@@ -19,6 +19,8 @@ export function ResultPanel({ campaign, generated }: { campaign: Campaign; gener
       </div>
       <div className="mt-7 space-y-5">
         <ResultCard title="Strategy Summary" body={campaign.summary} />
+        <ResultCard title="Campaign Setup" body={`Destination: ${campaign.setup.destination}\nPlatforms: ${campaign.setup.platforms.join(", ")}\nAudience: ${campaign.setup.audience}\nInterests: ${campaign.setup.interests}`} />
+        <ResultCard title="Budget & Payment" body={`Budget: ${campaign.setup.budget}\nPayment model: ${campaign.setup.paymentModel}\nGuidance: ${campaign.setup.paymentNote}\nSplit: ${campaign.setup.budgetSplit}`} />
         <ResultCard title="Meta Campaign" body={`Objective: ${campaign.meta.objective}\nAudience: ${campaign.meta.audience}\nAd sets: ${campaign.meta.adSets.join(" | ")}`} />
         <ResultCard title="Google Campaign" body={`Type: ${campaign.google.campaignType}\nKeywords: ${campaign.google.keywords.join(", ")}\nExtensions: ${campaign.google.extensions.join(", ")}`} />
         <ResultCard title="Ad Copy" body={`Headline: ${campaign.copy.headline}\nPrimary text: ${campaign.copy.primaryText}\nCTA: ${campaign.copy.cta}`} />
