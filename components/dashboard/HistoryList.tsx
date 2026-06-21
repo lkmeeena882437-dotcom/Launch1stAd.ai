@@ -2,14 +2,22 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { getCampaignDraftsFromCloud } from "@/lib/db/campaignDrafts";
 import { campaignHistoryKey, type SavedCampaign } from "@/lib/history";
 
 export function HistoryList() {
   const [items, setItems] = useState<SavedCampaign[]>([]);
+  const [source, setSource] = useState("local");
 
   useEffect(() => {
     const raw = window.localStorage.getItem(campaignHistoryKey);
     if (raw) setItems(JSON.parse(raw));
+
+    getCampaignDraftsFromCloud().then((cloudItems) => {
+      if (cloudItems.length === 0) return;
+      setItems(cloudItems);
+      setSource("cloud");
+    });
   }, []);
 
   if (items.length === 0) {
@@ -23,7 +31,10 @@ export function HistoryList() {
 
   return (
     <div className="rounded-2xl bg-dark p-6 text-canvas md:p-8">
-      <h2 className="text-2xl font-semibold">Saved campaign drafts</h2>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="text-2xl font-semibold">Saved campaign drafts</h2>
+        <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/60">{source}</span>
+      </div>
       <div className="mt-5 grid gap-4">
         {items.map((item) => (
           <Link key={item.id} href={`/campaign-report?id=${item.id}`} className="block rounded-xl bg-darkElevated p-5 transition hover:opacity-90">
