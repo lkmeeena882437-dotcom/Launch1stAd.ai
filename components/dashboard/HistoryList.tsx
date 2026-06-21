@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { clientHistoryLabel, filterCampaignsByClient } from "@/lib/clientHistory";
 import { getCampaignDraftsFromCloud } from "@/lib/db/campaignDrafts";
-import { campaignHistoryKey, type SavedCampaign } from "@/lib/history";
+import type { SavedCampaign } from "@/lib/history";
+import { readLocalCampaignHistory } from "@/lib/localHistory";
 import { getActiveClient, type ClientProfile } from "@/lib/workspace";
 import { HistoryCard } from "./HistoryCard";
 
@@ -14,8 +15,7 @@ export function HistoryList() {
 
   useEffect(() => {
     setClient(getActiveClient());
-    const raw = window.localStorage.getItem(campaignHistoryKey);
-    if (raw) setItems(JSON.parse(raw));
+    setItems(readLocalCampaignHistory());
 
     getCampaignDraftsFromCloud().then((cloudItems) => {
       if (cloudItems.length === 0) return;
