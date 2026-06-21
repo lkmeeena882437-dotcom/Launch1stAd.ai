@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { buildCampaign } from "@/lib/campaign";
+import { getCampaignDraftsFromCloud } from "@/lib/db/campaignDrafts";
 import { campaignHistoryKey, type SavedCampaign } from "@/lib/history";
 import { EmptyReport } from "./EmptyReport";
 import { ReportHero } from "./ReportHero";
@@ -16,10 +17,22 @@ export function CampaignDetail() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const raw = window.localStorage.getItem(campaignHistoryKey);
-    const list = raw ? (JSON.parse(raw) as SavedCampaign[]) : [];
-    setItem(list.find((draft) => draft.id === id) ?? null);
-    setLoaded(true);
+    async function loadDraft() {
+      const raw = window.localStorage.getItem(campaignHistoryKey);
+      const localList = raw ? (JSON.parse(raw) as SavedCampaign[]) : [];
+      const localItem = localList.find((draft) => draft.id === id);
+      if (localItem) {
+        setItem(localItem);
+        setLoaded(true);
+        return;
+      }
+
+      const cloudList = await getCampaignDraftsFromCloud();
+      setItem(cloudList.find((draft) => draft.id === id) ?? null);
+      setLoaded(true);
+    }
+
+    loadDraft();
   }, [id]);
 
   const campaign = useMemo(() => item ? buildCampaign(item.input) : null, [item]);
