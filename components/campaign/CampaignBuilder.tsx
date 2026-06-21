@@ -6,6 +6,7 @@ import { buildCampaign, type CampaignInput } from "@/lib/campaign";
 import { saveCampaignDraftToCloud } from "@/lib/db/campaignDrafts";
 import { campaignHistoryKey, campaignReuseKey, makeCampaignTitle, type SavedCampaign } from "@/lib/history";
 import { savedBusinessKey, savedBusinessToCampaign, type SavedBusiness } from "@/lib/saved";
+import { getActiveClient } from "@/lib/workspace";
 import { CampaignForm } from "./CampaignForm";
 import { ResultPanel } from "./ResultPanel";
 
@@ -25,6 +26,7 @@ export function CampaignBuilder() {
   const [generated, setGenerated] = useState(false);
   const [profileLoaded, setProfileLoaded] = useState(false);
   const [reuseLoaded, setReuseLoaded] = useState(false);
+  const [clientLoaded, setClientLoaded] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [source, setSource] = useState<"preview" | "ai" | "fallback">("preview");
   const [syncMessage, setSyncMessage] = useState("");
@@ -44,6 +46,13 @@ export function CampaignBuilder() {
       setForm(JSON.parse(reuseRaw) as CampaignInput);
       window.localStorage.removeItem(campaignReuseKey);
       setReuseLoaded(true);
+      return;
+    }
+
+    const activeClient = getActiveClient();
+    if (activeClient) {
+      setForm((current) => ({ ...current, ...savedBusinessToCampaign(activeClient) }));
+      setClientLoaded(true);
       return;
     }
 
@@ -97,6 +106,7 @@ export function CampaignBuilder() {
   return (
     <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 lg:grid-cols-[0.9fr_1.1fr]">
       <div>
+        {clientLoaded && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Active client auto-loaded from workspace.</p>}
         {reuseLoaded && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Saved campaign loaded. Edit and generate a new draft.</p>}
         {profileLoaded && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Saved business profile auto-loaded.</p>}
         {isGenerating && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Generating campaign with AI...</p>}
