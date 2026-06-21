@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { Brand } from "@/components/Brand";
-import { ShareNotice } from "@/components/share/ShareNotice";
+import { SharedReportView } from "@/components/share/SharedReportView";
 
 export default function SharePage() {
   return (
@@ -11,11 +12,15 @@ export default function SharePage() {
           <Link href="/dashboard" className="rounded-lg border border-hairline px-4 py-2 text-sm font-semibold">Dashboard</Link>
         </div>
       </header>
-      <section className="mx-auto max-w-4xl px-5 py-10">
+      <section className="mx-auto max-w-5xl px-5 py-10">
         <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Share</p>
         <h1 className="serif-display mt-3 text-5xl">Client-friendly report view.</h1>
-        <p className="mt-4 max-w-2xl text-muted">Yahan shareable campaign report flow connect hoga. Current version foundation page hai.</p>
-        <div className="mt-8"><ShareNotice /></div>
+        <p className="mt-4 max-w-2xl text-muted">Clean report preview for client sharing.</p>
+        <div className="mt-8">
+          <Suspense fallback={<p className="text-muted">Loading shared report...</p>}>
+            <SharedReportView />
+          </Suspense>
+        </div>
       </section>
     </main>
   );
