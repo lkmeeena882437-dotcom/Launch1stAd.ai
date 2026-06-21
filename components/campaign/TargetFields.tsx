@@ -1,5 +1,5 @@
 import type { CampaignInput } from "@/lib/campaign";
-import { goals, languages } from "./data";
+import { currencies, goals, languages, paymentModels } from "./data";
 import { Field, inputClass } from "./Field";
 
 export function TargetFields({ form, update }: {
@@ -12,9 +12,16 @@ export function TargetFields({ form, update }: {
         <Field label="Price range"><input className={inputClass} value={form.priceRange} onChange={(e) => update("priceRange", e.target.value)} placeholder="₹499–₹1499" /></Field>
         <Field label="Location"><input className={inputClass} value={form.location} onChange={(e) => update("location", e.target.value)} placeholder="Kota / Rajasthan / India" /></Field>
       </div>
+      <Field label="Audience category / customer type"><input className={inputClass} value={form.audienceType} onChange={(e) => update("audienceType", e.target.value)} placeholder="Local buyers / students / parents / shop owners" /></Field>
+      <Field label="Interests / search keywords"><input className={inputClass} value={form.interests} onChange={(e) => update("interests", e.target.value)} placeholder="Fashion, online shopping, local intent, competitor names" /></Field>
       <div className="grid gap-5 sm:grid-cols-3">
         <Field label="Daily budget"><input className={inputClass} value={form.budget} onChange={(e) => update("budget", e.target.value)} /></Field>
+        <Field label="Total budget"><input className={inputClass} value={form.totalBudget} onChange={(e) => update("totalBudget", e.target.value)} placeholder="₹3500/week" /></Field>
+        <Field label="Currency"><select className={inputClass} value={form.currency} onChange={(e) => update("currency", e.target.value as CampaignInput["currency"])}>{currencies.map((currency) => <option key={currency}>{currency}</option>)}</select></Field>
+      </div>
+      <div className="grid gap-5 sm:grid-cols-3">
         <Field label="Goal"><select className={inputClass} value={form.goal} onChange={(e) => update("goal", e.target.value as CampaignInput["goal"])}>{goals.map((goal) => <option key={goal}>{goal}</option>)}</select></Field>
+        <Field label="Payment model"><select className={inputClass} value={form.paymentModel} onChange={(e) => update("paymentModel", e.target.value as CampaignInput["paymentModel"])}>{paymentModels.map((model) => <option key={model}>{model}</option>)}</select></Field>
         <Field label="Language"><select className={inputClass} value={form.language} onChange={(e) => update("language", e.target.value as CampaignInput["language"])}>{languages.map((language) => <option key={language}>{language}</option>)}</select></Field>
       </div>
     </>
