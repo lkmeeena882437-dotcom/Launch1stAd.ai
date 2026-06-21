@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { buildCampaign, type CampaignInput } from "@/lib/campaign";
+import type { CampaignInput } from "@/lib/campaign";
+import { generateCampaignWithAI } from "@/lib/ai/provider";
 
 export async function POST(request: Request) {
   const body = (await request.json()) as CampaignInput;
-  const campaign = buildCampaign(body);
-  return NextResponse.json({ ok: true, campaign });
+  const result = await generateCampaignWithAI(body);
+  return NextResponse.json({ ok: true, ...result });
 }
