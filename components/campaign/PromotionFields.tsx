@@ -18,12 +18,12 @@ export function PromotionFields({ form, update }: {
   return (
     <div className="space-y-5">
       <Field label="What do you want to promote?">
-        <select className={inputClass} value={form.promotionType} onChange={(event) => update("promotionType", event.target.value as CampaignInput["promotionType"])}>
+        <select className={inputClass} value={form.promotionType || "WhatsApp"} onChange={(event) => update("promotionType", event.target.value as CampaignInput["promotionType"])}>
           {promotionTypes.map((type) => <option key={type}>{type}</option>)}
         </select>
       </Field>
       <Field label="Promotion link / destination">
-        <input className={inputClass} value={form.promotionLink} onChange={(event) => update("promotionLink", event.target.value)} placeholder="Website, app, Telegram, Instagram, Facebook, YouTube or WhatsApp link" />
+        <input className={inputClass} value={form.promotionLink || ""} onChange={(event) => update("promotionLink", event.target.value)} placeholder="Website, app, Telegram, Instagram, Facebook, YouTube or WhatsApp link" />
       </Field>
       <div>
         <p className="mb-3 text-sm font-semibold">Where should ads run?</p>
