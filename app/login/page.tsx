@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Brand } from "@/components/Brand";
+import { SignInBox } from "@/components/auth/SignInBox";
 
 export default function LoginPage() {
   return (
@@ -13,7 +14,8 @@ export default function LoginPage() {
       <section className="mx-auto max-w-3xl px-5 py-10">
         <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Login</p>
         <h1 className="serif-display mt-3 text-5xl">Magic link login</h1>
-        <p className="mt-4 text-muted">Supabase env connect hone ke baad yahan email magic-link auth active hoga. Next step me full client login form wire hoga.</p>
+        <p className="mt-4 text-muted">Email daalo, Supabase tumhe secure login link bhejega.</p>
+        <SignInBox />
       </section>
     </main>
   );
