@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { saveBusinessProfileToCloud } from "@/lib/db/businessProfiles";
+import { getLatestBusinessProfileFromCloud, saveBusinessProfileToCloud } from "@/lib/db/businessProfiles";
 import { defaultSavedBusiness, savedBusinessKey, type SavedBusiness } from "@/lib/saved";
 import { BusinessInput } from "./BusinessInput";
 import { ToneSelect } from "./ToneSelect";
@@ -13,6 +13,13 @@ export function BusinessForm() {
   useEffect(() => {
     const raw = window.localStorage.getItem(savedBusinessKey);
     if (raw) setBusiness(JSON.parse(raw));
+
+    getLatestBusinessProfileFromCloud().then((cloudProfile) => {
+      if (!cloudProfile) return;
+      setBusiness(cloudProfile);
+      window.localStorage.setItem(savedBusinessKey, JSON.stringify(cloudProfile));
+      setMessage("Cloud profile loaded.");
+    });
   }, []);
 
   function update<K extends keyof SavedBusiness>(key: K, value: SavedBusiness[K]) {
