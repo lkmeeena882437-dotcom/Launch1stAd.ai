@@ -7,6 +7,7 @@ import { campaignHistoryKey, type SavedCampaign } from "@/lib/history";
 import { EmptyReport } from "./EmptyReport";
 import { ReportHero } from "./ReportHero";
 import { ReportSections } from "./ReportSections";
+import { UseAgainButton } from "./UseAgainButton";
 
 export function CampaignDetail() {
   const searchParams = useSearchParams();
@@ -29,6 +30,15 @@ export function CampaignDetail() {
   return (
     <article className="space-y-5">
       <ReportHero item={item} />
+      <div className="rounded-2xl bg-card p-5 print:hidden">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="font-semibold">Use this campaign again</h2>
+            <p className="mt-1 text-sm text-muted">Same campaign details ko Campaign Builder me load karke edit karo.</p>
+          </div>
+          <UseAgainButton input={item.input} />
+        </div>
+      </div>
       <ReportSections campaign={campaign} />
     </article>
   );
