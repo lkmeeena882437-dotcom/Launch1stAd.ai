@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --canvas: #faf7ef;
+  --card: #efe6d8;
+  --ink: #141413;
+  --muted: #6c6a64;
+  --coral: #c8694e;
+  --dark: #181715;
+  --hairline: #e6dfd8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--ink);
+}
+
+::selection {
+  background: rgba(200, 105, 78, 0.24);
+}
+
+.serif-display {
+  font-family: Cormorant Garamond, Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+.glass-grid {
+  background-image:
+    linear-gradient(rgba(20, 20, 19, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 20, 19, 0.055) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.dark-panel-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
