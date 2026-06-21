@@ -1,13 +1,14 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { saveBusinessProfileToCloud } from "@/lib/db/businessProfiles";
+import { defaultSavedBusiness, savedBusinessKey, type SavedBusiness } from "@/lib/saved";
 import { BusinessInput } from "./BusinessInput";
 import { ToneSelect } from "./ToneSelect";
-import { defaultSavedBusiness, savedBusinessKey, type SavedBusiness } from "@/lib/saved";
 
 export function BusinessForm() {
   const [business, setBusiness] = useState<SavedBusiness>(defaultSavedBusiness);
-  const [saved, setSaved] = useState(false);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const raw = window.localStorage.getItem(savedBusinessKey);
@@ -16,13 +17,14 @@ export function BusinessForm() {
 
   function update<K extends keyof SavedBusiness>(key: K, value: SavedBusiness[K]) {
     setBusiness((current) => ({ ...current, [key]: value }));
-    setSaved(false);
+    setMessage("");
   }
 
-  function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     window.localStorage.setItem(savedBusinessKey, JSON.stringify(business));
-    setSaved(true);
+    const cloud = await saveBusinessProfileToCloud(business);
+    setMessage(cloud.ok ? "Saved locally and synced to Supabase." : "Saved locally. Login/Supabase setup ke baad cloud sync hoga.");
   }
 
   return (
@@ -39,7 +41,7 @@ export function BusinessForm() {
         <ToneSelect value={business.tone} onChange={(value) => update("tone", value)} />
       </div>
       <button className="mt-6 rounded-lg bg-coral px-5 py-3 text-sm font-semibold text-white">Save business profile</button>
-      {saved && <p className="mt-4 text-sm font-semibold text-coral">Saved. Campaign Builder me details auto-fill hongi.</p>}
+      {message && <p className="mt-4 text-sm font-semibold text-coral">{message}</p>}
     </form>
   );
 }
