@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Brand } from "@/components/Brand";
 import { Hero } from "@/components/home/Hero";
+import { IdeaBox } from "@/components/home/IdeaBox";
+import { TrustSection } from "@/components/home/TrustSection";
 import { Features } from "@/components/home/Features";
 import { Tiers } from "@/components/home/Tiers";
 
@@ -17,6 +19,8 @@ export default function HomePage() {
         </div>
       </header>
       <Hero />
+      <IdeaBox />
+      <TrustSection />
       <Features />
       <Tiers />
     </main>
