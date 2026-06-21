@@ -10,14 +10,19 @@ export function IdeaBox() {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoading(true);
-    const response = await fetch("/api/idea-chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question })
-    });
-    const data = await response.json();
-    setAnswer(data.answer || "Try a simple business question.");
-    setLoading(false);
+    try {
+      const response = await fetch("/api/idea-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question })
+      });
+      const data = await response.json();
+      setAnswer(data.answer || "Try a simple business question.");
+    } catch {
+      setAnswer("Quick idea: clear offer, simple audience, strong CTA aur WhatsApp follow-up ready rakho.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
