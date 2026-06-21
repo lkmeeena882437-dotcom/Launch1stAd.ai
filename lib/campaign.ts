@@ -25,11 +25,28 @@ const categoryAngles: Record<string, string[]> = {
   Clinic: ["Trust and care", "Appointment booking", "Doctor expertise", "Local convenience"],
   RealEstate: ["Site visit", "Location advantage", "Limited inventory", "Easy finance"],
   Restaurant: ["Taste craving", "Combo offer", "Family outing", "Fast delivery"],
+  LocalStore: ["Nearby store offer", "Local trust", "Walk-in visit", "WhatsApp enquiry"],
+  Ecommerce: ["Best seller", "Limited offer", "Fast delivery", "Retargeting deal"],
+  Agency: ["Client growth", "Lead generation", "Done-for-you service", "Case-study style proof"],
+  SalonBeauty: ["Appointment booking", "Before-after proof", "Festive package", "Local repeat visit"],
+  GymFitness: ["Trial pass", "Transformation proof", "Membership offer", "Local fitness community"],
+  Jewellery: ["Occasion offer", "Premium collection", "Wedding collection", "Store visit"],
+  MobileElectronics: ["Latest model", "Exchange offer", "Price comparison", "Local service"],
+  TravelHotel: ["Weekend package", "Booking offer", "Location experience", "Family trip"],
+  EventWedding: ["Portfolio proof", "Package offer", "Booking enquiry", "Trust and experience"],
+  InteriorFurniture: ["Home makeover", "Catalogue preview", "Premium finish", "Site visit"],
+  AutoVehicle: ["Test drive", "Service reminder", "Exchange offer", "Finance option"],
+  GroceryFMCG: ["Daily essentials", "Monthly basket", "Delivery offer", "Repeat order"],
+  EducationCourse: ["Skill outcome", "Demo class", "Certificate value", "Limited batch"],
+  B2BServices: ["Business growth", "Cost saving", "Consultation offer", "Quote request"],
+  CreatorInfluencer: ["Follower growth", "Video hook", "Community join", "Collab enquiry"],
+  TelegramChannel: ["Community join", "Daily value", "Exclusive updates", "Social proof"],
+  AppSaaS: ["Free trial", "Feature benefit", "Use-case demo", "Install now"],
   Default: ["Clear offer", "Trust proof", "Fast action", "WhatsApp enquiry"]
 };
 
 function anglesFor(category: string) {
-  const key = category.replace(/\s/g, "");
+  const key = category.replace(/[^A-Za-z0-9]/g, "");
   return categoryAngles[key] ?? categoryAngles.Default;
 }
 
