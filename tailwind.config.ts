@@ -17,11 +17,16 @@ const config: Config = {
         coralDark: "#a9583e",
         dark: "#181715",
         darkSoft: "#252320",
+        darkElevated: "#252320",
         hairline: "#e6dfd8",
+        success: "#5db872",
       },
       fontFamily: {
         display: ["Georgia", "serif"],
         sans: ["Inter", "system-ui", "sans-serif"],
+      },
+      boxShadow: {
+        soft: "0 1px 3px rgba(20,20,19,0.08)",
       },
     },
   },
