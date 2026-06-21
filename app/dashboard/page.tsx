@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Brand } from "@/components/Brand";
+import { HistoryList } from "@/components/dashboard/HistoryList";
 
 const stats = [
   ["Campaign packs", "12"],
@@ -34,6 +35,7 @@ export default function DashboardPage() {
         <div className="mt-10 grid gap-5 md:grid-cols-4">
           {tools.map(([title, href, text]) => <Link key={title} href={href} className="rounded-2xl bg-card p-6"><h2 className="font-semibold">{title}</h2><p className="mt-2 text-sm text-muted">{text}</p></Link>)}
         </div>
+        <div className="mt-10"><HistoryList /></div>
       </section>
     </main>
   );
