@@ -1,3 +1,4 @@
+import { PrintExportButton } from "@/components/actions/PrintExportButton";
 import { ResultCard } from "./ResultCard";
 import type { buildCampaign } from "@/lib/campaign";
 
@@ -11,7 +12,10 @@ export function ResultPanel({ campaign, generated }: { campaign: Campaign; gener
           <p className="text-sm text-white/50">AI Output</p>
           <h2 className="text-2xl font-semibold">Ready-to-launch campaign pack</h2>
         </div>
-        <span className="rounded-full bg-success/20 px-3 py-1 text-xs text-success">{generated ? "Generated" : "Preview"}</span>
+        <div className="flex items-center gap-3">
+          <span className="rounded-full bg-success/20 px-3 py-1 text-xs text-success">{generated ? "Generated" : "Preview"}</span>
+          <PrintExportButton />
+        </div>
       </div>
       <div className="mt-7 space-y-5">
         <ResultCard title="Strategy Summary" body={campaign.summary} />
