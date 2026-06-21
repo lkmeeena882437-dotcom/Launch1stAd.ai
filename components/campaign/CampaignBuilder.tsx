@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { buildCampaign, type CampaignInput } from "@/lib/campaign";
-import { campaignHistoryKey, makeCampaignTitle, type SavedCampaign } from "@/lib/history";
+import { campaignHistoryKey, campaignReuseKey, makeCampaignTitle, type SavedCampaign } from "@/lib/history";
 import { savedBusinessKey, savedBusinessToCampaign, type SavedBusiness } from "@/lib/saved";
 import { CampaignForm } from "./CampaignForm";
 import { ResultPanel } from "./ResultPanel";
@@ -22,9 +22,18 @@ export function CampaignBuilder() {
   const [form, setForm] = useState<CampaignInput>(starterForm);
   const [generated, setGenerated] = useState(false);
   const [profileLoaded, setProfileLoaded] = useState(false);
+  const [reuseLoaded, setReuseLoaded] = useState(false);
   const campaign = useMemo(() => buildCampaign(form), [form]);
 
   useEffect(() => {
+    const reuseRaw = window.localStorage.getItem(campaignReuseKey);
+    if (reuseRaw) {
+      setForm(JSON.parse(reuseRaw) as CampaignInput);
+      window.localStorage.removeItem(campaignReuseKey);
+      setReuseLoaded(true);
+      return;
+    }
+
     const raw = window.localStorage.getItem(savedBusinessKey);
     if (raw) {
       const saved = JSON.parse(raw) as SavedBusiness;
@@ -59,6 +68,7 @@ export function CampaignBuilder() {
   return (
     <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 lg:grid-cols-[0.9fr_1.1fr]">
       <div>
+        {reuseLoaded && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Saved campaign loaded. Edit and generate a new draft.</p>}
         {profileLoaded && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Saved business profile auto-loaded.</p>}
         {generated && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Campaign draft saved to dashboard.</p>}
         <CampaignForm form={form} update={update} onSubmit={onSubmit} />
