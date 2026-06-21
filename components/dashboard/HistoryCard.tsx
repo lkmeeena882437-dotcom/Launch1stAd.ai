@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { statusLabel, type SavedCampaign } from "@/lib/history";
+import { StatusButtons } from "./StatusButtons";
 
 export function HistoryCard({ item }: { item: SavedCampaign }) {
   return (
@@ -15,6 +16,7 @@ export function HistoryCard({ item }: { item: SavedCampaign }) {
         </div>
         <p className="mt-2 line-clamp-2 text-sm leading-6 text-white/65">{item.summary}</p>
       </Link>
+      <StatusButtons item={item} />
       <div className="mt-3 flex flex-wrap gap-3 text-xs font-semibold text-coral">
         <Link href={`/campaign-report?id=${item.id}`}>Open full report →</Link>
         <Link href={`/share?id=${item.id}`}>Share view →</Link>
