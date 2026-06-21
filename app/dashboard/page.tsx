@@ -3,23 +3,28 @@ import { Brand } from "@/components/Brand";
 import { SessionBadge } from "@/components/auth/SessionBadge";
 import { HistoryList } from "@/components/dashboard/HistoryList";
 
-const stats = [
-  ["Campaign packs", "12"],
-  ["Avg. CTR target", "2.5%+"],
-  ["Platforms", "Meta · Google · WhatsApp"],
-  ["Language modes", "Hindi · English · Hinglish"]
-];
-
-const tools = [
-  ["Clients", "/clients", "Manage multiple business profiles."],
-  ["Business Profile", "/business", "Save business details and brand tone."],
-  ["Campaign Builder", "/campaign", "Create Meta, Google and WhatsApp launch packs."],
-  ["Landing Builder", "/landing-builder", "Generate sales page copy."],
-  ["Growth Tools", "/tools", "Score, policy and PDF export tools."],
-  ["Analytics", "/analytics", "Check campaign metrics and advice."],
-  ["Share", "/share", "Client-friendly report view foundation."],
-  ["Setup", "/setup", "Supabase env and database status."],
-  ["Account", "/account", "Workspace access and usage levels."]
+const actions = [
+  {
+    title: "New Campaign",
+    href: "/campaign",
+    text: "Business details add karo aur AI launch pack generate karo.",
+    primary: true
+  },
+  {
+    title: "Clients",
+    href: "/clients",
+    text: "Multiple business profiles manage karo."
+  },
+  {
+    title: "Saved Reports",
+    href: "#reports",
+    text: "Generated campaigns aur client reports dekho."
+  },
+  {
+    title: "Analytics",
+    href: "/analytics",
+    text: "CTR, CPC, CPL aur ROAS check karo."
+  }
 ];
 
 export default function DashboardPage() {
@@ -34,17 +39,40 @@ export default function DashboardPage() {
           </div>
         </div>
       </header>
+
       <section className="mx-auto max-w-7xl px-5 py-10">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">Dashboard MVP</p>
-        <h1 className="serif-display mt-3 text-5xl">Growth command center.</h1>
-        <p className="mt-4 max-w-2xl leading-7 text-muted">Yahan saved campaigns, business profiles, exports aur optimization reports connect honge.</p>
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">Dashboard</p>
+        <div className="mt-3 flex flex-wrap items-end justify-between gap-5">
+          <div>
+            <h1 className="serif-display text-5xl">Launch workspace.</h1>
+            <p className="mt-4 max-w-2xl leading-7 text-muted">Client select karo, campaign banao, report export/share karo. Simple premium workflow.</p>
+          </div>
+          <Link href="/clients" className="rounded-lg border border-hairline px-4 py-2 text-sm font-semibold">Manage clients</Link>
+        </div>
+
         <div className="mt-10 grid gap-5 md:grid-cols-4">
-          {stats.map(([label, value]) => <div key={label} className="rounded-xl bg-card p-6"><p className="text-sm text-muted">{label}</p><p className="mt-3 text-2xl font-semibold">{value}</p></div>)}
+          {actions.map((action) => (
+            <Link
+              key={action.title}
+              href={action.href}
+              className={action.primary ? "rounded-2xl bg-dark p-6 text-canvas" : "rounded-2xl bg-card p-6 text-ink"}
+            >
+              <h2 className="text-xl font-semibold">{action.title}</h2>
+              <p className={action.primary ? "mt-3 text-sm leading-6 text-white/60" : "mt-3 text-sm leading-6 text-muted"}>{action.text}</p>
+              <p className="mt-5 text-sm font-semibold text-coral">Open →</p>
+            </Link>
+          ))}
         </div>
-        <div className="mt-10 grid gap-5 md:grid-cols-3 lg:grid-cols-9">
-          {tools.map(([title, href, text]) => <Link key={title} href={href} className="rounded-2xl bg-card p-6"><h2 className="font-semibold">{title}</h2><p className="mt-2 text-sm text-muted">{text}</p></Link>)}
+
+        <section id="reports" className="mt-10">
+          <HistoryList />
+        </section>
+
+        <div className="mt-8 flex flex-wrap gap-4 text-sm text-muted">
+          <Link href="/setup" className="hover:text-coral">Setup</Link>
+          <Link href="/account" className="hover:text-coral">Account</Link>
+          <Link href="/business" className="hover:text-coral">Single business profile</Link>
         </div>
-        <div className="mt-10"><HistoryList /></div>
       </section>
     </main>
   );
