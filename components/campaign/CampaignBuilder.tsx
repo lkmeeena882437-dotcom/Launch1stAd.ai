@@ -18,7 +18,17 @@ const starterForm: CampaignInput = {
   location: "India",
   budget: "₹500/day",
   goal: "WhatsApp",
-  language: "Hinglish"
+  language: "Hinglish",
+  promotionType: "WhatsApp",
+  promotionLink: "",
+  targetPlatforms: ["Instagram", "Facebook"],
+  audienceType: "Interested buyers",
+  ageRange: "18-45",
+  gender: "All",
+  interests: "",
+  currency: "INR",
+  totalBudget: "₹3500/week",
+  paymentModel: "Auto"
 };
 
 export function CampaignBuilder() {
