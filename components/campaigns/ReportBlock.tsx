@@ -1,4 +1,6 @@
-export function ReportBlock({ title, children }: { title: string; children: React.ReactNode }) {
+import type { ReactNode } from "react";
+
+export function ReportBlock({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="rounded-2xl bg-card p-6">
       <h2 className="text-xl font-semibold">{title}</h2>
