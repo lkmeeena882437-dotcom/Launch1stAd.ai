@@ -1,6 +1,7 @@
 import type { CampaignInput } from "./campaign";
 
 export const campaignHistoryKey = "launch1stad.campaignHistory";
+export const campaignReuseKey = "launch1stad.reuseCampaign";
 
 export type SavedCampaign = {
   id: string;
