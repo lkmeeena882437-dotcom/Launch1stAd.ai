@@ -9,6 +9,8 @@ export type SavedCampaign = {
   createdAt: string;
   input: CampaignInput;
   summary: string;
+  clientId?: string;
+  clientName?: string;
 };
 
 export function makeCampaignTitle(input: CampaignInput) {
