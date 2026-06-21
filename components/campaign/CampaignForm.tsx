@@ -22,7 +22,7 @@ export function CampaignForm({ form, update, onSubmit }: {
   function submit(event: FormEvent<HTMLFormElement>) {
     if (!canGenerateCampaign()) {
       event.preventDefault();
-      setMessage("Monthly generation count complete. Open Account page for more access.");
+      setMessage("Monthly generation limit complete. Account page se access update karo.");
       return;
     }
     recordCampaignUsage();
@@ -34,14 +34,14 @@ export function CampaignForm({ form, update, onSubmit }: {
   return (
     <section className="rounded-2xl bg-card p-6 md:p-8">
       <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">Campaign Builder</p>
-      <h1 className="serif-display mt-3 text-4xl md:text-5xl">Business details do, AI launch pack banayega.</h1>
-      <p className="mt-4 leading-7 text-muted">MVP me campaign engine hai. Baad me Gemini/GPT API connect karke aur advanced outputs add kar sakte hain.</p>
+      <h1 className="serif-display mt-3 text-4xl md:text-5xl">Business details do, launch pack ready karo.</h1>
+      <p className="mt-4 leading-7 text-muted">Offer, location, budget aur goal add karo. System ready-to-use ad plan, copy aur WhatsApp script banayega.</p>
       <p className="mt-4 rounded-xl border border-hairline bg-canvas px-4 py-3 text-sm font-semibold text-coral">Monthly generations: {used}/3</p>
       <form onSubmit={submit} className="mt-8 space-y-5">
         <BusinessFields form={form} update={update} />
         <TargetFields form={form} update={update} />
         {message && <p className="text-sm font-semibold text-coral">{message}</p>}
-        <button className="w-full rounded-lg bg-coral px-5 py-3 text-sm font-semibold text-white hover:bg-coralDark">Generate Launch Pack</button>
+        <button className="w-full rounded-lg bg-coral px-5 py-3 text-sm font-semibold text-white hover:bg-coralDark">Generate Campaign Report</button>
       </form>
     </section>
   );
