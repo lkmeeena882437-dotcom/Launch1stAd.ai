@@ -15,6 +15,7 @@ const tools = [
   ["Campaign Builder", "/campaign", "Create Meta, Google and WhatsApp launch packs."],
   ["Landing Builder", "/landing-builder", "Generate sales page copy."],
   ["Growth Tools", "/tools", "Score, policy and PDF export tools."],
+  ["Analytics", "/analytics", "Check campaign metrics and advice."],
   ["Setup", "/setup", "Supabase env and database status."],
   ["Account", "/account", "Workspace access and usage levels."]
 ];
@@ -38,7 +39,7 @@ export default function DashboardPage() {
         <div className="mt-10 grid gap-5 md:grid-cols-4">
           {stats.map(([label, value]) => <div key={label} className="rounded-xl bg-card p-6"><p className="text-sm text-muted">{label}</p><p className="mt-3 text-2xl font-semibold">{value}</p></div>)}
         </div>
-        <div className="mt-10 grid gap-5 md:grid-cols-6">
+        <div className="mt-10 grid gap-5 md:grid-cols-7">
           {tools.map(([title, href, text]) => <Link key={title} href={href} className="rounded-2xl bg-card p-6"><h2 className="font-semibold">{title}</h2><p className="mt-2 text-sm text-muted">{text}</p></Link>)}
         </div>
         <div className="mt-10"><HistoryList /></div>
