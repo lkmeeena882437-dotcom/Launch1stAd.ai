@@ -1,8 +1,19 @@
 import type { CampaignInput } from "@/lib/campaign";
 import { getCurrentUser } from "@/lib/auth/user";
+import type { SavedCampaign } from "@/lib/history";
 import { supabaseRest } from "@/lib/supabase/rest";
 
 type CampaignOutput = Record<string, unknown>;
+
+type CampaignDraftRow = {
+  id: string;
+  title: string;
+  input: CampaignInput;
+  output: CampaignOutput;
+  summary: string;
+  source: string;
+  created_at: string;
+};
 
 export async function saveCampaignDraftToCloud(args: {
   title: string;
@@ -29,12 +40,23 @@ export async function saveCampaignDraftToCloud(args: {
   return { ok: response.ok, reason: response.ok ? "saved" as const : "failed" as const };
 }
 
-export async function getCampaignDraftsFromCloud() {
+export function draftRowToSavedCampaign(row: CampaignDraftRow): SavedCampaign {
+  return {
+    id: row.id,
+    title: row.title,
+    createdAt: row.created_at,
+    input: row.input,
+    summary: row.summary
+  };
+}
+
+export async function getCampaignDraftsFromCloud(): Promise<SavedCampaign[]> {
   const user = getCurrentUser();
   if (!user) return [];
 
   const query = `campaign_drafts?select=*&user_id=eq.${user.id}&order=created_at.desc&limit=20`;
   const response = await supabaseRest(query);
   if (!response.ok) return [];
-  return response.json();
+  const rows = (await response.json()) as CampaignDraftRow[];
+  return rows.map(draftRowToSavedCampaign);
 }
