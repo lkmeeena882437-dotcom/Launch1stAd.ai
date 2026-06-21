@@ -71,13 +71,16 @@ export function CampaignBuilder() {
   async function saveDraft(activeSummary: string, activeCampaign: typeof campaign, activeSource: string) {
     const raw = window.localStorage.getItem(campaignHistoryKey);
     const existing = raw ? (JSON.parse(raw) as SavedCampaign[]) : [];
+    const activeClient = getActiveClient();
     const title = makeCampaignTitle(form);
     const record: SavedCampaign = {
       id: crypto.randomUUID(),
       title,
       createdAt: new Date().toISOString(),
       input: form,
-      summary: activeSummary
+      summary: activeSummary,
+      clientId: activeClient?.id,
+      clientName: activeClient?.businessName
     };
     window.localStorage.setItem(campaignHistoryKey, JSON.stringify([record, ...existing].slice(0, 20)));
 
@@ -86,7 +89,9 @@ export function CampaignBuilder() {
       input: form,
       output: activeCampaign as unknown as Record<string, unknown>,
       summary: activeSummary,
-      source: activeSource
+      source: activeSource,
+      clientId: activeClient?.id,
+      clientName: activeClient?.businessName
     });
 
     setSyncMessage(cloud.ok ? "Cloud sync complete." : "Saved locally. Login/Supabase setup ke baad cloud sync hoga.");
