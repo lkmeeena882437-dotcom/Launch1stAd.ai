@@ -11,14 +11,14 @@ const actions = [
     primary: true
   },
   {
+    title: "Promotion Links",
+    href: "/platforms",
+    text: "Website, app, WhatsApp, Instagram, Facebook, YouTube aur Telegram links save karo."
+  },
+  {
     title: "Clients",
     href: "/clients",
     text: "Multiple business profiles manage karo."
-  },
-  {
-    title: "Saved Reports",
-    href: "#reports",
-    text: "Generated campaigns aur client reports dekho."
   },
   {
     title: "Analytics",
@@ -45,7 +45,7 @@ export default function DashboardPage() {
         <div className="mt-3 flex flex-wrap items-end justify-between gap-5">
           <div>
             <h1 className="serif-display text-5xl">Launch workspace.</h1>
-            <p className="mt-4 max-w-2xl leading-7 text-muted">Client select karo, campaign banao, report export/share karo. Simple premium workflow.</p>
+            <p className="mt-4 max-w-2xl leading-7 text-muted">Client select karo, links save karo, campaign banao, report export/share karo.</p>
           </div>
           <Link href="/clients" className="rounded-lg border border-hairline px-4 py-2 text-sm font-semibold">Manage clients</Link>
         </div>
