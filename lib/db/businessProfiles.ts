@@ -1,5 +1,5 @@
-import type { SavedBusiness } from "@/lib/saved";
 import { getCurrentUser } from "@/lib/auth/user";
+import type { SavedBusiness } from "@/lib/saved";
 import { supabaseRest } from "@/lib/supabase/rest";
 
 type BusinessRow = {
@@ -45,24 +45,32 @@ export function fromBusinessRow(row: BusinessRow): SavedBusiness {
 }
 
 export async function saveBusinessProfileToCloud(profile: SavedBusiness) {
-  const user = getCurrentUser();
-  if (!user) return { ok: false, reason: "not_logged_in" as const };
+  try {
+    const user = getCurrentUser();
+    if (!user) return { ok: false, reason: "not_logged_in" as const };
 
-  const response = await supabaseRest("business_profiles", {
-    method: "POST",
-    body: JSON.stringify(toRow(profile, user.id))
-  });
+    const response = await supabaseRest("business_profiles", {
+      method: "POST",
+      body: JSON.stringify(toRow(profile, user.id))
+    });
 
-  return { ok: response.ok, reason: response.ok ? "saved" as const : "failed" as const };
+    return { ok: response.ok, reason: response.ok ? "saved" as const : "failed" as const };
+  } catch {
+    return { ok: false, reason: "not_configured" as const };
+  }
 }
 
 export async function getLatestBusinessProfileFromCloud() {
-  const user = getCurrentUser();
-  if (!user) return null;
+  try {
+    const user = getCurrentUser();
+    if (!user) return null;
 
-  const query = `business_profiles?select=*&user_id=eq.${user.id}&order=created_at.desc&limit=1`;
-  const response = await supabaseRest(query);
-  if (!response.ok) return null;
-  const rows = (await response.json()) as BusinessRow[];
-  return rows[0] ? fromBusinessRow(rows[0]) : null;
+    const query = `business_profiles?select=*&user_id=eq.${user.id}&order=created_at.desc&limit=1`;
+    const response = await supabaseRest(query);
+    if (!response.ok) return null;
+    const rows = (await response.json()) as BusinessRow[];
+    return rows[0] ? fromBusinessRow(rows[0]) : null;
+  } catch {
+    return null;
+  }
 }
