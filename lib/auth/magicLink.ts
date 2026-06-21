@@ -7,7 +7,7 @@ export async function sendMagicLink(email: string) {
     throw new Error("Supabase env variables missing.");
   }
 
-  const redirectTo = `${window.location.origin}/auth/callback`;
+  const redirectTo = `${window.location.origin}/session`;
 
   const response = await fetch(`${url}/auth/v1/otp`, {
     method: "POST",
