@@ -1,19 +1,26 @@
 import type { CampaignInput } from "@/lib/campaign";
-import { currencies, goals, languages, paymentModels } from "./data";
+import { audiencePresets, currencies, goals, languages, paymentModels } from "./data";
 import { Field, inputClass } from "./Field";
 
 export function TargetFields({ form, update }: {
   form: CampaignInput;
   update: <K extends keyof CampaignInput>(key: K, value: CampaignInput[K]) => void;
 }) {
+  const presets = audiencePresets[form.category] || audiencePresets.Default;
+
   return (
     <>
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Price range"><input className={inputClass} value={form.priceRange || ""} onChange={(e) => update("priceRange", e.target.value)} placeholder="₹499–₹1499" /></Field>
         <Field label="Location"><input className={inputClass} value={form.location || "India"} onChange={(e) => update("location", e.target.value)} placeholder="Kota / Rajasthan / India" /></Field>
       </div>
-      <Field label="Audience category / customer type"><input className={inputClass} value={form.audienceType || ""} onChange={(e) => update("audienceType", e.target.value)} placeholder="Local buyers / students / parents / shop owners" /></Field>
-      <Field label="Interests / search keywords"><input className={inputClass} value={form.interests || ""} onChange={(e) => update("interests", e.target.value)} placeholder="Fashion, online shopping, local intent, competitor names" /></Field>
+      <Field label="Audience preset / customer segment">
+        <select className={inputClass} value={form.audienceType || ""} onChange={(e) => update("audienceType", e.target.value)}>
+          <option value="">Select customer segment</option>
+          {presets.map((preset) => <option key={preset}>{preset}</option>)}
+        </select>
+      </Field>
+      <Field label="Custom interests / search keywords"><input className={inputClass} value={form.interests || ""} onChange={(e) => update("interests", e.target.value)} placeholder="Fashion, online shopping, local intent, competitor names" /></Field>
       <div className="grid gap-5 sm:grid-cols-3">
         <Field label="Daily budget"><input className={inputClass} value={form.budget || "₹500/day"} onChange={(e) => update("budget", e.target.value)} /></Field>
         <Field label="Total budget"><input className={inputClass} value={form.totalBudget || ""} onChange={(e) => update("totalBudget", e.target.value)} placeholder="₹3500/week" /></Field>
