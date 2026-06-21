@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Brand } from "@/components/Brand";
+import { SessionBadge } from "@/components/auth/SessionBadge";
 import { HistoryList } from "@/components/dashboard/HistoryList";
 
 const stats = [
@@ -23,7 +24,10 @@ export default function DashboardPage() {
       <header className="border-b border-hairline bg-canvas">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
           <Link href="/"><Brand /></Link>
-          <Link href="/campaign" className="rounded-lg bg-coral px-4 py-2 text-sm font-semibold text-white">New Campaign</Link>
+          <div className="flex items-center gap-3">
+            <SessionBadge />
+            <Link href="/campaign" className="rounded-lg bg-coral px-4 py-2 text-sm font-semibold text-white">New Campaign</Link>
+          </div>
         </div>
       </header>
       <section className="mx-auto max-w-7xl px-5 py-10">
