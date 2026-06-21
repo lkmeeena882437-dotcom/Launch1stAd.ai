@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { buildCampaign } from "@/lib/campaign";
 import { getCampaignDraftsFromCloud } from "@/lib/db/campaignDrafts";
 import { campaignHistoryKey, type SavedCampaign } from "@/lib/history";
+import { ShareReportButton } from "@/components/share/ShareReportButton";
 import { EmptyReport } from "./EmptyReport";
 import { ReportHero } from "./ReportHero";
 import { ReportSections } from "./ReportSections";
@@ -46,10 +47,13 @@ export function CampaignDetail() {
       <div className="rounded-2xl bg-card p-5 print:hidden">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="font-semibold">Use this campaign again</h2>
-            <p className="mt-1 text-sm text-muted">Same campaign details ko Campaign Builder me load karke edit karo.</p>
+            <h2 className="font-semibold">Report actions</h2>
+            <p className="mt-1 text-sm text-muted">Edit again or open a clean client-friendly share view.</p>
           </div>
-          <UseAgainButton input={item.input} />
+          <div className="flex flex-wrap gap-3">
+            <ShareReportButton id={item.id} />
+            <UseAgainButton input={item.input} />
+          </div>
         </div>
       </div>
       <ReportSections campaign={campaign} />
