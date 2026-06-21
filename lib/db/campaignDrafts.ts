@@ -13,6 +13,8 @@ type CampaignDraftRow = {
   summary: string;
   source: string;
   created_at: string;
+  client_id?: string;
+  client_name?: string;
 };
 
 export async function saveCampaignDraftToCloud(args: {
@@ -21,6 +23,8 @@ export async function saveCampaignDraftToCloud(args: {
   output: CampaignOutput;
   summary: string;
   source: string;
+  clientId?: string;
+  clientName?: string;
 }) {
   try {
     const user = getCurrentUser();
@@ -34,7 +38,9 @@ export async function saveCampaignDraftToCloud(args: {
         input: args.input,
         output: args.output,
         summary: args.summary,
-        source: args.source
+        source: args.source,
+        client_id: args.clientId ?? "",
+        client_name: args.clientName ?? ""
       })
     });
 
@@ -50,7 +56,9 @@ export function draftRowToSavedCampaign(row: CampaignDraftRow): SavedCampaign {
     title: row.title,
     createdAt: row.created_at,
     input: row.input,
-    summary: row.summary
+    summary: row.summary,
+    clientId: row.client_id,
+    clientName: row.client_name
   };
 }
 
