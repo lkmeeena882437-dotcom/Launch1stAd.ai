@@ -29,6 +29,7 @@ Launch1stAd.ai helps Indian businesses create ready-to-launch campaign packs for
 11. Use again / duplicate campaign flow
 12. PDF export through browser print
 13. Gemini AI provider with deterministic fallback
+14. Supabase schema foundation and setup status page
 
 ## Tech Stack
 
@@ -38,6 +39,7 @@ Launch1stAd.ai helps Indian businesses create ready-to-launch campaign packs for
 - Browser localStorage for MVP drafts/profiles
 - Built-in deterministic campaign generator
 - Optional Gemini AI generation via `GEMINI_API_KEY`
+- Supabase database schema for production persistence
 
 ## AI Generation Flow
 
@@ -45,6 +47,20 @@ Launch1stAd.ai helps Indian businesses create ready-to-launch campaign packs for
 - If `GEMINI_API_KEY` is present, the API tries Gemini generation.
 - If the key is missing or the API fails, it automatically returns the built-in fallback campaign.
 - The app never promises guaranteed leads, sales or income.
+
+## Supabase Setup
+
+1. Create a Supabase project.
+2. Open Supabase SQL Editor.
+3. Run the SQL from `supabase/schema.sql`.
+4. Add these environment variables in Vercel and `.env.local`:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+5. Open `/setup` in the app to confirm env variables are present.
 
 ## Run Locally
 
@@ -67,12 +83,14 @@ Then add:
 
 ```bash
 GEMINI_API_KEY=your_key_here
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
 ## Next Build Steps
 
-- Add Supabase auth and database
-- Move localStorage drafts to Supabase tables
+- Add auth UI for magic link login
+- Move localStorage drafts to Supabase tables after login
 - Add Razorpay subscriptions
 - Add campaign export as real server-side PDF
 - Add analytics optimizer input for CTR, CPC, CPL, CPM and ROAS
