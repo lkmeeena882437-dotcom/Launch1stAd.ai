@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { SavedCampaign } from "@/lib/history";
+import { statusLabel, type SavedCampaign } from "@/lib/history";
 
 export function HistoryCard({ item }: { item: SavedCampaign }) {
   return (
@@ -9,7 +9,10 @@ export function HistoryCard({ item }: { item: SavedCampaign }) {
           <h3 className="font-semibold text-white">{item.title}</h3>
           <span className="text-xs text-white/40">{new Date(item.createdAt).toLocaleDateString()}</span>
         </div>
-        {item.clientName && <p className="mt-2 text-xs font-semibold text-coral">Client: {item.clientName}</p>}
+        <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold">
+          <span className="rounded-full bg-white/10 px-3 py-1 text-white/60">{statusLabel(item.status)}</span>
+          {item.clientName && <span className="rounded-full bg-coral/20 px-3 py-1 text-coral">Client: {item.clientName}</span>}
+        </div>
         <p className="mt-2 line-clamp-2 text-sm leading-6 text-white/65">{item.summary}</p>
       </Link>
       <div className="mt-3 flex flex-wrap gap-3 text-xs font-semibold text-coral">
