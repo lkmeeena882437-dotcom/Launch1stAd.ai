@@ -25,6 +25,8 @@ create table if not exists public.campaign_drafts (
   output jsonb not null,
   summary text not null default '',
   source text not null default 'fallback',
+  client_id text not null default '',
+  client_name text not null default '',
   created_at timestamptz not null default now()
 );
 
@@ -54,3 +56,8 @@ create policy "Users can delete own campaign drafts" on public.campaign_drafts
 
 create index if not exists business_profiles_user_id_idx on public.business_profiles(user_id);
 create index if not exists campaign_drafts_user_id_created_at_idx on public.campaign_drafts(user_id, created_at desc);
+create index if not exists campaign_drafts_client_id_idx on public.campaign_drafts(client_id);
+
+-- Existing projects can run these safely if the table already exists.
+alter table public.campaign_drafts add column if not exists client_id text not null default '';
+alter table public.campaign_drafts add column if not exists client_name text not null default '';
