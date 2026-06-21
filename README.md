@@ -17,23 +17,34 @@ Launch1stAd.ai helps Indian businesses create ready-to-launch campaign packs for
 ## MVP Features
 
 1. Landing page with premium brand positioning
-2. Campaign builder form
-3. Business category understanding
+2. Business profile save system
+3. Campaign builder with saved profile auto-fill
 4. Meta campaign structure
 5. Google campaign structure
 6. Hindi / English / Hinglish ad copy
 7. WhatsApp lead conversion script
 8. 7-day optimization plan
-9. Dashboard placeholder
-10. API route for campaign generation
+9. Campaign history and saved drafts
+10. Full campaign report page
+11. Use again / duplicate campaign flow
+12. PDF export through browser print
+13. Gemini AI provider with deterministic fallback
 
 ## Tech Stack
 
 - Next.js 14 App Router
 - TypeScript
 - Tailwind CSS
+- Browser localStorage for MVP drafts/profiles
 - Built-in deterministic campaign generator
-- Ready for Gemini/GPT provider integration later
+- Optional Gemini AI generation via `GEMINI_API_KEY`
+
+## AI Generation Flow
+
+- Campaign Builder calls `/api/generate-campaign`.
+- If `GEMINI_API_KEY` is present, the API tries Gemini generation.
+- If the key is missing or the API fails, it automatically returns the built-in fallback campaign.
+- The app never promises guaranteed leads, sales or income.
 
 ## Run Locally
 
@@ -52,12 +63,17 @@ Copy `.env.example` to `.env.local`.
 cp .env.example .env.local
 ```
 
+Then add:
+
+```bash
+GEMINI_API_KEY=your_key_here
+```
+
 ## Next Build Steps
 
-- Add Supabase auth
-- Add campaign save/export
-- Add PDF download
+- Add Supabase auth and database
+- Move localStorage drafts to Supabase tables
 - Add Razorpay subscriptions
-- Add Gemini/GPT API prompt pipeline
-- Add user business profiles
+- Add campaign export as real server-side PDF
 - Add analytics optimizer input for CTR, CPC, CPL, CPM and ROAS
+- Add team/agency multi-client workspace
