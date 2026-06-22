@@ -11,14 +11,14 @@ const actions = [
     primary: true
   },
   {
+    title: "Real Launch",
+    href: "/launch",
+    text: "Manual launch, human review aur future platform automation ka roadmap dekho."
+  },
+  {
     title: "Promotion Links",
     href: "/platforms",
     text: "Website, app, WhatsApp, Instagram, Facebook, YouTube aur Telegram links save karo."
-  },
-  {
-    title: "Clients",
-    href: "/clients",
-    text: "Multiple business profiles manage karo."
   },
   {
     title: "Analytics",
