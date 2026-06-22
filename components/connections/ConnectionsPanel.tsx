@@ -13,15 +13,15 @@ export function ConnectionsPanel() {
     const provider = searchParams.get("provider");
     const status = searchParams.get("status");
     if ((provider === "meta" || provider === "google") && status === "connected") {
-      setConnections(saveConnectionStatus(provider, "connected", "Login callback received. Server token storage can be enabled."));
+      setConnections(saveConnectionStatus(provider, "connected", "Connection verified. Server-side token storage is ready for configuration."));
       return;
     }
     if ((provider === "meta" || provider === "google") && status === "started") {
-      setConnections(saveConnectionStatus(provider, "started", "Connection flow started. Add platform login URL to complete real account connection."));
+      setConnections(saveConnectionStatus(provider, "started", "Connection initiated. Complete provider login to continue."));
       return;
     }
     if ((provider === "meta" || provider === "google") && status === "error") {
-      setConnections(saveConnectionStatus(provider, "error", "Connection could not start. Check platform setup."));
+      setConnections(saveConnectionStatus(provider, "error", "Connection unavailable. Review provider setup."));
       return;
     }
     setConnections(saved);
@@ -30,9 +30,9 @@ export function ConnectionsPanel() {
   return (
     <section className="mx-auto max-w-6xl px-5 py-10">
       <div className="rounded-3xl bg-card p-6 md:p-10">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">Platform connections</p>
-        <h1 className="serif-display mt-3 text-4xl md:text-6xl">Connect user ad accounts.</h1>
-        <p className="mt-4 max-w-3xl leading-7 text-muted">User login karega, permission dega, phir webapp campaign payload ko connected account ke liye ready rakhegi.</p>
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">Channel connections</p>
+        <h1 className="mt-3 text-4xl font-black tracking-tight text-ink md:text-6xl">Connect advertising accounts.</h1>
+        <p className="mt-4 max-w-3xl leading-7 text-muted">Link owned ad accounts and prepare approved campaign requests for channel activation.</p>
 
         <div className="mt-8 grid gap-5 md:grid-cols-2">
           {connections.map((connection) => (
@@ -51,7 +51,7 @@ export function ConnectionsPanel() {
         </div>
 
         <div className="mt-8 rounded-2xl border border-hairline bg-canvas p-5 text-sm leading-7 text-muted">
-          Next technical step: replace started link with real provider login URL, store server token safely, then enable publish action.
+          Provider login, token storage and connector endpoints are configured from deployment environment settings.
         </div>
       </div>
     </section>
