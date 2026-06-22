@@ -9,14 +9,17 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-white text-ink">
       <header className="sticky top-0 z-30 border-b border-hairline bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-5 py-4">
           <Link href="/"><Brand /></Link>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/" className="rounded-lg border border-hairline bg-white px-4 py-2 text-sm font-semibold">Home</Link>
-            <Link href="#ai-chat" className="rounded-lg border border-hairline bg-white px-4 py-2 text-sm font-semibold">AI Chat</Link>
-            <Link href="/campaign" className="rounded-lg bg-coral px-4 py-2 text-sm font-semibold text-white">Campaign</Link>
-            <Link href="/launch" className="rounded-lg bg-dark px-4 py-2 text-sm font-semibold text-canvas">Final Setup</Link>
-            <Link href="/dashboard" className="rounded-lg border border-hairline bg-white px-4 py-2 text-sm font-semibold">Dashboard</Link>
+          <nav className="hidden items-center gap-5 text-sm font-semibold text-muted md:flex">
+            <Link href="#ai-chat" className="hover:text-ink">AI Chat</Link>
+            <Link href="/campaign" className="hover:text-ink">Campaigns</Link>
+            <Link href="/connections" className="hover:text-ink">Channels</Link>
+            <Link href="/analytics" className="hover:text-ink">Analytics</Link>
+          </nav>
+          <div className="flex shrink-0 gap-2">
+            <Link href="/login" className="rounded-lg border border-hairline bg-white px-4 py-2 text-sm font-semibold">Login</Link>
+            <Link href="/campaign" className="rounded-lg bg-coral px-4 py-2 text-sm font-semibold text-white">Start</Link>
           </div>
         </div>
       </header>
