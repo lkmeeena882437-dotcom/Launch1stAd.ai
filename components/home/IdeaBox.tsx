@@ -3,15 +3,15 @@
 import { FormEvent, useState } from "react";
 
 const prompts = [
-  "Mere business ke liye low budget ad plan do",
-  "Instagram aur Facebook ke liye best audience batao",
-  "WhatsApp leads ke liye ad copy do",
-  "Google search keywords suggest karo"
+  "Build a campaign plan for my business",
+  "Suggest the best audience for Meta ads",
+  "Write WhatsApp lead ad copy",
+  "Suggest Google search keywords"
 ];
 
 export function IdeaBox() {
-  const [question, setQuestion] = useState("Mere business ke liye ad idea do");
-  const [answer, setAnswer] = useState("Business, product, offer ya promotion link likho. Main ad angle, platform, audience, copy aur next step suggest karunga.");
+  const [question, setQuestion] = useState("Build a campaign plan for my business");
+  const [answer, setAnswer] = useState("Describe your business, offer, target location and budget. The assistant will suggest an ad angle, audience, creative direction and next launch step.");
   const [loading, setLoading] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -24,9 +24,9 @@ export function IdeaBox() {
         body: JSON.stringify({ question })
       });
       const data = await response.json();
-      setAnswer(data.answer || "Try a simple business question.");
+      setAnswer(data.answer || "Try a clear business question.");
     } catch {
-      setAnswer("Quick idea: clear offer, simple audience, strong CTA aur WhatsApp follow-up ready rakho.");
+      setAnswer("Recommended next step: define the offer, choose one primary audience, write a direct CTA and prepare WhatsApp follow-up replies.");
     } finally {
       setLoading(false);
     }
@@ -36,9 +36,9 @@ export function IdeaBox() {
     <section className="mx-auto max-w-7xl px-5 py-12 md:py-20">
       <div className="premium-ring rounded-[2rem] bg-dark p-5 text-canvas md:p-10">
         <div className="mx-auto max-w-4xl text-center">
-          <p className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/60">AI campaign chat</p>
-          <h2 className="serif-display mt-4 text-4xl md:text-6xl">Ask before you spend a rupee.</h2>
-          <p className="mx-auto mt-4 max-w-2xl leading-7 text-white/60">Business idea, audience, platform, budget, copy, WhatsApp script, Google keywords ya campaign review — yahan se quick answer lo.</p>
+          <p className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/60">AI campaign assistant</p>
+          <h2 className="mt-4 text-3xl font-black tracking-tight text-white md:text-5xl">Get campaign guidance before you spend.</h2>
+          <p className="mx-auto mt-4 max-w-2xl leading-7 text-white/60">Ask for strategy, targeting, copy, keywords, budget direction or a campaign review.</p>
         </div>
 
         <div className="mx-auto mt-8 max-w-4xl rounded-3xl border border-white/10 bg-white/5 p-4 backdrop-blur md:p-6">
