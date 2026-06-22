@@ -11,6 +11,15 @@ function StatusRow({ label, ready }: { label: string; ready: boolean }) {
   );
 }
 
+const platformItems = [
+  "Provider A login link",
+  "Provider B login link",
+  "Callback URL",
+  "Secure server storage",
+  "Connected account selector",
+  "Campaign create action"
+];
+
 export default function SetupPage() {
   const config = getAppConfig();
 
@@ -33,6 +42,13 @@ export default function SetupPage() {
           <StatusRow label="Team access link" ready={config.teamLinkReady} />
           <StatusRow label="WhatsApp contact" ready={config.whatsappReady} />
           <StatusRow label="Support email" ready={config.supportEmailReady} />
+        </div>
+        <div className="mt-6 rounded-2xl bg-card p-6">
+          <h2 className="text-2xl font-semibold">Platform publish readiness</h2>
+          <div className="mt-4 grid gap-3">
+            {platformItems.map((item) => <div key={item} className="rounded-xl bg-canvas px-4 py-3 text-sm font-semibold">{item}</div>)}
+          </div>
+          <p className="mt-4 text-sm leading-6 text-muted">Ye checklist real ad account connection aur auto campaign create flow ke liye hai. Values deployment ke last step me add hongi.</p>
         </div>
         <div className="mt-6 rounded-2xl bg-dark p-6 text-canvas">
           <h2 className="text-2xl font-semibold">Deploy note</h2>
