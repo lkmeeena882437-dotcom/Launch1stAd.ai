@@ -23,7 +23,7 @@ export default function HomePage() {
         </div>
       </header>
       <Hero />
-      <IdeaBox />
+      <div id="ai-chat"><IdeaBox /></div>
       <AppHub />
       <TrustSection />
       <Features />
