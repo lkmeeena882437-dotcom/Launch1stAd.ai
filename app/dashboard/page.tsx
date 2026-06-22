@@ -69,6 +69,7 @@ export default function DashboardPage() {
         </section>
 
         <div className="mt-8 flex flex-wrap gap-4 text-sm text-muted">
+          <Link href="/connections" className="hover:text-coral">Connections</Link>
           <Link href="/setup" className="hover:text-coral">Setup</Link>
           <Link href="/account" className="hover:text-coral">Account</Link>
           <Link href="/business" className="hover:text-coral">Single business profile</Link>
