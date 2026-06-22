@@ -27,14 +27,14 @@ export function LaunchRequestsList() {
   }
 
   async function finalPublish(item: LaunchRequest) {
-    setMessage("Sending request...");
+    setMessage("Submitting request...");
     const response = await fetch("/api/platform-action", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ provider: item.provider, requestId: item.id, payload: item.payload })
     });
     const data = await response.json();
-    setMessage(data.message || "Request checked.");
+    setMessage(data.message || "Request processed.");
   }
 
   return (
@@ -42,9 +42,9 @@ export function LaunchRequestsList() {
       <div className="rounded-3xl bg-card p-6 md:p-10">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">Platform campaign requests</p>
-            <h1 className="serif-display mt-3 text-4xl md:text-6xl">Requests ready for account connection.</h1>
-            <p className="mt-4 max-w-3xl leading-7 text-muted">Campaign report se created requests yahan dikhenge. Account connect hone ke baad same payload platform action me use hoga.</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">Launch requests</p>
+            <h1 className="mt-3 text-4xl font-black tracking-tight text-ink md:text-6xl">Review channel-ready requests.</h1>
+            <p className="mt-4 max-w-3xl leading-7 text-muted">Approved campaign packages appear here before channel submission.</p>
           </div>
           {items.length > 0 && <button onClick={clearAll} className="rounded-xl border border-hairline px-4 py-3 text-sm font-bold">Clear</button>}
         </div>
@@ -53,7 +53,7 @@ export function LaunchRequestsList() {
 
         {items.length === 0 ? (
           <div className="mt-8 rounded-2xl bg-canvas p-6 text-muted">
-            Abhi koi request nahi hai. Campaign report khol kar "Create platform campaign" dabao.
+            No launch requests yet. Create a campaign package to begin.
           </div>
         ) : (
           <div className="mt-8 grid gap-4">
@@ -69,10 +69,10 @@ export function LaunchRequestsList() {
                 <div className="mt-4 grid gap-3 text-sm md:grid-cols-3">
                   <div className="rounded-xl bg-card px-4 py-3">Provider: {item.provider}</div>
                   <div className="rounded-xl bg-card px-4 py-3">Created: {new Date(item.createdAt).toLocaleString()}</div>
-                  <div className="rounded-xl bg-card px-4 py-3">Needs: connected account</div>
+                  <div className="rounded-xl bg-card px-4 py-3">Requirement: connected account</div>
                 </div>
                 <div className="mt-5 flex flex-wrap gap-3">
-                  <button onClick={() => finalPublish(item)} className="rounded-xl bg-dark px-4 py-3 text-sm font-bold text-canvas">Final Publish</button>
+                  <button onClick={() => finalPublish(item)} className="rounded-xl bg-dark px-4 py-3 text-sm font-bold text-canvas">Submit request</button>
                   <Link href={`/campaigns?id=${item.campaignId}`} className="rounded-xl border border-hairline px-4 py-3 text-sm font-bold">Open report</Link>
                   <Link href="/connections" className="rounded-xl bg-coral px-4 py-3 text-sm font-bold text-white">Connect account</Link>
                 </div>
