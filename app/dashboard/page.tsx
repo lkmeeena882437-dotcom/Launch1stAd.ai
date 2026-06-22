@@ -7,23 +7,23 @@ const actions = [
   {
     title: "Create Campaign",
     href: "/campaign",
-    text: "Build a structured campaign brief with audience, copy, budget and channel plan.",
+    text: "Build a campaign brief with audience, copy, budget and channel plan.",
     primary: true
   },
   {
     title: "Launch Setup",
     href: "/launch",
-    text: "Review final campaign details before account connection and activation."
+    text: "Review final details before channel connection and activation."
   },
   {
     title: "Promotion Links",
     href: "/platforms",
-    text: "Save website, app, WhatsApp and social destinations for campaigns."
+    text: "Save landing pages, WhatsApp links and social destinations."
   },
   {
     title: "Performance",
     href: "/analytics",
-    text: "Track spend, CPC, CTR, leads and return metrics."
+    text: "Review spend, clicks, leads and return metrics."
   }
 ];
 
@@ -45,7 +45,7 @@ export default function DashboardPage() {
         <div className="mt-3 flex flex-wrap items-end justify-between gap-5">
           <div>
             <h1 className="text-4xl font-black tracking-tight text-ink md:text-6xl">Campaign control center.</h1>
-            <p className="mt-4 max-w-2xl leading-7 text-muted">Manage clients, create campaign briefs, prepare launch requests and review performance from one dashboard.</p>
+            <p className="mt-4 max-w-2xl leading-7 text-muted">Create briefs, prepare launch requests, manage clients and review performance from one dashboard.</p>
           </div>
           <Link href="/clients" className="rounded-lg border border-hairline px-4 py-2 text-sm font-semibold">Manage clients</Link>
         </div>
