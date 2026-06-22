@@ -14,7 +14,7 @@ export function SignInBox() {
     setNote("");
     try {
       await sendMagicLink(email);
-      setNote("Check your inbox for the secure sign-in link.");
+      setNote("Secure sign-in link sent. Check your inbox.");
     } catch (error) {
       setNote(error instanceof Error ? error.message : "Unable to send sign-in link.");
     }
@@ -24,7 +24,7 @@ export function SignInBox() {
   return (
     <form onSubmit={submit} className="mt-8 rounded-2xl bg-card p-6 md:p-8">
       <label className="block">
-        <span className="text-sm font-medium">Work email</span>
+        <span className="text-sm font-medium">Email address</span>
         <input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} className="mt-2 w-full rounded-lg border border-hairline bg-canvas px-4 py-3 outline-coral" placeholder="you@company.com" />
       </label>
       <button disabled={busy} className="mt-5 rounded-lg bg-coral px-5 py-3 text-sm font-semibold text-white disabled:opacity-60">
