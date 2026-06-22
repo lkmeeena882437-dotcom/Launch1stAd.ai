@@ -1,5 +1,6 @@
 import { Brand } from "@/components/Brand";
 import { RealLaunchRoadmap } from "@/components/launch/RealLaunchRoadmap";
+import { TodayRunSetup } from "@/components/launch/TodayRunSetup";
 
 export default function LaunchPage() {
   return (
@@ -10,6 +11,7 @@ export default function LaunchPage() {
         </div>
       </header>
       <RealLaunchRoadmap />
+      <TodayRunSetup />
     </main>
   );
 }
