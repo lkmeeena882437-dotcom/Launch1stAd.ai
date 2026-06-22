@@ -3,9 +3,7 @@ import { Brand } from "@/components/Brand";
 import { Hero } from "@/components/home/Hero";
 import { IdeaBox } from "@/components/home/IdeaBox";
 import { AppHub } from "@/components/home/AppHub";
-import { TrustSection } from "@/components/home/TrustSection";
 import { Features } from "@/components/home/Features";
-import { Tiers } from "@/components/home/Tiers";
 
 export default function HomePage() {
   return (
@@ -16,8 +14,8 @@ export default function HomePage() {
           <div className="flex flex-wrap gap-3">
             <Link href="/" className="rounded-lg border border-hairline bg-white px-4 py-2 text-sm font-semibold">Home</Link>
             <Link href="#ai-chat" className="rounded-lg border border-hairline bg-white px-4 py-2 text-sm font-semibold">AI Chat</Link>
+            <Link href="/campaign" className="rounded-lg bg-coral px-4 py-2 text-sm font-semibold text-white">Campaign</Link>
             <Link href="/launch" className="rounded-lg bg-dark px-4 py-2 text-sm font-semibold text-canvas">Final Setup</Link>
-            <Link href="/campaign" className="rounded-lg bg-coral px-4 py-2 text-sm font-semibold text-white">Create Campaign</Link>
             <Link href="/dashboard" className="rounded-lg border border-hairline bg-white px-4 py-2 text-sm font-semibold">Dashboard</Link>
           </div>
         </div>
@@ -25,9 +23,7 @@ export default function HomePage() {
       <Hero />
       <div id="ai-chat"><IdeaBox /></div>
       <AppHub />
-      <TrustSection />
       <Features />
-      <Tiers />
     </main>
   );
 }
