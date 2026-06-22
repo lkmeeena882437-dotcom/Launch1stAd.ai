@@ -2,9 +2,16 @@
 
 import { FormEvent, useState } from "react";
 
+const prompts = [
+  "Mere business ke liye low budget ad plan do",
+  "Instagram aur Facebook ke liye best audience batao",
+  "WhatsApp leads ke liye ad copy do",
+  "Google search keywords suggest karo"
+];
+
 export function IdeaBox() {
   const [question, setQuestion] = useState("Mere business ke liye ad idea do");
-  const [answer, setAnswer] = useState("Business, product ya offer likho. Yahan se quick marketing idea milega.");
+  const [answer, setAnswer] = useState("Business, product, offer ya promotion link likho. Main ad angle, platform, audience, copy aur next step suggest karunga.");
   const [loading, setLoading] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -26,19 +33,25 @@ export function IdeaBox() {
   }
 
   return (
-    <section className="mx-auto max-w-7xl px-5 py-12 md:py-16">
-      <div className="grid overflow-hidden rounded-3xl bg-dark text-canvas md:grid-cols-2">
-        <div className="p-6 md:p-10">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">AI idea box</p>
-          <h2 className="serif-display mt-3 text-4xl md:text-5xl">Ask, then launch smarter.</h2>
-          <p className="mt-4 leading-7 text-white/60">Ad idea, offer angle, caption, audience ya WhatsApp follow-up ke liye quick help lo.</p>
+    <section className="mx-auto max-w-7xl px-5 py-12 md:py-20">
+      <div className="rounded-[2rem] bg-dark p-5 text-canvas shadow-soft md:p-10">
+        <div className="mx-auto max-w-4xl text-center">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">AI campaign chat</p>
+          <h2 className="serif-display mt-3 text-4xl md:text-6xl">Ask anything before you run ads.</h2>
+          <p className="mx-auto mt-4 max-w-2xl leading-7 text-white/60">Business idea, audience, platform, budget, copy, WhatsApp script, Google keywords ya campaign review — yahan se quick answer lo.</p>
         </div>
-        <div className="bg-darkElevated p-5 md:p-8">
+
+        <div className="mx-auto mt-8 max-w-4xl rounded-3xl bg-darkElevated p-4 md:p-6">
           <form onSubmit={submit} className="space-y-4">
-            <textarea value={question} onChange={(event) => setQuestion(event.target.value)} className="min-h-28 w-full rounded-2xl border border-white/10 bg-dark p-4 text-base text-white outline-none" />
-            <button className="w-full rounded-lg bg-coral px-5 py-3 text-sm font-semibold text-white">{loading ? "Thinking..." : "Get idea"}</button>
+            <textarea value={question} onChange={(event) => setQuestion(event.target.value)} className="min-h-36 w-full rounded-2xl border border-white/10 bg-dark p-4 text-base text-white outline-none" />
+            <div className="flex flex-wrap gap-2">
+              {prompts.map((prompt) => (
+                <button key={prompt} type="button" onClick={() => setQuestion(prompt)} className="rounded-full bg-white/10 px-3 py-2 text-xs font-semibold text-white/70">{prompt}</button>
+              ))}
+            </div>
+            <button className="w-full rounded-xl bg-coral px-5 py-4 text-sm font-bold text-white">{loading ? "Thinking..." : "Ask AI"}</button>
           </form>
-          <div className="mt-5 whitespace-pre-line rounded-2xl bg-dark p-4 text-sm leading-7 text-white/70">{answer}</div>
+          <div className="mt-5 whitespace-pre-line rounded-2xl bg-dark p-5 text-sm leading-7 text-white/75">{answer}</div>
         </div>
       </div>
     </section>
