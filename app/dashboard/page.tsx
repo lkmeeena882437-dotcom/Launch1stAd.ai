@@ -5,25 +5,25 @@ import { HistoryList } from "@/components/dashboard/HistoryList";
 
 const actions = [
   {
-    title: "New Campaign",
+    title: "Create Campaign",
     href: "/campaign",
-    text: "Business details add karo aur AI campaign setup generate karo.",
+    text: "Build a structured campaign brief with audience, copy, budget and channel plan.",
     primary: true
   },
   {
-    title: "Auto Publish",
+    title: "Launch Setup",
     href: "/launch",
-    text: "User info se connected ad platforms par campaign create karne ka flow dekho."
+    text: "Review final campaign details before account connection and activation."
   },
   {
     title: "Promotion Links",
     href: "/platforms",
-    text: "Website, app, WhatsApp, Instagram, Facebook, YouTube aur Telegram links save karo."
+    text: "Save website, app, WhatsApp and social destinations for campaigns."
   },
   {
-    title: "Analytics",
+    title: "Performance",
     href: "/analytics",
-    text: "CTR, CPC, CPL aur ROAS check karo."
+    text: "Track spend, CPC, CTR, leads and return metrics."
   }
 ];
 
@@ -41,11 +41,11 @@ export default function DashboardPage() {
       </header>
 
       <section className="mx-auto max-w-7xl px-5 py-10">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">Dashboard</p>
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">Workspace</p>
         <div className="mt-3 flex flex-wrap items-end justify-between gap-5">
           <div>
-            <h1 className="serif-display text-5xl">Launch workspace.</h1>
-            <p className="mt-4 max-w-2xl leading-7 text-muted">Client select karo, links save karo, campaign banao, report export/share karo.</p>
+            <h1 className="text-4xl font-black tracking-tight text-ink md:text-6xl">Campaign control center.</h1>
+            <p className="mt-4 max-w-2xl leading-7 text-muted">Manage clients, create campaign briefs, prepare launch requests and review performance from one dashboard.</p>
           </div>
           <Link href="/clients" className="rounded-lg border border-hairline px-4 py-2 text-sm font-semibold">Manage clients</Link>
         </div>
@@ -70,9 +70,10 @@ export default function DashboardPage() {
 
         <div className="mt-8 flex flex-wrap gap-4 text-sm text-muted">
           <Link href="/connections" className="hover:text-coral">Connections</Link>
+          <Link href="/launch-requests" className="hover:text-coral">Launch requests</Link>
           <Link href="/setup" className="hover:text-coral">Setup</Link>
           <Link href="/account" className="hover:text-coral">Account</Link>
-          <Link href="/business" className="hover:text-coral">Single business profile</Link>
+          <Link href="/business" className="hover:text-coral">Business profile</Link>
         </div>
       </section>
     </main>
