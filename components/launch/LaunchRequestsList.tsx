@@ -15,6 +15,7 @@ function readRequests() {
 
 export function LaunchRequestsList() {
   const [items, setItems] = useState<LaunchRequest[]>([]);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     setItems(readRequests());
@@ -25,6 +26,17 @@ export function LaunchRequestsList() {
     setItems([]);
   }
 
+  async function finalPublish(item: LaunchRequest) {
+    setMessage("Sending request...");
+    const response = await fetch("/api/platform-action", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ provider: item.provider, requestId: item.id, payload: item.payload })
+    });
+    const data = await response.json();
+    setMessage(data.message || "Request checked.");
+  }
+
   return (
     <section className="mx-auto max-w-6xl px-5 py-10">
       <div className="rounded-3xl bg-card p-6 md:p-10">
@@ -32,10 +44,12 @@ export function LaunchRequestsList() {
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">Platform campaign requests</p>
             <h1 className="serif-display mt-3 text-4xl md:text-6xl">Requests ready for account connection.</h1>
-            <p className="mt-4 max-w-3xl leading-7 text-muted">Campaign report se created requests yahan dikhenge. Account connect hone ke baad same payload publish/create flow me use hoga.</p>
+            <p className="mt-4 max-w-3xl leading-7 text-muted">Campaign report se created requests yahan dikhenge. Account connect hone ke baad same payload platform action me use hoga.</p>
           </div>
           {items.length > 0 && <button onClick={clearAll} className="rounded-xl border border-hairline px-4 py-3 text-sm font-bold">Clear</button>}
         </div>
+
+        {message && <div className="mt-6 rounded-2xl bg-canvas p-4 text-sm font-semibold text-coral">{message}</div>}
 
         {items.length === 0 ? (
           <div className="mt-8 rounded-2xl bg-canvas p-6 text-muted">
@@ -58,6 +72,7 @@ export function LaunchRequestsList() {
                   <div className="rounded-xl bg-card px-4 py-3">Needs: connected account</div>
                 </div>
                 <div className="mt-5 flex flex-wrap gap-3">
+                  <button onClick={() => finalPublish(item)} className="rounded-xl bg-dark px-4 py-3 text-sm font-bold text-canvas">Final Publish</button>
                   <Link href={`/campaigns?id=${item.campaignId}`} className="rounded-xl border border-hairline px-4 py-3 text-sm font-bold">Open report</Link>
                   <Link href="/connections" className="rounded-xl bg-coral px-4 py-3 text-sm font-bold text-white">Connect account</Link>
                 </div>
