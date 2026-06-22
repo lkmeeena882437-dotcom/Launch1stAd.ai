@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Brand } from "@/components/Brand";
 import { ConnectionsPanel } from "@/components/connections/ConnectionsPanel";
 
@@ -9,7 +10,9 @@ export default function ConnectionsPage() {
           <Brand />
         </div>
       </header>
-      <ConnectionsPanel />
+      <Suspense fallback={<div className="mx-auto max-w-6xl px-5 py-10 text-muted">Loading connections...</div>}>
+        <ConnectionsPanel />
+      </Suspense>
     </main>
   );
 }
