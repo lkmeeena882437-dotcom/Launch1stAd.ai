@@ -14,9 +14,9 @@ export function SignInBox() {
     setNote("");
     try {
       await sendMagicLink(email);
-      setNote("Email bhej diya. Inbox me login link check karo.");
+      setNote("Check your inbox for the secure sign-in link.");
     } catch (error) {
-      setNote(error instanceof Error ? error.message : "Email send nahi hua.");
+      setNote(error instanceof Error ? error.message : "Unable to send sign-in link.");
     }
     setBusy(false);
   }
@@ -24,11 +24,11 @@ export function SignInBox() {
   return (
     <form onSubmit={submit} className="mt-8 rounded-2xl bg-card p-6 md:p-8">
       <label className="block">
-        <span className="text-sm font-medium">Email</span>
-        <input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} className="mt-2 w-full rounded-lg border border-hairline bg-canvas px-4 py-3 outline-coral" />
+        <span className="text-sm font-medium">Work email</span>
+        <input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} className="mt-2 w-full rounded-lg border border-hairline bg-canvas px-4 py-3 outline-coral" placeholder="you@company.com" />
       </label>
       <button disabled={busy} className="mt-5 rounded-lg bg-coral px-5 py-3 text-sm font-semibold text-white disabled:opacity-60">
-        {busy ? "Sending..." : "Send magic link"}
+        {busy ? "Sending..." : "Send secure link"}
       </button>
       {note && <p className="mt-4 text-sm font-semibold text-coral">{note}</p>}
     </form>
