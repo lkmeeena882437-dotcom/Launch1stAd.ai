@@ -1,4 +1,5 @@
 import { Brand } from "@/components/Brand";
+import { CampaignProcessForm } from "@/components/create/CampaignProcessForm";
 import { RealLaunchRoadmap } from "@/components/launch/RealLaunchRoadmap";
 import { TodayRunSetup } from "@/components/launch/TodayRunSetup";
 
@@ -11,6 +12,7 @@ export default function LaunchPage() {
         </div>
       </header>
       <RealLaunchRoadmap />
+      <CampaignProcessForm />
       <TodayRunSetup />
     </main>
   );
