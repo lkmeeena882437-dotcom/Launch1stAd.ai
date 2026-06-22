@@ -13,11 +13,15 @@ export function ConnectionsPanel() {
     const provider = searchParams.get("provider");
     const status = searchParams.get("status");
     if ((provider === "meta" || provider === "google") && status === "connected") {
-      setConnections(saveConnectionStatus(provider, "connected", "Login callback received. Token exchange/storage needs server approval setup."));
+      setConnections(saveConnectionStatus(provider, "connected", "Login callback received. Server token storage can be enabled."));
+      return;
+    }
+    if ((provider === "meta" || provider === "google") && status === "started") {
+      setConnections(saveConnectionStatus(provider, "started", "Connection flow started. Add platform login URL to complete real account connection."));
       return;
     }
     if ((provider === "meta" || provider === "google") && status === "error") {
-      setConnections(saveConnectionStatus(provider, "error", "Connection could not start. Check environment variables and platform app setup."));
+      setConnections(saveConnectionStatus(provider, "error", "Connection could not start. Check platform setup."));
       return;
     }
     setConnections(saved);
@@ -28,7 +32,7 @@ export function ConnectionsPanel() {
       <div className="rounded-3xl bg-card p-6 md:p-10">
         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">Platform connections</p>
         <h1 className="serif-display mt-3 text-4xl md:text-6xl">Connect user ad accounts.</h1>
-        <p className="mt-4 max-w-3xl leading-7 text-muted">User login karega, platform permission dega, phir webapp campaign payload ko connected account ke liye ready rakhegi. Final publish action server-side token setup ke baad active hoga.</p>
+        <p className="mt-4 max-w-3xl leading-7 text-muted">User login karega, permission dega, phir webapp campaign payload ko connected account ke liye ready rakhegi.</p>
 
         <div className="mt-8 grid gap-5 md:grid-cols-2">
           {connections.map((connection) => (
@@ -39,7 +43,7 @@ export function ConnectionsPanel() {
               </div>
               <p className="mt-3 text-sm leading-6 text-muted">{connection.note}</p>
               <div className="mt-5 flex flex-wrap gap-3">
-                <a href={`/api/connect/${connection.provider}/start`} className="rounded-xl bg-coral px-4 py-3 text-sm font-bold text-white">Connect</a>
+                <a href={`/connections?provider=${connection.provider}&status=started`} className="rounded-xl bg-coral px-4 py-3 text-sm font-bold text-white">Connect</a>
                 <button type="button" onClick={() => setConnections(saveConnectionStatus(connection.provider, "not_connected"))} className="rounded-xl border border-hairline px-4 py-3 text-sm font-bold">Reset</button>
               </div>
             </div>
@@ -47,7 +51,7 @@ export function ConnectionsPanel() {
         </div>
 
         <div className="mt-8 rounded-2xl border border-hairline bg-canvas p-5 text-sm leading-7 text-muted">
-          Required setup: platform developer app, redirect URL, user permission, billing-ready ad account, secure token storage, then campaign create API.
+          Next technical step: replace started link with real provider login URL, store server token safely, then enable publish action.
         </div>
       </div>
     </section>
