@@ -7,17 +7,17 @@ const modules = [
   { title: "Creative", text: "Hooks, copy, CTA", href: "/campaign", badge: "CR", tone: "bg-pink-500 text-white" },
   { title: "Meta Connect", text: "Facebook + Instagram", href: "/connections", badge: "M", tone: "bg-blue-700 text-white" },
   { title: "Google Connect", text: "Search + YouTube", href: "/connections", badge: "G", tone: "bg-emerald-500 text-white" },
-  { title: "Payment", text: "UPI, wallet, crypto", href: "#payments", badge: "₹", tone: "bg-amber-500 text-white" },
+  { title: "Payment", text: "UPI, Card, USDT, TON", href: "#payments", badge: "₹", tone: "bg-amber-500 text-white" },
+  { title: "TRC20", text: "Network option", href: "#payments", badge: "T20", tone: "bg-teal-600 text-white" },
   { title: "Ad Status", text: "Requests & progress", href: "/launch-requests", badge: "S", tone: "bg-violet-600 text-white" },
   { title: "Wallet", text: "Balance & billing", href: "#payments", badge: "W", tone: "bg-slate-900 text-white" },
   { title: "Spend", text: "CPM, CPC, ROAS", href: "/analytics", badge: "SP", tone: "bg-lime-600 text-white" },
-  { title: "Privacy", text: "Policy ready", href: "/setup", badge: "P", tone: "bg-slate-700 text-white" },
-  { title: "Help", text: "Support center", href: "/setup", badge: "?", tone: "bg-coral text-white" }
+  { title: "Help", text: "Support & privacy", href: "/setup", badge: "?", tone: "bg-coral text-white" }
 ];
 
 export function AppHub() {
   return (
-    <section className="mx-auto max-w-7xl px-5 py-12">
+    <section id="payments" className="mx-auto max-w-7xl px-5 py-12">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Your control room</p>
