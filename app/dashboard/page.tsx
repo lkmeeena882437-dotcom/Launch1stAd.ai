@@ -7,13 +7,13 @@ const actions = [
   {
     title: "New Campaign",
     href: "/campaign",
-    text: "Business details add karo aur AI launch pack generate karo.",
+    text: "Business details add karo aur AI campaign setup generate karo.",
     primary: true
   },
   {
-    title: "Real Launch",
+    title: "Auto Publish",
     href: "/launch",
-    text: "Manual launch, human review aur future platform automation ka roadmap dekho."
+    text: "User info se connected ad platforms par campaign create karne ka flow dekho."
   },
   {
     title: "Promotion Links",
