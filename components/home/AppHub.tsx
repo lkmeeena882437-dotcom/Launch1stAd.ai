@@ -1,34 +1,30 @@
 import Link from "next/link";
 
 const modules = [
-  { title: "Home", text: "Start here", href: "/", badge: "H", tone: "bg-dark text-canvas" },
-  { title: "AI Chat", text: "Ask before spend", href: "#ai-chat", badge: "AI", tone: "bg-coral text-white" },
-  { title: "Ad Campaign", text: "Build campaign", href: "/campaign", badge: "AD", tone: "bg-blue-600 text-white" },
-  { title: "Creative", text: "Hooks, copy, CTA", href: "/campaign", badge: "CR", tone: "bg-pink-500 text-white" },
-  { title: "Meta Connect", text: "Facebook + Instagram", href: "/connections", badge: "M", tone: "bg-blue-700 text-white" },
-  { title: "Google Connect", text: "Search + YouTube", href: "/connections", badge: "G", tone: "bg-emerald-500 text-white" },
-  { title: "Payment", text: "UPI, Card, USDT, TON", href: "#payments", badge: "₹", tone: "bg-amber-500 text-white" },
-  { title: "TRC20", text: "Network option", href: "#payments", badge: "T20", tone: "bg-teal-600 text-white" },
-  { title: "Ad Status", text: "Requests & progress", href: "/launch-requests", badge: "S", tone: "bg-violet-600 text-white" },
-  { title: "Wallet", text: "Balance & billing", href: "#payments", badge: "W", tone: "bg-slate-900 text-white" },
-  { title: "Spend", text: "CPM, CPC, ROAS", href: "/analytics", badge: "SP", tone: "bg-lime-600 text-white" },
-  { title: "Help", text: "Support & privacy", href: "/setup", badge: "?", tone: "bg-coral text-white" }
+  { title: "Campaign Builder", text: "Create structured launch briefs", href: "/campaign", badge: "AD", tone: "bg-blue-600 text-white" },
+  { title: "Creative Studio", text: "Hooks, copy and CTA ideas", href: "/campaign", badge: "CR", tone: "bg-pink-500 text-white" },
+  { title: "Meta Channels", text: "Facebook and Instagram setup", href: "/connections", badge: "M", tone: "bg-blue-700 text-white" },
+  { title: "Google Channels", text: "Search and YouTube setup", href: "/connections", badge: "G", tone: "bg-emerald-600 text-white" },
+  { title: "Wallet", text: "Balance and billing options", href: "#payments", badge: "₹", tone: "bg-amber-500 text-white" },
+  { title: "Launch Status", text: "Requests and approvals", href: "/launch-requests", badge: "S", tone: "bg-violet-600 text-white" },
+  { title: "Spend Reports", text: "CPM, CPC and ROAS view", href: "/analytics", badge: "SP", tone: "bg-lime-600 text-white" },
+  { title: "Support", text: "Help, policy and setup", href: "/setup", badge: "?", tone: "bg-slate-800 text-white" }
 ];
 
 const mainPlacements = [
   { title: "Meta", text: "Facebook + Instagram", badge: "M", tone: "bg-blue-700 text-white" },
   { title: "Google", text: "Search + YouTube", badge: "G", tone: "bg-emerald-600 text-white" },
-  { title: "WhatsApp", text: "Lead chat", badge: "W", tone: "bg-green-600 text-white" }
+  { title: "WhatsApp", text: "Lead conversations", badge: "W", tone: "bg-green-600 text-white" }
 ];
 
 const launchOffers = [
-  ["Starter", "₹500", "AI setup + copy"],
+  ["Starter", "₹500", "Brief + copy pack"],
   ["Growth", "₹1,500", "Creative variants"],
   ["Pro", "₹5,000", "Priority review"]
 ];
 
 export function AppHub() {
-  const line = " Ads can run on Meta, Instagram Reels, Facebook Feed, Google Search, YouTube and WhatsApp leads. ";
+  const line = " Meta Ads • Instagram Reels • Facebook Feed • Google Search • YouTube • WhatsApp Leads • Website Traffic ";
   return (
     <section id="payments" className="mx-auto max-w-7xl px-5 py-12">
       <div className="overflow-hidden rounded-[2rem] border border-hairline bg-dark py-3 text-canvas">
@@ -39,8 +35,8 @@ export function AppHub() {
 
       <div className="mt-6 grid gap-5 lg:grid-cols-[1fr_0.85fr]">
         <div className="rounded-[2rem] border border-hairline bg-white p-6 shadow-soft">
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Main placements</p>
-          <h2 className="mt-2 text-3xl font-black tracking-tight text-ink">Aapka ad yahan chal sakta hai.</h2>
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Media channels</p>
+          <h2 className="mt-2 text-3xl font-black tracking-tight text-ink">Launch across high-intent channels.</h2>
           <div className="mt-5 grid gap-4 md:grid-cols-3">
             {mainPlacements.map((item) => (
               <div key={item.title} className="rounded-3xl border border-hairline bg-card p-5">
@@ -52,8 +48,8 @@ export function AppHub() {
           </div>
         </div>
         <div className="rounded-[2rem] border border-hairline bg-white p-6 shadow-soft">
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Launch offers</p>
-          <h2 className="mt-2 text-3xl font-black tracking-tight text-ink">Simple packs to start.</h2>
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Launch credits</p>
+          <h2 className="mt-2 text-3xl font-black tracking-tight text-ink">Choose a starting balance.</h2>
           <div className="mt-5 grid gap-3">
             {launchOffers.map(([name, amount, text]) => (
               <Link key={name} href="/launch" className="flex items-center justify-between gap-4 rounded-2xl bg-card p-4">
@@ -67,8 +63,8 @@ export function AppHub() {
 
       <div className="mt-10 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Your control room</p>
-          <h2 className="mt-2 text-4xl font-black tracking-tight text-ink md:text-5xl">Everything in one clean app hub.</h2>
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Product modules</p>
+          <h2 className="mt-2 text-4xl font-black tracking-tight text-ink md:text-5xl">Tools for every launch stage.</h2>
         </div>
         <Link href="/dashboard" className="rounded-xl border border-hairline bg-white px-5 py-3 text-sm font-bold">Open workspace</Link>
       </div>
@@ -84,7 +80,7 @@ export function AppHub() {
 
       <details className="mt-6 rounded-[2rem] border border-hairline bg-white p-5 shadow-soft">
         <summary className="cursor-pointer text-sm font-bold text-ink">More tools</summary>
-        <p className="mt-3 text-sm leading-6 text-muted">Privacy policy, help, support, wallet, spend, status, payment options and extra campaign tools yahan compact rakhe gaye hain.</p>
+        <p className="mt-3 text-sm leading-6 text-muted">Privacy policy, help, wallet, payment methods, status tracking and extra launch tools are kept here for quick access.</p>
       </details>
     </section>
   );
