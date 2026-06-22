@@ -6,6 +6,7 @@ import { buildCampaign } from "@/lib/campaign";
 import { getCampaignDraftsFromCloud } from "@/lib/db/campaignDrafts";
 import { campaignHistoryKey, type SavedCampaign } from "@/lib/history";
 import { ShareReportButton } from "@/components/share/ShareReportButton";
+import { CreateLaunchRequestButton } from "./CreateLaunchRequestButton";
 import { EmptyReport } from "./EmptyReport";
 import { ReportHero } from "./ReportHero";
 import { ReportSections } from "./ReportSections";
@@ -48,9 +49,10 @@ export function CampaignDetail() {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="font-semibold">Report actions</h2>
-            <p className="mt-1 text-sm text-muted">Edit again or open a clean client-friendly share view.</p>
+            <p className="mt-1 text-sm text-muted">Edit, share, or prepare this campaign for connected platform creation.</p>
           </div>
           <div className="flex flex-wrap gap-3">
+            <CreateLaunchRequestButton campaignId={item.id} input={item.input} output={campaign} />
             <ShareReportButton id={item.id} />
             <UseAgainButton input={item.input} />
           </div>
