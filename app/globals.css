@@ -81,6 +81,17 @@ canvas {
   box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.06), 0 28px 90px rgba(15, 23, 42, 0.12);
 }
 
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-slide 24s linear infinite;
+}
+
+@keyframes marquee-slide {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 .dark-panel-code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 }
