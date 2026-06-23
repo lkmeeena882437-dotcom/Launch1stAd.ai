@@ -11,16 +11,16 @@ export function AuthCallback() {
   useEffect(() => {
     const session = sessionFromHash(window.location.hash);
     if (!session) {
-      setStatus("Login session nahi mili. Link expired ho sakta hai.");
+      setStatus("Login session was not found. Request a fresh sign-in link.");
       return;
     }
     saveAuthSession(session);
-    setStatus("Login successful. Dashboard open karo.");
+    setStatus("Login successful. Open your dashboard.");
   }, []);
 
   return (
     <div className="rounded-2xl bg-card p-6">
-      <h1 className="text-2xl font-semibold">Auth callback</h1>
+      <h1 className="text-2xl font-semibold">Secure sign-in</h1>
       <p className="mt-3 text-muted">{status}</p>
       <Link href="/dashboard" className="mt-5 inline-flex rounded-lg bg-coral px-5 py-3 text-sm font-semibold text-white">Go to dashboard</Link>
     </div>
