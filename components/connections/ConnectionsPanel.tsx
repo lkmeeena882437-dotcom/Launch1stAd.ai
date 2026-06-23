@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { defaultConnections, readConnections, saveConnectionStatus, type PlatformConnection } from "@/lib/connections";
+import { ProviderReadiness } from "./ProviderReadiness";
 
 export function ConnectionsPanel() {
   const searchParams = useSearchParams();
@@ -17,11 +18,11 @@ export function ConnectionsPanel() {
       return;
     }
     if ((provider === "meta" || provider === "google") && status === "started") {
-      setConnections(saveConnectionStatus(provider, "started", "Connection initiated. Complete provider login to continue."));
+      setConnections(saveConnectionStatus(provider, "started", "Provider login started. Complete OAuth and account approval to activate delivery."));
       return;
     }
     if ((provider === "meta" || provider === "google") && status === "error") {
-      setConnections(saveConnectionStatus(provider, "error", "Connection unavailable. Review provider setup."));
+      setConnections(saveConnectionStatus(provider, "error", "Connection unavailable. Review provider setup and permissions."));
       return;
     }
     setConnections(saved);
@@ -31,8 +32,8 @@ export function ConnectionsPanel() {
     <section className="mx-auto max-w-6xl px-5 py-10">
       <div className="rounded-3xl bg-card p-6 md:p-10">
         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">Channel connections</p>
-        <h1 className="mt-3 text-4xl font-black tracking-tight text-ink md:text-6xl">Connect advertising accounts.</h1>
-        <p className="mt-4 max-w-3xl leading-7 text-muted">Link owned ad accounts and prepare approved campaign requests for channel activation.</p>
+        <h1 className="mt-3 text-4xl font-black tracking-tight text-ink md:text-6xl">Connect approved advertising accounts.</h1>
+        <p className="mt-4 max-w-3xl leading-7 text-muted">Configure Meta and Google provider access, submit campaigns for review and activate delivery after account approval.</p>
 
         <div className="mt-8 grid gap-5 md:grid-cols-2">
           {connections.map((connection) => (
@@ -43,16 +44,14 @@ export function ConnectionsPanel() {
               </div>
               <p className="mt-3 text-sm leading-6 text-muted">{connection.note}</p>
               <div className="mt-5 flex flex-wrap gap-3">
-                <a href={`/connections?provider=${connection.provider}&status=started`} className="rounded-xl bg-coral px-4 py-3 text-sm font-bold text-white">Connect</a>
+                <a href={`/connections?provider=${connection.provider}&status=started`} className="rounded-xl bg-coral px-4 py-3 text-sm font-bold text-white">Start connection</a>
                 <button type="button" onClick={() => setConnections(saveConnectionStatus(connection.provider, "not_connected"))} className="rounded-xl border border-hairline px-4 py-3 text-sm font-bold">Reset</button>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="mt-8 rounded-2xl border border-hairline bg-canvas p-5 text-sm leading-7 text-muted">
-          Provider login, token storage and connector endpoints are configured from deployment environment settings.
-        </div>
+        <ProviderReadiness />
       </div>
     </section>
   );
