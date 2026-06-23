@@ -11,7 +11,7 @@ export function TargetFields({ form, update }: {
   return (
     <>
       <div className="rounded-2xl border border-hairline bg-canvas p-4 text-sm leading-6 text-muted">
-        India-first targeting active hai. City/state likhoge to campaign India ke andar us location ke hisaab se plan banayega.
+        India-first targeting is active. Add a city or state to plan the campaign around that location.
       </div>
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Price range"><input className={inputClass} value={form.priceRange || ""} onChange={(e) => update("priceRange", e.target.value)} placeholder="₹499–₹1499" /></Field>
@@ -31,7 +31,7 @@ export function TargetFields({ form, update }: {
       </div>
       <div className="grid gap-5 sm:grid-cols-3">
         <Field label="Goal"><select className={inputClass} value={form.goal || "WhatsApp"} onChange={(e) => update("goal", e.target.value as CampaignInput["goal"])}>{goals.map((goal) => <option key={goal}>{goal}</option>)}</select></Field>
-        <Field label="Payment model"><select className={inputClass} value={form.paymentModel || "Auto"} onChange={(e) => update("paymentModel", e.target.value as CampaignInput["paymentModel"])}>{paymentModels.map((model) => <option key={model}>{model}</option>)}</select></Field>
+        <Field label="Billing model"><select className={inputClass} value={form.paymentModel || "Auto"} onChange={(e) => update("paymentModel", e.target.value as CampaignInput["paymentModel"])}>{paymentModels.map((model) => <option key={model}>{model}</option>)}</select></Field>
         <Field label="Language"><select className={inputClass} value={form.language || "Hinglish"} onChange={(e) => update("language", e.target.value as CampaignInput["language"])}>{languages.map((language) => <option key={language}>{language}</option>)}</select></Field>
       </div>
     </>
