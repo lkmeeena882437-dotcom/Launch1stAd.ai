@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getAuthSession } from "@/lib/auth/session";
 import { addCredits, readWallet, reserveSpend, type WalletState } from "@/lib/wallet";
 import { SupportedMethods } from "./SupportedMethods";
 import { FxRateCard } from "./FxRateCard";
@@ -49,9 +50,18 @@ export function WalletPanel() {
   }, []);
 
   async function verifyAndCredit(payload: Record<string, unknown>, amountInr: number) {
+    const session = getAuthSession();
+    if (!session?.accessToken) {
+      setMessage("Sign in before adding wallet credits.");
+      return;
+    }
+
     const response = await fetch("/api/billing/verify-payment", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.accessToken}`
+      },
       body: JSON.stringify({ ...payload, amountInr })
     });
     const data = await response.json();
