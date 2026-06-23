@@ -119,16 +119,23 @@ export function CampaignBuilder() {
   }
 
   return (
-    <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 lg:grid-cols-[0.9fr_1.1fr]">
-      <div>
+    <div className="mx-auto grid max-w-7xl gap-5 px-4 py-6 md:px-5 md:py-10 lg:grid-cols-[0.86fr_1.14fr]">
+      <div className="rounded-3xl bg-white p-4 shadow-soft md:p-6">
+        <div className="mb-5 grid grid-cols-3 gap-2 text-center text-xs font-bold text-muted">
+          <div className="rounded-2xl bg-card px-2 py-3 text-coral">1. Offer</div>
+          <div className="rounded-2xl bg-card px-2 py-3">2. Target</div>
+          <div className="rounded-2xl bg-card px-2 py-3">3. Launch</div>
+        </div>
         {clientLoaded && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Client profile loaded.</p>}
         {reuseLoaded && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Saved campaign loaded.</p>}
         {profileLoaded && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Business profile loaded.</p>}
         {isGenerating && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Generating campaign package...</p>}
-        {generated && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Campaign package ready. {syncMessage}</p>}
+        {generated && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Campaign package ready. Submit it for review after funding your ad wallet. {syncMessage}</p>}
         <CampaignForm form={form} update={update} onSubmit={onSubmit} />
       </div>
-      <ResultPanel campaign={campaign} generated={generated} />
+      <div className="rounded-3xl bg-white p-4 shadow-soft md:p-6">
+        <ResultPanel campaign={campaign} generated={generated} />
+      </div>
     </div>
   );
 }
