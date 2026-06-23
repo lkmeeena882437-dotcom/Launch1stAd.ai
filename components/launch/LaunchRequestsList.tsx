@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { getAuthSession } from "@/lib/auth/session";
 import { launchRequestsKey, type LaunchRequest } from "@/lib/launchRequests";
+import { getSupabaseConfig } from "@/lib/supabase/config";
 
 function readRequests() {
   try {
@@ -11,6 +13,31 @@ function readRequests() {
   } catch {
     return [];
   }
+}
+
+async function loadCloudRequests() {
+  const { url, anonKey } = getSupabaseConfig();
+  const session = getAuthSession();
+  if (!url || !anonKey || !session?.accessToken) return [];
+
+  const response = await fetch(`${url}/rest/v1/campaign_launches?select=*&order=created_at.desc`, {
+    headers: {
+      apikey: anonKey,
+      Authorization: `Bearer ${session.accessToken}`
+    }
+  });
+  const rows = await response.json().catch(() => []);
+  if (!response.ok || !Array.isArray(rows)) return [];
+
+  return rows.map((row) => ({
+    id: row.id,
+    campaignId: row.campaign_id,
+    provider: row.provider || "selected",
+    status: row.status || "under_review",
+    payload: row.payload || { input: { promotionType: row.destination || "Campaign" }, output: {} },
+    createdAt: row.created_at,
+    reviewWindow: row.review_window || "2–24 hours"
+  })) as LaunchRequest[];
 }
 
 function estimatedMetrics(index: number) {
@@ -27,28 +54,25 @@ export function LaunchRequestsList() {
 
   useEffect(() => {
     setItems(readRequests());
+    loadCloudRequests().then((cloudItems) => {
+      if (cloudItems.length > 0) setItems(cloudItems);
+    });
   }, []);
 
-  function clearAll() {
+  function clearLocal() {
     window.localStorage.removeItem(launchRequestsKey);
     setItems([]);
+    setMessage("Local review list cleared. Cloud records stay in your workspace.");
   }
 
-  function updateStatus(id: string, status: LaunchRequest["status"]) {
-    const next = items.map((item) => item.id === id ? { ...item, status } : item);
-    window.localStorage.setItem(launchRequestsKey, JSON.stringify(next));
-    setItems(next);
-    setMessage(status === "active" ? "Campaign marked active. Metrics panel is ready for tracking." : "Campaign status updated.");
-  }
-
-  async function submitForReview(item: LaunchRequest) {
-    setMessage("Request submitted. Review window: 2–24 hours.");
-    updateStatus(item.id, "under_review");
+  async function sendToProvider(item: LaunchRequest) {
+    setMessage("Sending campaign to configured provider connector.");
     await fetch("/api/platform-action", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ provider: item.provider, requestId: item.id, payload: item.payload })
     }).catch(() => undefined);
+    setMessage("Provider request sent. Review window remains 2–24 hours.");
   }
 
   return (
@@ -58,13 +82,13 @@ export function LaunchRequestsList() {
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">Launch requests</p>
             <h1 className="mt-3 text-4xl font-black tracking-tight text-ink md:text-6xl">Review, approve and track campaigns.</h1>
-            <p className="mt-4 max-w-3xl leading-7 text-muted">Every submitted campaign enters a 2–24 hour review window before active delivery and destination tracking.</p>
+            <p className="mt-4 max-w-3xl leading-7 text-muted">Submitted campaigns enter a 2–24 hour review window before active delivery and destination tracking.</p>
           </div>
-          {items.length > 0 && <button onClick={clearAll} className="rounded-xl border border-hairline px-4 py-3 text-sm font-bold">Clear</button>}
+          {items.length > 0 && <button onClick={clearLocal} className="rounded-xl border border-hairline px-4 py-3 text-sm font-bold">Clear local</button>}
         </div>
 
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white p-4 text-sm">
-          <p className="font-semibold text-muted">Add ad funds before submitting campaigns for review and activation.</p>
+          <p className="font-semibold text-muted">Fund wallet and reserve ad spend before provider delivery.</p>
           <Link href="/wallet" className="rounded-xl bg-coral px-4 py-3 font-bold text-white">Add ad funds</Link>
         </div>
 
@@ -72,7 +96,7 @@ export function LaunchRequestsList() {
 
         {items.length === 0 ? (
           <div className="mt-8 rounded-2xl bg-canvas p-6 text-muted">
-            No launch requests yet. Create a campaign package and submit it for review.
+            No launch requests yet. Create a funded campaign to submit it for review.
           </div>
         ) : (
           <div className="mt-8 grid gap-4">
@@ -103,8 +127,7 @@ export function LaunchRequestsList() {
                 )}
 
                 <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:flex lg:flex-wrap">
-                  <button onClick={() => submitForReview(item)} className="rounded-xl bg-dark px-4 py-3 text-sm font-bold text-canvas">Submit for review</button>
-                  <button onClick={() => updateStatus(item.id, "active")} className="rounded-xl bg-coral px-4 py-3 text-sm font-bold text-white">Mark active</button>
+                  <button onClick={() => sendToProvider(item)} className="rounded-xl bg-dark px-4 py-3 text-sm font-bold text-canvas">Send to provider</button>
                   <Link href={`/campaigns?id=${item.campaignId}`} className="rounded-xl border border-hairline px-4 py-3 text-sm font-bold">Open report</Link>
                   <Link href="/wallet" className="rounded-xl border border-hairline px-4 py-3 text-sm font-bold">Wallet</Link>
                 </div>
