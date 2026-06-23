@@ -5,6 +5,7 @@ import { requestCampaign } from "@/lib/ai/client";
 import { buildCampaign, type CampaignInput } from "@/lib/campaign";
 import { saveCampaignDraftToCloud } from "@/lib/db/campaignDrafts";
 import { campaignHistoryKey, campaignReuseKey, makeCampaignTitle, type SavedCampaign } from "@/lib/history";
+import { createLaunchRequest } from "@/lib/launchRequests";
 import { savedBusinessKey, savedBusinessToCampaign, type SavedBusiness } from "@/lib/saved";
 import { getActiveClient } from "@/lib/workspace";
 import { CampaignForm } from "./CampaignForm";
@@ -104,7 +105,10 @@ export function CampaignBuilder() {
       clientName: activeClient?.businessName
     });
 
-    setSyncMessage(cloud.ok ? "Saved to workspace." : "Saved on this device. Sign in to enable workspace sync.");
+    const review = await createLaunchRequest(record.id, form, activeCampaign, "selected");
+    const draftMessage = cloud.ok ? "Saved to workspace." : "Saved on this device.";
+    const reviewMessage = review.cloud.ok ? "Review request synced." : "Review request saved on this device.";
+    setSyncMessage(`${draftMessage} ${reviewMessage}`);
   }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -130,7 +134,7 @@ export function CampaignBuilder() {
         {reuseLoaded && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Saved campaign loaded.</p>}
         {profileLoaded && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Business profile loaded.</p>}
         {isGenerating && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Generating campaign package...</p>}
-        {generated && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Campaign package ready. Submit it for review after funding your ad wallet. {syncMessage}</p>}
+        {generated && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Campaign submitted for 2–24 hour review. {syncMessage}</p>}
         <CampaignForm form={form} update={update} onSubmit={onSubmit} />
       </div>
       <div className="rounded-3xl bg-white p-4 shadow-soft md:p-6">
