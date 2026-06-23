@@ -7,9 +7,10 @@ export async function sendMagicLink(email: string) {
     throw new Error("Supabase environment variables are missing. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY, then redeploy.");
   }
 
-  const redirectTo = `${window.location.origin}/session`;
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
+  const redirectTo = `${appUrl.replace(/\/+$/, "")}/session`;
 
-  const response = await fetch(`${url}/auth/v1/otp`, {
+  const response = await fetch(`${url}/auth/v1/otp?redirect_to=${encodeURIComponent(redirectTo)}`, {
     method: "POST",
     headers: {
       apikey: anonKey,
@@ -17,8 +18,7 @@ export async function sendMagicLink(email: string) {
     },
     body: JSON.stringify({
       email,
-      create_user: true,
-      options: { email_redirect_to: redirectTo }
+      create_user: true
     })
   });
 
