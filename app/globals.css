@@ -95,6 +95,22 @@ div {
     max-height: 50vh;
     overflow: hidden;
   }
+
+  form label,
+  form p,
+  form span {
+    overflow-wrap: anywhere;
+  }
+
+  form input,
+  form select,
+  form textarea {
+    border-radius: 1rem;
+  }
+
+  form button {
+    min-height: 44px;
+  }
 }
 
 .scrollbar-hide {
