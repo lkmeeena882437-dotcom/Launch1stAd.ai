@@ -70,7 +70,7 @@ export function WalletPanel() {
     }
 
     setBusyPack(pack.name);
-    setMessage("Preparing checkout...");
+    setMessage("Opening secure checkout...");
     try {
       const response = await fetch("/api/billing/create-order", {
         method: "POST",
@@ -80,8 +80,7 @@ export function WalletPanel() {
       const data = (await response.json()) as CheckoutResponse;
 
       if (!data.ok && data.status === "missing_setup") {
-        setWallet(addCredits(pack.amount, `${pack.name} review credits`));
-        setMessage(`${data.message} Review credits added for testing.`);
+        setMessage("Secure checkout is not configured yet. Add Razorpay live keys in Vercel before taking deposits.");
         return;
       }
       if (!data.ok || !data.keyId || !data.order?.id) {
@@ -107,7 +106,7 @@ export function WalletPanel() {
       });
       checkout.open();
     } catch {
-      setMessage("Checkout service unavailable. Try again after deployment setup.");
+      setMessage("Checkout service unavailable. Please try again after deployment setup.");
     } finally {
       setBusyPack("");
     }
@@ -128,8 +127,12 @@ export function WalletPanel() {
     <section className="mx-auto max-w-7xl px-4 py-8 md:px-5 md:py-10">
       <div className="rounded-3xl bg-card p-5 md:p-10">
         <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Ad spend wallet</p>
-        <h1 className="mt-3 text-4xl font-black tracking-tight text-ink md:text-6xl">Deposit credits for active campaigns.</h1>
-        <p className="mt-4 max-w-3xl leading-7 text-muted">Minimum deposit is $10. Deposit ad spend credits, reserve campaign budget and monitor delivery activity.</p>
+        <h1 className="mt-3 text-4xl font-black tracking-tight text-ink md:text-6xl">Fund campaigns securely.</h1>
+        <p className="mt-4 max-w-3xl leading-7 text-muted">Minimum deposit is $10. Credits are added only after verified checkout confirmation.</p>
+
+        <div className="mt-6 rounded-2xl bg-white p-4 text-sm leading-6 text-muted">
+          Payments run through Razorpay Checkout with UPI, RuPay, Visa, Mastercard and NetBanking support.
+        </div>
 
         <div className="mt-8 grid gap-5 md:grid-cols-4">
           <div className="rounded-3xl bg-dark p-6 text-canvas">
@@ -162,7 +165,7 @@ export function WalletPanel() {
                 <button key={pack.name} onClick={() => topUp(pack)} disabled={busyPack === pack.name} className="rounded-2xl border border-hairline bg-card p-5 text-left disabled:opacity-60">
                   <span className="text-sm font-semibold text-muted">{pack.name}</span>
                   <strong className="mt-2 block text-3xl text-ink">${pack.usd}</strong>
-                  <span className="mt-2 block text-xs text-muted">≈ ₹{pack.amount.toLocaleString("en-IN")} ad credits</span>
+                  <span className="mt-2 block text-xs text-muted">Secure checkout</span>
                 </button>
               ))}
             </div>
@@ -177,7 +180,7 @@ export function WalletPanel() {
 
           <div className="rounded-3xl bg-white p-6">
             <h2 className="text-2xl font-bold">Reserve for ads</h2>
-            <p className="mt-2 text-sm leading-6 text-muted">Move wallet credits into campaign spend reserve before launch review.</p>
+            <p className="mt-2 text-sm leading-6 text-muted">Move verified wallet credits into campaign spend reserve before launch review.</p>
             <input value={reserveAmount} onChange={(event) => setReserveAmount(event.target.value)} className="mt-5 w-full rounded-xl border border-hairline bg-card px-4 py-3 outline-none" />
             <button onClick={reserve} className="mt-4 w-full rounded-xl bg-coral px-5 py-3 text-sm font-bold text-white">Reserve spend</button>
           </div>
