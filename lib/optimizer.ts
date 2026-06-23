@@ -16,11 +16,11 @@ export function calculateMetrics(input: MetricsInput) {
 
   const advice: string[] = [];
 
-  if (ctr < 1) advice.push("CTR low hai. Hook, thumbnail aur first line change karo.");
-  if (cpc > 20) advice.push("CPC high hai. Audience broad test karo aur low-quality interests remove karo.");
-  if (conversionRate < 5) advice.push("Clicks aa rahe hain par leads kam hain. Offer aur WhatsApp script improve karo.");
-  if (roas > 0 && roas < 1.5) advice.push("ROAS weak hai. Retargeting aur high-intent keywords par budget shift karo.");
-  if (advice.length === 0) advice.push("Metrics healthy lag rahe hain. Best creative aur audience ko scale karo.");
+  if (ctr < 1) advice.push("CTR is low. Refresh the hook, creative thumbnail and opening line.");
+  if (cpc > 20) advice.push("CPC is high. Test a broader audience and remove low-quality interests.");
+  if (conversionRate < 5) advice.push("Clicks are not converting. Strengthen the offer, landing step and follow-up script.");
+  if (roas > 0 && roas < 1.5) advice.push("ROAS needs improvement. Shift budget toward retargeting and high-intent keywords.");
+  if (advice.length === 0) advice.push("Metrics are healthy. Scale the best-performing creative and audience segment.");
 
   return {
     ctr: Number(ctr.toFixed(2)),
