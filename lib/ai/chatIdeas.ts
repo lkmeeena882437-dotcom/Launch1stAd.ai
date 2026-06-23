@@ -1,21 +1,20 @@
 const fallbackIdeas = [
-  "Use a clear offer: product + price range + one strong reason to contact now.",
-  "Create 3 ad angles: problem-solution, offer/discount, and social proof.",
-  "For WhatsApp leads, ask one simple question first: budget, location, or product choice.",
-  "Keep the first line short. Example: Need more local customers this week?",
-  "Test one reel, one static image, and one direct offer creative before increasing budget."
+  "Offer: one clear promise + price/benefit.",
+  "Audience: choose one primary segment first.",
+  "Creative: test hook, proof and CTA variants.",
+  "Follow-up: prepare WhatsApp or lead-form replies."
 ];
 
 export function fallbackChatAnswer(question: string) {
   const clean = question.trim();
-  if (!clean) return "Ask about ad creative, offer, campaign idea, WhatsApp script, or targeting.";
+  if (!clean) return "Ask for strategy, targeting, copy, keywords or lead follow-up guidance.";
 
   return [
-    `Idea for: ${clean}`,
+    `Focus: ${clean}`,
     "",
     ...fallbackIdeas.map((idea, index) => `${index + 1}. ${idea}`),
     "",
-    "Simple next step: turn this into one campaign report from Campaign Builder."
+    "Next: create a campaign package and review targeting before launch."
   ].join("\n");
 }
 
@@ -30,7 +29,7 @@ export async function answerMarketingQuestion(question: string) {
       body: JSON.stringify({
         contents: [{
           role: "user",
-          parts: [{ text: `You are Launch1stAd.ai, a practical ad strategy assistant for Indian businesses. Answer simply in Hinglish/English. Give concise, useful ideas. No guaranteed results. User question: ${question}` }]
+          parts: [{ text: `You are Launch1stAd.ai, a concise advertising strategy assistant. Give premium, practical output in short sections. No guaranteed results. Include compliance caution for finance or investment categories. User question: ${question}` }]
         }]
       })
     });
