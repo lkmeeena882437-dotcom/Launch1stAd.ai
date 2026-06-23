@@ -5,9 +5,9 @@ const modules = [
   { title: "Creative Studio", text: "Hooks, copy and CTA ideas", href: "/campaign", badge: "CR", tone: "bg-pink-500 text-white" },
   { title: "Meta Channels", text: "Facebook and Instagram setup", href: "/connections", badge: "M", tone: "bg-blue-700 text-white" },
   { title: "Google Channels", text: "Search and YouTube setup", href: "/connections", badge: "G", tone: "bg-emerald-600 text-white" },
-  { title: "Wallet", text: "Balance and billing options", href: "#payments", badge: "₹", tone: "bg-amber-500 text-white" },
-  { title: "Launch Status", text: "Requests and approvals", href: "/launch-requests", badge: "S", tone: "bg-violet-600 text-white" },
-  { title: "Spend Reports", text: "CPM, CPC and ROAS view", href: "/analytics", badge: "SP", tone: "bg-lime-600 text-white" },
+  { title: "Ad Wallet", text: "Deposit and reserve ad credits", href: "/wallet", badge: "₹", tone: "bg-amber-500 text-white" },
+  { title: "Launch Status", text: "Review, approval and activation", href: "/launch-requests", badge: "S", tone: "bg-violet-600 text-white" },
+  { title: "Spend Reports", text: "Views, clicks and leads", href: "/analytics", badge: "SP", tone: "bg-lime-600 text-white" },
   { title: "Support", text: "Help, policy and setup", href: "/setup", badge: "?", tone: "bg-slate-800 text-white" }
 ];
 
@@ -17,10 +17,10 @@ const mainPlacements = [
   { title: "WhatsApp", text: "Lead conversations", badge: "W", tone: "bg-green-600 text-white" }
 ];
 
-const launchOffers = [
-  ["Starter", "₹500", "Brief + copy pack"],
-  ["Growth", "₹1,500", "Creative variants"],
-  ["Pro", "₹5,000", "Priority review"]
+const adCreditSteps = [
+  ["Deposit", "Minimum $10"],
+  ["Reserve", "Campaign budget"],
+  ["Track", "Views, clicks, leads"]
 ];
 
 export function AppHub() {
@@ -48,13 +48,13 @@ export function AppHub() {
           </div>
         </div>
         <div className="rounded-[2rem] border border-hairline bg-white p-6 shadow-soft">
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Launch credits</p>
-          <h2 className="mt-2 text-3xl font-black tracking-tight text-ink">Choose a starting balance.</h2>
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Ad spend credits</p>
+          <h2 className="mt-2 text-3xl font-black tracking-tight text-ink">Deposit, reserve and track delivery.</h2>
           <div className="mt-5 grid gap-3">
-            {launchOffers.map(([name, amount, text]) => (
-              <Link key={name} href="/launch" className="flex items-center justify-between gap-4 rounded-2xl bg-card p-4">
+            {adCreditSteps.map(([name, text]) => (
+              <Link key={name} href="/wallet" className="flex items-center justify-between gap-4 rounded-2xl bg-card p-4">
                 <div><h3 className="font-bold text-ink">{name}</h3><p className="text-sm text-muted">{text}</p></div>
-                <span className="rounded-xl bg-dark px-4 py-2 text-sm font-black text-canvas">{amount}</span>
+                <span className="rounded-xl bg-dark px-4 py-2 text-sm font-black text-canvas">Wallet</span>
               </Link>
             ))}
           </div>
