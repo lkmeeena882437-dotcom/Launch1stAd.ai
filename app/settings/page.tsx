@@ -3,9 +3,11 @@ import { Brand } from "@/components/Brand";
 
 const rows = [
   ["Profile details", "/account"],
-  ["Privacy & security", "/privacy"],
   ["Provider connections", "/connections"],
-  ["Review requests", "/launch-requests"]
+  ["Review requests", "/launch-requests"],
+  ["FAQ", "/faq"],
+  ["Privacy policy", "/privacy"],
+  ["Terms & conditions", "/terms"]
 ];
 
 export default function SettingsPage() {
