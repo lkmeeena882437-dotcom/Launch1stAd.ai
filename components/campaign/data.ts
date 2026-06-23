@@ -22,7 +22,16 @@ export const categories = [
   "B2B Services",
   "Creator / Influencer",
   "Telegram Channel",
-  "App / SaaS"
+  "App / SaaS",
+  "Financial Education",
+  "Stock Market Learning",
+  "Trading Community",
+  "Insurance Advisory",
+  "Loan & Credit Services",
+  "Investment Newsletter",
+  "Tax & Accounting",
+  "Webinar / Workshop",
+  "Lead Generation"
 ];
 
 export const goals: CampaignInput["goal"][] = ["Sales", "Leads", "WhatsApp", "Traffic", "Views", "App Installs"];
@@ -54,7 +63,16 @@ export const audiencePresets: Record<string, string[]> = {
   "Education Course": ["Course enquiries", "Skill learners", "Demo class seekers", "Webinar viewers", "Lead form visitors"],
   "B2B Services": ["Business decision makers", "Service comparison searchers", "Quote request leads", "Website visitors", "LinkedIn/social engagers"],
   "Creator / Influencer": ["Content engagers", "Follower lookalike segment", "Video viewers", "Community members", "Retargeting viewers"],
-  "Telegram Channel": ["Cricket/community followers", "Channel join intent", "Social content engagers", "Lookalike community segment", "Retargeting viewers"],
+  "Telegram Channel": ["Community join intent", "Social content engagers", "Lookalike audience", "Video viewers", "Retargeting viewers"],
   "App / SaaS": ["App install intent", "Trial users", "Feature searchers", "Website visitors", "In-app ad responders"],
+  "Financial Education": ["Finance learners", "Budget planning interest", "Investment education seekers", "Webinar leads", "Newsletter subscribers"],
+  "Stock Market Learning": ["Stock market learners", "Trading course enquiries", "Market education viewers", "Webinar registrants", "Finance content engagers"],
+  "Trading Community": ["Community join intent", "Market discussion followers", "Telegram audience", "Finance creators audience", "Retargeting viewers"],
+  "Insurance Advisory": ["Policy comparison seekers", "Family protection segment", "Local advisory leads", "Form visitors", "Call-ready enquiries"],
+  "Loan & Credit Services": ["Loan comparison seekers", "Credit score interest", "Eligibility enquiry segment", "Local finance leads", "Form visitors"],
+  "Investment Newsletter": ["Finance newsletter subscribers", "Market update readers", "Long-form content readers", "Email opt-in leads", "Retargeting visitors"],
+  "Tax & Accounting": ["Business owners", "ITR filing seekers", "GST support leads", "Accounting service enquiries", "Local professional leads"],
+  "Webinar / Workshop": ["Webinar registrations", "Skill learners", "Event reminder audience", "Lookalike attendees", "Retargeting viewers"],
+  "Lead Generation": ["High-intent searchers", "Form submit intent", "WhatsApp enquiries", "Website visitors", "Retargeting visitors"],
   Default: ["Relevant local buyers", "High-intent searchers", "Social media engagers", "Website visitors", "WhatsApp enquiries"]
 };
