@@ -6,9 +6,9 @@ import { SupportedMethods } from "./SupportedMethods";
 import { FxRateCard } from "./FxRateCard";
 
 const packs = [
-  { name: "Starter", usd: 10, amount: 850, note: "Starter wallet credits" },
-  { name: "Growth", usd: 25, amount: 2125, note: "Growth wallet credits" },
-  { name: "Pro", usd: 60, amount: 5100, note: "Pro wallet credits" }
+  { name: "Ad Spend $10", usd: 10, amount: 850, note: "Ad spend credits" },
+  { name: "Ad Spend $25", usd: 25, amount: 2125, note: "Ad spend credits" },
+  { name: "Ad Spend $60", usd: 60, amount: 5100, note: "Ad spend credits" }
 ];
 
 export function WalletPanel() {
@@ -57,9 +57,9 @@ export function WalletPanel() {
   return (
     <section className="mx-auto max-w-7xl px-5 py-10">
       <div className="rounded-3xl bg-card p-6 md:p-10">
-        <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Wallet</p>
-        <h1 className="mt-3 text-4xl font-black tracking-tight text-ink md:text-6xl">Credits for campaign spend.</h1>
-        <p className="mt-4 max-w-3xl leading-7 text-muted">Minimum deposit is $10. Add credits, reserve campaign budget and track wallet activity.</p>
+        <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Ad spend wallet</p>
+        <h1 className="mt-3 text-4xl font-black tracking-tight text-ink md:text-6xl">Deposit credits for active campaigns.</h1>
+        <p className="mt-4 max-w-3xl leading-7 text-muted">Minimum deposit is $10. Deposit ad spend credits, reserve campaign budget and monitor delivery activity.</p>
 
         <div className="mt-8 grid gap-5 md:grid-cols-4">
           <div className="rounded-3xl bg-dark p-6 text-canvas">
@@ -81,8 +81,8 @@ export function WalletPanel() {
           <div className="rounded-3xl bg-white p-6">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
-                <h2 className="text-2xl font-bold">Add credits</h2>
-                <p className="mt-2 text-sm text-muted">USD-based packs with INR wallet credit estimate.</p>
+                <h2 className="text-2xl font-bold">Deposit ad credits</h2>
+                <p className="mt-2 text-sm text-muted">Select a deposit amount. Higher budgets continue through custom gateway checkout.</p>
               </div>
               <span className="rounded-full bg-card px-3 py-2 text-xs font-bold text-muted">Min $10</span>
             </div>
@@ -92,7 +92,7 @@ export function WalletPanel() {
                 <button key={pack.name} onClick={() => topUp(pack)} disabled={busyPack === pack.name} className="rounded-2xl border border-hairline bg-card p-5 text-left disabled:opacity-60">
                   <span className="text-sm font-semibold text-muted">{pack.name}</span>
                   <strong className="mt-2 block text-3xl text-ink">${pack.usd}</strong>
-                  <span className="mt-2 block text-xs text-muted">≈ ₹{pack.amount.toLocaleString("en-IN")} credits</span>
+                  <span className="mt-2 block text-xs text-muted">≈ ₹{pack.amount.toLocaleString("en-IN")} ad credits</span>
                 </button>
               ))}
             </div>
@@ -100,7 +100,7 @@ export function WalletPanel() {
 
           <div className="rounded-3xl bg-white p-6">
             <h2 className="text-2xl font-bold">Reserve for ads</h2>
-            <p className="mt-2 text-sm leading-6 text-muted">Move wallet credits into reserved ad spend before campaign submission.</p>
+            <p className="mt-2 text-sm leading-6 text-muted">Move wallet credits into campaign spend reserve before launch review.</p>
             <input value={reserveAmount} onChange={(event) => setReserveAmount(event.target.value)} className="mt-5 w-full rounded-xl border border-hairline bg-card px-4 py-3 outline-none" />
             <button onClick={reserve} className="mt-4 w-full rounded-xl bg-coral px-5 py-3 text-sm font-bold text-white">Reserve spend</button>
           </div>
