@@ -4,7 +4,7 @@ export async function sendMagicLink(email: string) {
   const { url, anonKey, isConfigured } = getSupabaseConfig();
 
   if (!isConfigured || !url || !anonKey) {
-    throw new Error("Supabase env variables missing.");
+    throw new Error("Supabase environment variables are missing. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY, then redeploy.");
   }
 
   const redirectTo = `${window.location.origin}/session`;
@@ -23,7 +23,14 @@ export async function sendMagicLink(email: string) {
   });
 
   if (!response.ok) {
-    throw new Error("Login link send nahi ho paya. Supabase settings check karo.");
+    let details = "";
+    try {
+      const error = await response.json();
+      details = error?.msg || error?.message || "";
+    } catch {
+      details = "";
+    }
+    throw new Error(details || "Magic link failed. Enable Supabase Email provider and add the site URL plus /session redirect URL.");
   }
 
   return true;
