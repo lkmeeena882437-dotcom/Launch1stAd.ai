@@ -4,6 +4,7 @@ import { Hero } from "@/components/home/Hero";
 import { IdeaBox } from "@/components/home/IdeaBox";
 import { AppHub } from "@/components/home/AppHub";
 import { Features } from "@/components/home/Features";
+import { SecurityMonetization } from "@/components/home/SecurityMonetization";
 
 export default function HomePage() {
   return (
@@ -26,6 +27,7 @@ export default function HomePage() {
       <Hero />
       <div id="ai-chat"><IdeaBox /></div>
       <AppHub />
+      <SecurityMonetization />
       <Features />
     </main>
   );
