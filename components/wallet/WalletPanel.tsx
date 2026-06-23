@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { addCredits, readWallet, reserveSpend, type WalletState } from "@/lib/wallet";
 import { SupportedMethods } from "./SupportedMethods";
+import { FxRateCard } from "./FxRateCard";
 
 const packs = [
   { name: "Starter", usd: 10, amount: 850, note: "Starter wallet credits" },
@@ -60,7 +61,7 @@ export function WalletPanel() {
         <h1 className="mt-3 text-4xl font-black tracking-tight text-ink md:text-6xl">Credits for campaign spend.</h1>
         <p className="mt-4 max-w-3xl leading-7 text-muted">Minimum deposit is $10. Add credits, reserve campaign budget and track wallet activity.</p>
 
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
+        <div className="mt-8 grid gap-5 md:grid-cols-4">
           <div className="rounded-3xl bg-dark p-6 text-canvas">
             <p className="text-sm text-white/50">Available balance</p>
             <h2 className="mt-3 text-5xl font-black">₹{wallet.balance.toLocaleString("en-IN")}</h2>
@@ -69,6 +70,7 @@ export function WalletPanel() {
             <p className="text-sm text-muted">Reserved ad spend</p>
             <h2 className="mt-3 text-5xl font-black text-ink">₹{wallet.reserved.toLocaleString("en-IN")}</h2>
           </div>
+          <FxRateCard />
           <div className="rounded-3xl bg-white p-6">
             <p className="text-sm text-muted">Transactions</p>
             <h2 className="mt-3 text-5xl font-black text-ink">{wallet.transactions.length}</h2>
