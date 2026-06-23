@@ -55,10 +55,31 @@ create table if not exists public.launch_requests (
   updated_at timestamptz not null default now()
 );
 
+create table if not exists public.wallet_accounts (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  balance_inr numeric not null default 0,
+  reserved_inr numeric not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.wallet_transactions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  transaction_type text not null,
+  amount_inr numeric not null,
+  note text not null default '',
+  reference_id text not null default '',
+  created_at timestamptz not null default now()
+);
+
 alter table public.business_profiles enable row level security;
 alter table public.campaign_drafts enable row level security;
 alter table public.platform_connections enable row level security;
 alter table public.launch_requests enable row level security;
+alter table public.wallet_accounts enable row level security;
+alter table public.wallet_transactions enable row level security;
 
 create policy "Users can read own business profiles" on public.business_profiles
   for select using (auth.uid() = user_id);
@@ -102,12 +123,29 @@ create policy "Users can insert own launch requests" on public.launch_requests
 create policy "Users can update own launch requests" on public.launch_requests
   for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
 
+create policy "Users can read own wallet account" on public.wallet_accounts
+  for select using (auth.uid() = user_id);
+
+create policy "Users can insert own wallet account" on public.wallet_accounts
+  for insert with check (auth.uid() = user_id);
+
+create policy "Users can update own wallet account" on public.wallet_accounts
+  for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+create policy "Users can read own wallet transactions" on public.wallet_transactions
+  for select using (auth.uid() = user_id);
+
+create policy "Users can insert own wallet transactions" on public.wallet_transactions
+  for insert with check (auth.uid() = user_id);
+
 create index if not exists business_profiles_user_id_idx on public.business_profiles(user_id);
 create index if not exists campaign_drafts_user_id_created_at_idx on public.campaign_drafts(user_id, created_at desc);
 create index if not exists campaign_drafts_client_id_idx on public.campaign_drafts(client_id);
 create index if not exists platform_connections_user_id_idx on public.platform_connections(user_id);
 create index if not exists launch_requests_user_id_idx on public.launch_requests(user_id);
 create index if not exists launch_requests_campaign_id_idx on public.launch_requests(campaign_id);
+create index if not exists wallet_accounts_user_id_idx on public.wallet_accounts(user_id);
+create index if not exists wallet_transactions_user_id_idx on public.wallet_transactions(user_id, created_at desc);
 
 -- Existing projects can run these safely if the table already exists.
 alter table public.campaign_drafts add column if not exists client_id text not null default '';
