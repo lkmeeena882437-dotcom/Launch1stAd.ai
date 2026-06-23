@@ -5,7 +5,7 @@ const rows = [
   ["Profile details", "/account"],
   ["Privacy & security", "/privacy"],
   ["Provider connections", "/connections"],
-  ["Documentation", "/setup"]
+  ["Review requests", "/launch-requests"]
 ];
 
 export default function SettingsPage() {
