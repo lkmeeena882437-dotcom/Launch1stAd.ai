@@ -104,7 +104,7 @@ export function CampaignBuilder() {
       clientName: activeClient?.businessName
     });
 
-    setSyncMessage(cloud.ok ? "Cloud sync complete." : "Saved locally. Login/Supabase setup ke baad cloud sync hoga.");
+    setSyncMessage(cloud.ok ? "Saved to workspace." : "Saved on this device. Sign in to enable workspace sync.");
   }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -121,11 +121,11 @@ export function CampaignBuilder() {
   return (
     <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 lg:grid-cols-[0.9fr_1.1fr]">
       <div>
-        {clientLoaded && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Active client auto-loaded from workspace.</p>}
-        {reuseLoaded && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Saved campaign loaded. Edit and generate a new draft.</p>}
-        {profileLoaded && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Saved business profile auto-loaded.</p>}
-        {isGenerating && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Generating campaign with AI...</p>}
-        {generated && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Campaign draft saved to dashboard. Source: {source}. {syncMessage}</p>}
+        {clientLoaded && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Client profile loaded.</p>}
+        {reuseLoaded && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Saved campaign loaded.</p>}
+        {profileLoaded && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Business profile loaded.</p>}
+        {isGenerating && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Generating campaign package...</p>}
+        {generated && <p className="mb-4 rounded-xl border border-hairline bg-card px-4 py-3 text-sm font-semibold text-coral">Campaign package ready. {syncMessage}</p>}
         <CampaignForm form={form} update={update} onSubmit={onSubmit} />
       </div>
       <ResultPanel campaign={campaign} generated={generated} />
