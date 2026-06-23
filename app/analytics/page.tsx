@@ -12,9 +12,9 @@ export default function AnalyticsPage() {
         </div>
       </header>
       <section className="mx-auto max-w-7xl px-5 py-10">
-        <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Analytics</p>
-        <h1 className="serif-display mt-3 text-5xl">Campaign metric checker.</h1>
-        <p className="mt-4 max-w-2xl text-muted">CTR, CPC, CPL and ROAS daalo. System practical advice dega.</p>
+        <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Performance</p>
+        <h1 className="mt-3 text-4xl font-black tracking-tight text-ink md:text-6xl">Track delivery and improve spend.</h1>
+        <p className="mt-4 max-w-2xl leading-7 text-muted">Review views, clicks, leads, CTR, CPC, CPL and ROAS. Use the optimizer to identify the next budget or creative action.</p>
         <OptimizerForm />
       </section>
     </main>
