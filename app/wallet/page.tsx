@@ -12,6 +12,14 @@ export default function WalletPage() {
         </div>
       </header>
       <WalletPanel />
+      <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-hairline bg-white md:hidden">
+        <div className="grid grid-cols-4 text-center text-xs font-bold">
+          <Link href="/dashboard" className="px-2 py-4 text-muted">Dashboard</Link>
+          <Link href="/campaigns" className="px-2 py-4 text-muted">Campaigns</Link>
+          <Link href="/wallet" className="border-t-2 border-coral bg-orange-50 px-2 py-4 text-coral">Wallet</Link>
+          <Link href="/settings" className="px-2 py-4 text-muted">Settings</Link>
+        </div>
+      </nav>
     </main>
   );
 }
