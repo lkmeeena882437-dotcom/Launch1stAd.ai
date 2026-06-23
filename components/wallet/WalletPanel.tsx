@@ -11,9 +11,36 @@ const packs = [
   { name: "Ad Spend $60", usd: 60, amount: 5100, note: "Ad spend credits" }
 ];
 
+type CheckoutResponse = {
+  ok: boolean;
+  status?: string;
+  message?: string;
+  amountInr?: number;
+  keyId?: string;
+  order?: { id?: string; amount?: number; currency?: string };
+};
+
+declare global {
+  interface Window {
+    Razorpay?: new (options: Record<string, unknown>) => { open: () => void };
+  }
+}
+
+function loadCheckoutScript() {
+  return new Promise<boolean>((resolve) => {
+    if (window.Razorpay) return resolve(true);
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+}
+
 export function WalletPanel() {
   const [wallet, setWallet] = useState<WalletState>({ balance: 0, reserved: 0, transactions: [] });
   const [reserveAmount, setReserveAmount] = useState("500");
+  const [customUsd, setCustomUsd] = useState("100");
   const [message, setMessage] = useState("");
   const [busyPack, setBusyPack] = useState("");
 
@@ -21,7 +48,27 @@ export function WalletPanel() {
     setWallet(readWallet());
   }, []);
 
-  async function topUp(pack: typeof packs[number]) {
+  async function verifyAndCredit(payload: Record<string, unknown>, amountInr: number) {
+    const response = await fetch("/api/billing/verify-payment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...payload, amountInr })
+    });
+    const data = await response.json();
+    if (data.ok) {
+      setWallet(addCredits(amountInr, "Verified ad spend deposit"));
+      setMessage("Payment verified. Ad credits added to wallet.");
+    } else {
+      setMessage(data.message || "Payment verification failed. Credits were not added.");
+    }
+  }
+
+  async function topUp(pack: { name: string; usd: number; amount: number }) {
+    if (pack.usd < 10) {
+      setMessage("Minimum deposit is $10.");
+      return;
+    }
+
     setBusyPack(pack.name);
     setMessage("Preparing checkout...");
     try {
@@ -30,17 +77,35 @@ export function WalletPanel() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amountUsd: pack.usd, packName: pack.name })
       });
-      const data = await response.json();
+      const data = (await response.json()) as CheckoutResponse;
+
       if (!data.ok && data.status === "missing_setup") {
         setWallet(addCredits(pack.amount, `${pack.name} review credits`));
         setMessage(`${data.message} Review credits added for testing.`);
         return;
       }
-      if (!data.ok) {
+      if (!data.ok || !data.keyId || !data.order?.id) {
         setMessage(data.message || "Checkout could not start.");
         return;
       }
-      setMessage("Order created. Checkout script can be enabled with live keys.");
+
+      const loaded = await loadCheckoutScript();
+      if (!loaded || !window.Razorpay) {
+        setMessage("Checkout script failed to load.");
+        return;
+      }
+
+      const checkout = new window.Razorpay({
+        key: data.keyId,
+        amount: data.order.amount,
+        currency: data.order.currency || "INR",
+        name: "Launch1stAd.ai",
+        description: pack.name,
+        order_id: data.order.id,
+        handler: (payment: Record<string, unknown>) => verifyAndCredit(payment, data.amountInr || pack.amount),
+        theme: { color: "#2563eb" }
+      });
+      checkout.open();
     } catch {
       setMessage("Checkout service unavailable. Try again after deployment setup.");
     } finally {
@@ -54,9 +119,14 @@ export function WalletPanel() {
     setMessage(result.message);
   }
 
+  function addCustomDeposit() {
+    const usd = Number(customUsd);
+    topUp({ name: `Ad Spend $${usd}`, usd, amount: Math.round(usd * 85) });
+  }
+
   return (
-    <section className="mx-auto max-w-7xl px-5 py-10">
-      <div className="rounded-3xl bg-card p-6 md:p-10">
+    <section className="mx-auto max-w-7xl px-4 py-8 md:px-5 md:py-10">
+      <div className="rounded-3xl bg-card p-5 md:p-10">
         <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Ad spend wallet</p>
         <h1 className="mt-3 text-4xl font-black tracking-tight text-ink md:text-6xl">Deposit credits for active campaigns.</h1>
         <p className="mt-4 max-w-3xl leading-7 text-muted">Minimum deposit is $10. Deposit ad spend credits, reserve campaign budget and monitor delivery activity.</p>
@@ -82,7 +152,7 @@ export function WalletPanel() {
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
                 <h2 className="text-2xl font-bold">Deposit ad credits</h2>
-                <p className="mt-2 text-sm text-muted">Select a deposit amount. Higher budgets continue through custom gateway checkout.</p>
+                <p className="mt-2 text-sm text-muted">Select a deposit amount or enter a custom ad budget.</p>
               </div>
               <span className="rounded-full bg-card px-3 py-2 text-xs font-bold text-muted">Min $10</span>
             </div>
@@ -95,6 +165,13 @@ export function WalletPanel() {
                   <span className="mt-2 block text-xs text-muted">≈ ₹{pack.amount.toLocaleString("en-IN")} ad credits</span>
                 </button>
               ))}
+            </div>
+            <div className="mt-5 rounded-2xl bg-card p-4">
+              <label className="text-sm font-bold text-ink">Custom deposit in USD</label>
+              <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]">
+                <input value={customUsd} onChange={(event) => setCustomUsd(event.target.value)} className="rounded-xl border border-hairline bg-white px-4 py-3 outline-none" />
+                <button onClick={addCustomDeposit} className="rounded-xl bg-dark px-5 py-3 text-sm font-bold text-canvas">Deposit</button>
+              </div>
             </div>
           </div>
 
