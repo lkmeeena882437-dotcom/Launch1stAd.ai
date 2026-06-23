@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { addCredits, readWallet, reserveSpend, type WalletState } from "@/lib/wallet";
+import { SupportedMethods } from "./SupportedMethods";
 
 const packs = [
   { name: "Starter", usd: 10, amount: 850, note: "Starter wallet credits" },
@@ -38,7 +39,7 @@ export function WalletPanel() {
         setMessage(data.message || "Checkout could not start.");
         return;
       }
-      setMessage("Order created. Razorpay checkout script can be enabled with live keys.");
+      setMessage("Order created. Checkout script can be enabled with live keys.");
     } catch {
       setMessage("Checkout service unavailable. Try again after deployment setup.");
     } finally {
@@ -83,6 +84,7 @@ export function WalletPanel() {
               </div>
               <span className="rounded-full bg-card px-3 py-2 text-xs font-bold text-muted">Min $10</span>
             </div>
+            <SupportedMethods />
             <div className="mt-5 grid gap-3 md:grid-cols-3">
               {packs.map((pack) => (
                 <button key={pack.name} onClick={() => topUp(pack)} disabled={busyPack === pack.name} className="rounded-2xl border border-hairline bg-card p-5 text-left disabled:opacity-60">
@@ -103,21 +105,6 @@ export function WalletPanel() {
         </div>
 
         {message && <div className="mt-6 rounded-2xl bg-white p-4 text-sm font-semibold text-coral">{message}</div>}
-
-        <div className="mt-8 rounded-3xl bg-white p-6">
-          <h2 className="text-2xl font-bold">Activity</h2>
-          <div className="mt-5 grid gap-3">
-            {wallet.transactions.length === 0 ? <p className="text-sm text-muted">No wallet activity yet.</p> : wallet.transactions.map((item) => (
-              <div key={item.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-card p-4 text-sm">
-                <div>
-                  <p className="font-bold text-ink">{item.note}</p>
-                  <p className="text-muted">{new Date(item.createdAt).toLocaleString()}</p>
-                </div>
-                <span className="font-black text-ink">{item.type === "credit" ? "+" : "-"}₹{item.amount.toLocaleString("en-IN")}</span>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );
