@@ -39,10 +39,18 @@ textarea {
   -webkit-tap-highlight-color: transparent;
 }
 
+button,
+a {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
 input,
 select,
 textarea {
   font-size: 16px;
+  max-width: 100%;
 }
 
 img,
@@ -50,6 +58,14 @@ svg,
 video,
 canvas {
   max-width: 100%;
+}
+
+section,
+main,
+header,
+footer,
+div {
+  min-width: 0;
 }
 
 ::selection {
@@ -68,6 +84,26 @@ canvas {
     line-height: 1.02 !important;
     letter-spacing: -0.035em;
   }
+
+  a[class*="rounded"],
+  button[class*="rounded"] {
+    white-space: normal;
+    line-height: 1.2;
+  }
+
+  .ai-mobile-panel {
+    max-height: 50vh;
+    overflow: hidden;
+  }
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 .glass-grid {
