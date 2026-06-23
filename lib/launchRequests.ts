@@ -6,12 +6,13 @@ export type LaunchRequest = {
   id: string;
   campaignId: string;
   provider: string;
-  status: "draft" | "ready" | "submitted" | "connected_required";
+  status: "draft" | "connected_required" | "under_review" | "active" | "paused";
   payload: {
     input: CampaignInput;
     output: unknown;
   };
   createdAt: string;
+  reviewWindow: string;
 };
 
 function readAll() {
@@ -28,9 +29,10 @@ export function createLaunchRequest(campaignId: string, input: CampaignInput, ou
     id: crypto.randomUUID(),
     campaignId,
     provider,
-    status: "connected_required",
+    status: "under_review",
     payload: { input, output },
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
+    reviewWindow: "2–24 hours"
   };
 
   const next = [item, ...readAll()];
