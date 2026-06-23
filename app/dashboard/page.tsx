@@ -7,23 +7,23 @@ const actions = [
   {
     title: "Create Campaign",
     href: "/campaign",
-    text: "Build a campaign brief with audience, copy, budget and channel plan.",
+    text: "Build audience, copy, budget and channel strategy.",
     primary: true
   },
   {
-    title: "Launch Setup",
-    href: "/launch",
-    text: "Review final details before channel connection and activation."
+    title: "Ad Wallet",
+    href: "/wallet",
+    text: "Deposit credits and reserve campaign spend."
   },
   {
-    title: "Promotion Links",
-    href: "/platforms",
-    text: "Save landing pages, WhatsApp links and social destinations."
+    title: "Review Queue",
+    href: "/launch-requests",
+    text: "Track 2–24 hour review, approval and active delivery."
   },
   {
     title: "Performance",
     href: "/analytics",
-    text: "Review spend, clicks, leads and return metrics."
+    text: "Review views, clicks, leads and destination activity."
   }
 ];
 
@@ -44,8 +44,8 @@ export default function DashboardPage() {
         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">Workspace</p>
         <div className="mt-3 flex flex-wrap items-end justify-between gap-5">
           <div>
-            <h1 className="text-4xl font-black tracking-tight text-ink md:text-6xl">Campaign control center.</h1>
-            <p className="mt-4 max-w-2xl leading-7 text-muted">Create briefs, prepare launch requests, manage clients and review performance from one dashboard.</p>
+            <h1 className="text-4xl font-black tracking-tight text-ink md:text-6xl">Advertiser control center.</h1>
+            <p className="mt-4 max-w-2xl leading-7 text-muted">Create campaigns, fund ad spend, submit for review and track delivery from one workspace.</p>
           </div>
           <Link href="/clients" className="rounded-lg border border-hairline px-4 py-2 text-sm font-semibold">Manage clients</Link>
         </div>
@@ -69,6 +69,7 @@ export default function DashboardPage() {
         </section>
 
         <div className="mt-8 flex flex-wrap gap-4 text-sm text-muted">
+          <Link href="/wallet" className="hover:text-coral">Wallet</Link>
           <Link href="/connections" className="hover:text-coral">Connections</Link>
           <Link href="/launch-requests" className="hover:text-coral">Launch requests</Link>
           <Link href="/setup" className="hover:text-coral">Setup</Link>
