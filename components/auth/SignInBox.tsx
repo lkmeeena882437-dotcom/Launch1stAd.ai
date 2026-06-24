@@ -1,12 +1,14 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { saveAuthSession } from "@/lib/auth/session";
 import { sendMagicLink } from "@/lib/auth/magicLink";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 
 export function SignInBox() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [otp, setOtp] = useState("");
   const [busy, setBusy] = useState(false);
   const [note, setNote] = useState("");
 
@@ -39,9 +41,32 @@ export function SignInBox() {
         const error = await response.json().catch(() => ({}));
         throw new Error(error?.msg || error?.message || "OTP could not be sent.");
       }
-      setNote("OTP sent. Enter verification code after SMS provider is enabled in Supabase.");
+      setNote("OTP sent. Enter the code and verify.");
     } catch (error) {
       setNote(error instanceof Error ? error.message : "Unable to send OTP.");
+    }
+    setBusy(false);
+  }
+
+  async function verifyPhone() {
+    setBusy(true);
+    setNote("");
+    try {
+      const { url, anonKey, isConfigured } = getSupabaseConfig();
+      if (!isConfigured || !url || !anonKey) throw new Error("Phone login is not configured.");
+      const response = await fetch(`${url}/auth/v1/verify`, {
+        method: "POST",
+        headers: { apikey: anonKey, "Content-Type": "application/json" },
+        body: JSON.stringify({ phone, token: otp, type: "sms" })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data?.access_token) {
+        throw new Error(data?.msg || data?.message || "OTP verification failed.");
+      }
+      saveAuthSession({ accessToken: data.access_token, refreshToken: data.refresh_token, expiresAt: Date.now() + Number(data.expires_in || 3600) * 1000 });
+      window.location.href = "/dashboard";
+    } catch (error) {
+      setNote(error instanceof Error ? error.message : "Unable to verify OTP.");
     }
     setBusy(false);
   }
@@ -78,6 +103,10 @@ export function SignInBox() {
           <input value={phone} onChange={(event) => setPhone(event.target.value)} className="mt-2 w-full rounded-lg border border-hairline bg-canvas px-4 py-3 outline-coral" placeholder="+91XXXXXXXXXX" />
         </label>
         <button disabled={busy} className="mt-4 rounded-lg border border-hairline px-5 py-3 text-sm font-semibold text-ink disabled:opacity-60">Send OTP</button>
+        <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto]">
+          <input value={otp} onChange={(event) => setOtp(event.target.value)} className="rounded-lg border border-hairline bg-canvas px-4 py-3 outline-coral" placeholder="Enter OTP" />
+          <button type="button" onClick={verifyPhone} disabled={busy} className="rounded-lg bg-dark px-5 py-3 text-sm font-semibold text-white disabled:opacity-60">Verify</button>
+        </div>
       </form>
 
       <div className="mt-5 rounded-2xl bg-canvas p-4 text-sm leading-6 text-muted">
