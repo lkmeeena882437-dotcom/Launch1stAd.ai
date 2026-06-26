@@ -67,6 +67,7 @@ External setup still required: enable providers inside Supabase. Phone OTP needs
 - Campaign form has funding gate.
 - Campaign funding gate now checks cloud wallet status when signed in.
 - Campaign generation creates a review request.
+- Review requests submit through server route `/api/campaigns/submit-review`.
 - Review requests sync to Supabase.
 - Launch requests page can read cloud review records.
 - User-side manual activation control was removed.
@@ -84,6 +85,7 @@ External setup still required: enable providers inside Supabase. Phone OTP needs
 - FAQ page exists.
 - Privacy page exists.
 - Terms page exists.
+- README has been updated to current product state.
 
 ### DevOps and Security
 
@@ -101,15 +103,13 @@ External setup still required: enable providers inside Supabase. Phone OTP needs
 4. Email, Google, Facebook, and phone login must be live-tested after Supabase provider setup.
 5. Provider OAuth still needs production token exchange and safe storage.
 6. Meta and Google connectors are skeletons; real provider campaign creation is not complete.
-7. Add server-side campaign submit route so review creation is not only client-side.
-8. Add provider/admin status update flow for review requests.
+7. Add provider/admin status update flow for review requests.
 
 ### P1: Production Hardening
 
 - Add API rate limiting.
 - Add error logging.
 - Add E2E tests for login, wallet, campaign, and review queue.
-- Update README to match current app state.
 - Keep public setup screens out of user navigation.
 - Add SEO, GEO, and AEO content pages and schema.
 
@@ -148,15 +148,13 @@ Run this after every redeploy:
 ## Immediate Next Coding Tasks
 
 1. Improve payment order error messages.
-2. Add server campaign submit endpoint.
-3. Add API rate limiting.
-4. Update README.
-5. Add first smoke tests.
-6. Add admin/provider review status update flow.
-7. Add SEO/GEO/AEO pages.
-8. Finish provider token exchange after account approvals.
-9. Add provider launch worker when real API credentials are ready.
-10. Add monitoring and alerts after first live user tests.
+2. Add API rate limiting.
+3. Add first smoke tests.
+4. Add admin/provider review status update flow.
+5. Add SEO/GEO/AEO pages.
+6. Finish provider token exchange after account approvals.
+7. Add provider launch worker when real API credentials are ready.
+8. Add monitoring and alerts after first live user tests.
 
 ## Working Standard
 
