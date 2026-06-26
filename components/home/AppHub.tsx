@@ -1,60 +1,53 @@
 import Link from "next/link";
 
 const modules = [
-  { title: "Campaign Builder", text: "Create structured launch briefs", href: "/campaign", badge: "AD", tone: "bg-blue-600 text-white" },
-  { title: "Creative Studio", text: "Hooks, copy and CTA ideas", href: "/campaign", badge: "CR", tone: "bg-pink-500 text-white" },
-  { title: "Meta Channels", text: "Facebook and Instagram setup", href: "/connections", badge: "M", tone: "bg-blue-700 text-white" },
-  { title: "Google Channels", text: "Search and YouTube setup", href: "/connections", badge: "G", tone: "bg-emerald-600 text-white" },
-  { title: "Ad Wallet", text: "Deposit and reserve ad credits", href: "/wallet", badge: "₹", tone: "bg-amber-500 text-white" },
-  { title: "Launch Status", text: "Review, approval and activation", href: "/launch-requests", badge: "S", tone: "bg-violet-600 text-white" },
-  { title: "Spend Reports", text: "Views, clicks and leads", href: "/analytics", badge: "SP", tone: "bg-lime-600 text-white" },
-  { title: "Support", text: "Help, policy and setup", href: "/setup", badge: "?", tone: "bg-slate-800 text-white" }
+  { title: "Campaign Builder", text: "Create structured launch briefs", href: "/campaign", badge: "AI", glow: "from-sky-400 to-blue-600" },
+  { title: "Creative Studio", text: "Hooks, copy and CTA ideas", href: "/campaign", badge: "CR", glow: "from-pink-400 to-fuchsia-600" },
+  { title: "Meta Channels", text: "Facebook and Instagram connections", href: "/connections", badge: "M", glow: "from-blue-400 to-indigo-600" },
+  { title: "Google Channels", text: "Search and YouTube account path", href: "/connections", badge: "G", glow: "from-emerald-300 to-green-600" },
+  { title: "Ad Wallet", text: "Verified deposits and payment records", href: "/wallet", badge: "₹", glow: "from-amber-300 to-orange-600" },
+  { title: "Launch Status", text: "Review, approval and tracking", href: "/launch-requests", badge: "S", glow: "from-violet-400 to-purple-700" }
 ];
 
-const mainPlacements = [
-  { title: "Meta", text: "Facebook + Instagram", badge: "M", tone: "bg-blue-700 text-white" },
-  { title: "Google", text: "Search + YouTube", badge: "G", tone: "bg-emerald-600 text-white" },
-  { title: "WhatsApp", text: "Lead conversations", badge: "W", tone: "bg-green-600 text-white" }
-];
-
-const adCreditSteps = [
-  ["Deposit", "Minimum $10"],
-  ["Reserve", "Campaign budget"],
-  ["Track", "Views, clicks, leads"]
+const channels = [
+  ["Meta", "Facebook + Instagram reach", "#60a5fa"],
+  ["Google", "Search + YouTube intent", "#34d399"],
+  ["WhatsApp", "Lead conversations", "#22c55e"]
 ];
 
 export function AppHub() {
   const line = " Meta Ads • Instagram Reels • Facebook Feed • Google Search • YouTube • WhatsApp Leads • Website Traffic ";
   return (
-    <section id="payments" className="mx-auto max-w-7xl px-5 py-12">
-      <div className="overflow-hidden rounded-[2rem] border border-hairline bg-dark py-3 text-canvas">
-        <div className="marquee-track gap-8 text-sm font-bold uppercase tracking-[0.16em] text-white/80">
+    <section id="payments" className="mx-auto max-w-7xl px-4 py-10 md:px-5 md:py-14">
+      <div className="overflow-hidden rounded-[2rem] border border-white/12 bg-white/8 py-3 text-white backdrop-blur-xl">
+        <div className="marquee-track gap-8 text-sm font-black uppercase tracking-[0.16em] text-white/72">
           <span>{line}</span><span>{line}</span><span>{line}</span><span>{line}</span>
         </div>
       </div>
 
-      <div className="mt-6 grid gap-5 lg:grid-cols-[1fr_0.85fr]">
-        <div className="rounded-[2rem] border border-hairline bg-white p-6 shadow-soft">
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Media channels</p>
-          <h2 className="mt-2 text-3xl font-black tracking-tight text-ink">Launch across high-intent channels.</h2>
-          <div className="mt-5 grid gap-4 md:grid-cols-3">
-            {mainPlacements.map((item) => (
-              <div key={item.title} className="rounded-3xl border border-hairline bg-card p-5">
-                <div className={`grid h-12 w-12 place-items-center rounded-2xl text-sm font-black ${item.tone}`}>{item.badge}</div>
-                <h3 className="mt-4 text-xl font-bold text-ink">{item.title}</h3>
-                <p className="mt-2 text-sm text-muted">{item.text}</p>
+      <div className="mt-6 grid gap-5 lg:grid-cols-[1fr_0.9fr]">
+        <div className="neon-card rounded-[2rem] p-5 md:p-6">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[#22e6a8]">Media channels</p>
+          <h2 className="mt-3 text-3xl font-black tracking-tight text-white md:text-5xl">Launch across high-intent channels.</h2>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {channels.map(([title, text, color]) => (
+              <div key={title} className="rounded-3xl border border-white/10 bg-black/24 p-5">
+                <div style={{ background: color }} className="grid h-12 w-12 place-items-center rounded-2xl text-sm font-black text-black">{title.slice(0, 1)}</div>
+                <h3 className="mt-4 text-xl font-black text-white">{title}</h3>
+                <p className="mt-2 text-sm text-white/58">{text}</p>
               </div>
             ))}
           </div>
         </div>
-        <div className="rounded-[2rem] border border-hairline bg-white p-6 shadow-soft">
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Ad spend credits</p>
-          <h2 className="mt-2 text-3xl font-black tracking-tight text-ink">Deposit, reserve and track delivery.</h2>
-          <div className="mt-5 grid gap-3">
-            {adCreditSteps.map(([name, text]) => (
-              <Link key={name} href="/wallet" className="flex items-center justify-between gap-4 rounded-2xl bg-card p-4">
-                <div><h3 className="font-bold text-ink">{name}</h3><p className="text-sm text-muted">{text}</p></div>
-                <span className="rounded-xl bg-dark px-4 py-2 text-sm font-black text-canvas">Wallet</span>
+
+        <div className="neon-card rounded-[2rem] p-5 md:p-6">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[#fda4af]">Ad spend workflow</p>
+          <h2 className="mt-3 text-3xl font-black tracking-tight text-white md:text-5xl">Deposit, verify and launch with control.</h2>
+          <div className="mt-6 grid gap-3">
+            {[["Deposit", "Razorpay checkout and verified wallet credits"], ["Review", "Campaign generated only after funding"], ["Track", "Requests and records stay in workspace"]].map(([name, text]) => (
+              <Link key={name} href="/wallet" className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-black/24 p-4">
+                <div><h3 className="font-black text-white">{name}</h3><p className="text-sm text-white/58">{text}</p></div>
+                <span className="rounded-xl bg-white px-4 py-2 text-sm font-black text-black">Open</span>
               </Link>
             ))}
           </div>
@@ -63,25 +56,20 @@ export function AppHub() {
 
       <div className="mt-10 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-coral">Product modules</p>
-          <h2 className="mt-2 text-4xl font-black tracking-tight text-ink md:text-5xl">Tools for every launch stage.</h2>
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[#7dd3fc]">Product modules</p>
+          <h2 className="mt-3 text-4xl font-black tracking-tight text-white md:text-6xl">Tools for every launch stage.</h2>
         </div>
-        <Link href="/dashboard" className="rounded-xl border border-hairline bg-white px-5 py-3 text-sm font-bold">Open workspace</Link>
+        <Link href="/dashboard" className="rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-black text-white">Open workspace</Link>
       </div>
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {modules.map((item) => (
-          <Link key={item.title} href={item.href} className="group rounded-3xl border border-hairline bg-white p-5 shadow-soft transition hover:-translate-y-1 hover:shadow-premium">
-            <div className={`grid h-12 w-12 place-items-center rounded-2xl text-sm font-black ${item.tone}`}>{item.badge}</div>
-            <h3 className="mt-5 text-xl font-bold text-ink">{item.title}</h3>
-            <p className="mt-2 text-sm leading-6 text-muted">{item.text}</p>
+          <Link key={item.title} href={item.href} className="group rounded-3xl border border-white/12 bg-white/8 p-5 shadow-soft backdrop-blur-xl transition hover:-translate-y-1 hover:bg-white/12">
+            <div className={`grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br ${item.glow} text-sm font-black text-white shadow-lg`}>{item.badge}</div>
+            <h3 className="mt-5 text-xl font-black text-white">{item.title}</h3>
+            <p className="mt-2 text-sm leading-6 text-white/58">{item.text}</p>
           </Link>
         ))}
       </div>
-
-      <details className="mt-6 rounded-[2rem] border border-hairline bg-white p-5 shadow-soft">
-        <summary className="cursor-pointer text-sm font-bold text-ink">More tools</summary>
-        <p className="mt-3 text-sm leading-6 text-muted">Privacy policy, help, wallet, payment methods, status tracking and extra launch tools are kept here for quick access.</p>
-      </details>
     </section>
   );
 }
