@@ -2,26 +2,13 @@
 
 import { FormEvent, useState } from "react";
 
-const personas = [
-  "Meta Ads Expert",
-  "Google Search Planner",
-  "Landing Page Hook Creator",
-  "WhatsApp Leads Specialist",
-  "Email Marketing Specialist",
-  "Telegram Growth Planner"
-];
-
-const prompts = [
-  "Build plan",
-  "Targeting",
-  "Ad copy",
-  "Keywords"
-];
+const personas = ["Meta Ads", "Google Search", "Landing Page", "WhatsApp Leads", "Email", "Telegram"];
+const prompts = ["Plan", "Targeting", "Ad copy", "Keywords"];
 
 export function IdeaBox() {
   const [persona, setPersona] = useState(personas[0]);
-  const [question, setQuestion] = useState("Build a campaign plan for my business");
-  const [answer, setAnswer] = useState("Select an expert, enter the offer, and generate a focused launch direction.");
+  const [question, setQuestion] = useState("Build a focused campaign plan for my business");
+  const [answer, setAnswer] = useState("Select a channel expert, enter your offer and get one clear launch direction.");
   const [loading, setLoading] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -34,39 +21,41 @@ export function IdeaBox() {
         body: JSON.stringify({ question: `${persona}: ${question}` })
       });
       const data = await response.json();
-      setAnswer(data.answer || "Add business, offer, audience and budget for better guidance.");
+      setAnswer(data.answer || "Add offer, audience, budget and destination for a stronger answer.");
     } catch {
-      setAnswer("Define the offer, select one audience, write a direct CTA, and prepare follow-up replies.");
+      setAnswer("Use one audience, one offer, one CTA and one follow-up path before launching.");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-6 md:px-5 md:py-14">
-      <div className="premium-ring rounded-[1.5rem] bg-dark p-4 text-canvas md:rounded-[2rem] md:p-8">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60 md:px-4 md:py-2 md:text-xs">AI campaign assistant</p>
-          <h2 className="mt-3 text-2xl font-black tracking-tight text-white md:mt-4 md:text-5xl">Choose an expert. Get a focused answer.</h2>
-          <p className="mx-auto mt-2 max-w-2xl text-xs leading-5 text-white/60 md:mt-3 md:text-sm md:leading-6">Strategy, targeting, creative, keywords and lead follow-up ideas.</p>
-        </div>
-
-        <div className="ai-mobile-panel mx-auto mt-4 max-w-3xl rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur md:mt-6 md:rounded-3xl md:p-5">
-          <div className="scrollbar-hide mb-3 flex gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible">
-            {personas.map((item) => (
-              <button key={item} type="button" onClick={() => setPersona(item)} className={item === persona ? "shrink-0 rounded-full bg-coral px-3 py-2 text-[11px] font-bold text-white" : "shrink-0 rounded-full bg-white/10 px-3 py-2 text-[11px] font-semibold text-white/70"}>{item}</button>
-            ))}
+    <section className="mx-auto max-w-7xl px-4 py-5 md:px-5 md:py-10">
+      <div className="neon-card rounded-[2rem] p-4 md:p-6">
+        <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-[#c084fc]">AI campaign assistant</p>
+            <h2 className="mt-3 text-3xl font-black tracking-tight text-white md:text-5xl">Ask less. Launch clearer.</h2>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-white/62">A compact planner for strategy, targeting, hooks and follow-up ideas. Keep it focused; build the full campaign in the workspace.</p>
           </div>
-          <form onSubmit={submit} className="space-y-2 md:space-y-3">
-            <textarea value={question} onChange={(event) => setQuestion(event.target.value)} className="min-h-16 w-full rounded-xl border border-white/10 bg-white p-3 text-sm text-ink outline-none md:min-h-24 md:rounded-2xl md:p-4" />
-            <div className="grid grid-cols-2 gap-2 md:flex md:flex-wrap">
-              {prompts.map((prompt) => (
-                <button key={prompt} type="button" onClick={() => setQuestion(prompt)} className="rounded-full bg-white/10 px-3 py-2 text-[11px] font-semibold text-white/70">{prompt}</button>
+
+          <div className="rounded-3xl border border-white/10 bg-black/25 p-3 md:p-4">
+            <div className="scrollbar-hide mb-3 flex gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible">
+              {personas.map((item) => (
+                <button key={item} type="button" onClick={() => setPersona(item)} className={item === persona ? "shrink-0 rounded-full bg-[#2dd4ff] px-3 py-2 text-[11px] font-black text-black" : "shrink-0 rounded-full bg-white/10 px-3 py-2 text-[11px] font-bold text-white/70"}>{item}</button>
               ))}
             </div>
-            <button className="w-full rounded-xl bg-coral px-5 py-2.5 text-sm font-bold text-white md:py-3">{loading ? "Thinking..." : "Ask AI"}</button>
-          </form>
-          <div className="mt-3 max-h-28 overflow-y-auto whitespace-pre-line rounded-xl bg-white p-3 text-xs leading-5 text-ink md:mt-4 md:max-h-80 md:rounded-2xl md:p-4 md:text-sm md:leading-6">{answer}</div>
+            <form onSubmit={submit} className="space-y-3">
+              <textarea value={question} onChange={(event) => setQuestion(event.target.value)} className="min-h-20 w-full rounded-2xl border border-white/10 bg-white px-4 py-3 text-sm text-slate-950 outline-none" />
+              <div className="grid grid-cols-4 gap-2">
+                {prompts.map((prompt) => (
+                  <button key={prompt} type="button" onClick={() => setQuestion(prompt)} className="rounded-full bg-white/10 px-3 py-2 text-[11px] font-bold text-white/70">{prompt}</button>
+                ))}
+              </div>
+              <button className="w-full rounded-2xl px-5 py-3 text-sm font-black text-white neon-button">{loading ? "Thinking..." : "Ask AI"}</button>
+            </form>
+            <div className="mt-3 max-h-28 overflow-y-auto rounded-2xl bg-white/95 p-3 text-xs leading-5 text-slate-900 md:text-sm">{answer}</div>
+          </div>
         </div>
       </div>
     </section>
