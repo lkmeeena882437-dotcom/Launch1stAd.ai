@@ -57,12 +57,15 @@ External setup still required: enable providers inside Supabase. Phone OTP needs
 - Razorpay checkout opens from wallet UI.
 - Payment verification route checks payment signature.
 - Verified payment flow credits Supabase wallet tables.
+- Authenticated wallet read route exists at `/api/wallet/me`.
+- Wallet page now syncs balance from cloud wallet data.
 - Trusted payment method labels are shown in the wallet UI.
 - Reserve spend UI was removed from the wallet page.
 
 ### Campaign and Review
 
 - Campaign form has funding gate.
+- Campaign funding gate now checks cloud wallet status when signed in.
 - Campaign generation creates a review request.
 - Review requests sync to Supabase.
 - Launch requests page can read cloud review records.
@@ -82,30 +85,28 @@ External setup still required: enable providers inside Supabase. Phone OTP needs
 - Privacy page exists.
 - Terms page exists.
 
-### DevOps
+### DevOps and Security
 
 - GitHub Actions build workflow exists.
 - Build workflow runs install and build on push or pull request.
+- Security headers middleware exists.
 
 ## Current Gaps
 
 ### P0: Must Fix Before Claiming Production Ready
 
 1. Redeploy latest code and test the live app.
-2. Wallet page must load balance from Supabase on page load, not only local browser state.
-3. Campaign funding gate must read cloud wallet status, not only local browser state.
-4. Payment order route needs clearer gateway error messages.
-5. Payment flow must be live-tested end to end.
-6. Email, Google, Facebook, and phone login must be live-tested after Supabase provider setup.
-7. Provider OAuth still needs production token exchange and safe storage.
-8. Meta and Google connectors are skeletons; real provider campaign creation is not complete.
+2. Payment order route needs clearer gateway error messages. Tool safety blocked this patch once, so retry carefully later.
+3. Payment flow must be live-tested end to end.
+4. Email, Google, Facebook, and phone login must be live-tested after Supabase provider setup.
+5. Provider OAuth still needs production token exchange and safe storage.
+6. Meta and Google connectors are skeletons; real provider campaign creation is not complete.
+7. Add server-side campaign submit route so review creation is not only client-side.
+8. Add provider/admin status update flow for review requests.
 
 ### P1: Production Hardening
 
-- Add security headers.
 - Add API rate limiting.
-- Add server wallet read endpoint.
-- Add server campaign submit endpoint.
 - Add error logging.
 - Add E2E tests for login, wallet, campaign, and review queue.
 - Update README to match current app state.
@@ -146,16 +147,16 @@ Run this after every redeploy:
 
 ## Immediate Next Coding Tasks
 
-1. Build authenticated wallet read route.
-2. Update wallet page to load cloud wallet.
-3. Update campaign gate to use cloud wallet.
-4. Improve payment order error messages.
-5. Add security headers.
-6. Update README.
-7. Add first smoke tests.
-8. Add admin/provider review status update flow.
-9. Add SEO/GEO/AEO pages.
-10. Finish provider token exchange after account approvals.
+1. Improve payment order error messages.
+2. Add server campaign submit endpoint.
+3. Add API rate limiting.
+4. Update README.
+5. Add first smoke tests.
+6. Add admin/provider review status update flow.
+7. Add SEO/GEO/AEO pages.
+8. Finish provider token exchange after account approvals.
+9. Add provider launch worker when real API credentials are ready.
+10. Add monitoring and alerts after first live user tests.
 
 ## Working Standard
 
