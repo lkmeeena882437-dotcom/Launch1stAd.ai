@@ -31,14 +31,14 @@ export function readWallet(): WalletState {
   }
 }
 
-function writeWallet(next: WalletState) {
+export function saveWallet(next: WalletState) {
   window.localStorage.setItem(walletKey, JSON.stringify(next));
   return next;
 }
 
 export function addCredits(amount: number, note = "Wallet top-up") {
   const current = readWallet();
-  return writeWallet({
+  return saveWallet({
     ...current,
     balance: current.balance + amount,
     transactions: [{ id: crypto.randomUUID(), type: "credit", amount, note, createdAt: new Date().toISOString() }, ...current.transactions]
@@ -48,7 +48,7 @@ export function addCredits(amount: number, note = "Wallet top-up") {
 export function reserveSpend(amount: number, note = "Campaign spend reserve") {
   const current = readWallet();
   if (amount <= 0 || amount > current.balance) return { ok: false, wallet: current, message: "Insufficient wallet balance." };
-  const next = writeWallet({
+  const next = saveWallet({
     balance: current.balance - amount,
     reserved: current.reserved + amount,
     transactions: [{ id: crypto.randomUUID(), type: "reserve", amount, note, createdAt: new Date().toISOString() }, ...current.transactions]
