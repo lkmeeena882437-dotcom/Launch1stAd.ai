@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { defaultConnections, readConnections, saveConnectionStatus, type PlatformConnection } from "@/lib/connections";
-import { ProviderReadiness } from "./ProviderReadiness";
 
 export function ConnectionsPanel() {
   const searchParams = useSearchParams();
@@ -14,44 +13,48 @@ export function ConnectionsPanel() {
     const provider = searchParams.get("provider");
     const status = searchParams.get("status");
     if ((provider === "meta" || provider === "google") && status === "connected") {
-      setConnections(saveConnectionStatus(provider, "connected", "Connection verified. Server-side token storage is ready for configuration."));
+      setConnections(saveConnectionStatus(provider, "connected", "Connected."));
       return;
     }
     if ((provider === "meta" || provider === "google") && status === "started") {
-      setConnections(saveConnectionStatus(provider, "started", "Provider login started. Complete OAuth and account approval to activate delivery."));
+      setConnections(saveConnectionStatus(provider, "started", "Connection started."));
       return;
     }
     if ((provider === "meta" || provider === "google") && status === "error") {
-      setConnections(saveConnectionStatus(provider, "error", "Connection unavailable. Review provider setup and permissions."));
+      setConnections(saveConnectionStatus(provider, "error", "Connection failed."));
       return;
     }
     setConnections(saved);
   }, [searchParams]);
 
   return (
-    <section className="mx-auto max-w-6xl px-5 py-10">
-      <div className="rounded-3xl bg-card p-6 md:p-10">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">Channel connections</p>
-        <h1 className="mt-3 text-4xl font-black tracking-tight text-ink md:text-6xl">Connect approved advertising accounts.</h1>
-        <p className="mt-4 max-w-3xl leading-7 text-muted">Configure Meta and Google provider access, submit campaigns for review and activate delivery after account approval.</p>
+    <section className="mx-auto max-w-6xl px-4 py-8 md:px-5 md:py-10">
+      <div className="neon-shell rounded-[2rem] p-5 md:p-10">
+        <p className="text-xs font-black uppercase tracking-[0.2em] text-[#22e6a8]">Account connections</p>
+        <h1 className="mt-3 text-5xl font-black tracking-tight text-white md:text-7xl">Connect ad accounts.</h1>
+        <p className="mt-5 max-w-3xl leading-7 text-white/62">Connect Meta and Google accounts so reviewed campaigns can use the right advertising channel.</p>
 
         <div className="mt-8 grid gap-5 md:grid-cols-2">
           {connections.map((connection) => (
-            <div key={connection.provider} className="rounded-2xl bg-canvas p-5">
+            <div key={connection.provider} className="rounded-3xl border border-white/10 bg-black/26 p-5 text-white">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <h2 className="text-xl font-semibold">{connection.label}</h2>
-                <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-muted">{connection.status.replace("_", " ")}</span>
+                <h2 className="text-2xl font-black">{connection.label}</h2>
+                <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-black text-white/70">{connection.status.replace("_", " ")}</span>
               </div>
-              <p className="mt-3 text-sm leading-6 text-muted">{connection.note}</p>
+              <p className="mt-3 text-sm leading-6 text-white/60">{connection.note}</p>
               <div className="mt-5 flex flex-wrap gap-3">
-                <a href={`/connections?provider=${connection.provider}&status=started`} className="rounded-xl bg-coral px-4 py-3 text-sm font-bold text-white">Start connection</a>
-                <button type="button" onClick={() => setConnections(saveConnectionStatus(connection.provider, "not_connected"))} className="rounded-xl border border-hairline px-4 py-3 text-sm font-bold">Reset</button>
+                <a href={`/api/oauth/${connection.provider}/start`} className="rounded-2xl px-5 py-3 text-sm font-black text-white neon-button">Start connection</a>
+                <button type="button" onClick={() => setConnections(saveConnectionStatus(connection.provider, "not_connected"))} className="rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-black text-white">Reset</button>
               </div>
             </div>
           ))}
         </div>
 
-        <ProviderReadiness />
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          <a href="/terms" className="rounded-2xl border border-white/10 bg-white/7 p-4 text-sm font-black text-white">Terms</a>
+          <a href="/privacy" className="rounded-2xl border border-white/10 bg-white/7 p-4 text-sm font-black text-white">Privacy</a>
+          <a href="/faq" className="rounded-2xl border border-white/10 bg-white/7 p-4 text-sm font-black text-white">FAQ</a>
+        </div>
       </div>
     </section>
   );
