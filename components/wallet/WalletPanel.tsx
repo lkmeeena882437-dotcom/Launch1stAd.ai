@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getAuthSession } from "@/lib/auth/session";
-import { addCredits, readWallet, type WalletState } from "@/lib/wallet";
+import { readWallet, saveWallet, type WalletState } from "@/lib/wallet";
 import { SupportedMethods } from "./SupportedMethods";
 import { FxRateCard } from "./FxRateCard";
 
@@ -44,8 +44,34 @@ export function WalletPanel() {
   const [message, setMessage] = useState("");
   const [busyPack, setBusyPack] = useState("");
 
+  async function refreshWallet(showMessage = false) {
+    const session = getAuthSession();
+    if (!session?.accessToken) {
+      const local = readWallet();
+      setWallet(local);
+      if (showMessage) setMessage("Sign in to sync wallet balance.");
+      return local;
+    }
+
+    const response = await fetch("/api/wallet/me", {
+      headers: { Authorization: `Bearer ${session.accessToken}` }
+    });
+    const data = await response.json().catch(() => null);
+    if (response.ok && data?.ok && data.wallet) {
+      const synced = saveWallet(data.wallet as WalletState);
+      setWallet(synced);
+      if (showMessage) setMessage("Wallet synced.");
+      return synced;
+    }
+
+    const local = readWallet();
+    setWallet(local);
+    if (showMessage) setMessage(data?.message || "Wallet sync unavailable.");
+    return local;
+  }
+
   useEffect(() => {
-    setWallet(readWallet());
+    refreshWallet();
   }, []);
 
   async function verifyAndCredit(payload: Record<string, unknown>, amountInr: number) {
@@ -65,8 +91,8 @@ export function WalletPanel() {
     });
     const data = await response.json();
     if (data.ok) {
-      setWallet(addCredits(amountInr, "Verified ad spend deposit"));
-      setMessage("Payment verified. Ad credits added to wallet.");
+      await refreshWallet();
+      setMessage("Payment verified. Wallet balance updated.");
     } else {
       setMessage(data.message || "Payment verification failed. Credits were not added.");
     }
@@ -89,7 +115,7 @@ export function WalletPanel() {
       const data = (await response.json()) as CheckoutResponse;
 
       if (!data.ok && data.status === "missing_setup") {
-        setMessage("Secure checkout is not configured yet. Add Razorpay live keys in Vercel before taking deposits.");
+        setMessage("Secure checkout is not configured yet. Add Razorpay keys and redeploy before taking deposits.");
         return;
       }
       if (!data.ok || !data.keyId || !data.order?.id) {
@@ -123,7 +149,7 @@ export function WalletPanel() {
 
   function addCustomDeposit() {
     const usd = Number(customUsd);
-    topUp({ name: `Ad Spend $${usd}`, usd, amount: Math.round(usd * 85) });
+    topUp({ name: `Ad Spend $${usd}`, usd, amount: Math.round(usd * 89) });
   }
 
   return (
@@ -133,8 +159,9 @@ export function WalletPanel() {
         <h1 className="mt-3 text-4xl font-black tracking-tight text-ink md:text-6xl">Fund campaigns securely.</h1>
         <p className="mt-4 max-w-3xl leading-7 text-muted">Minimum deposit is $10. Credits are added only after verified checkout confirmation.</p>
 
-        <div className="mt-6 rounded-2xl bg-white p-4 text-sm leading-6 text-muted">
-          Payments run through Razorpay Checkout with UPI, RuPay, Visa, Mastercard and NetBanking support.
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white p-4 text-sm leading-6 text-muted">
+          <span>Payments run through Razorpay Checkout with UPI, RuPay, Visa, Mastercard and NetBanking support.</span>
+          <button onClick={() => refreshWallet(true)} className="rounded-xl border border-hairline px-4 py-2 text-xs font-bold text-ink">Sync wallet</button>
         </div>
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">
