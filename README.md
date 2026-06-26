@@ -1,84 +1,74 @@
 # Launch1stAd.ai
 
-**AI Assistant + Ad Launch System for Businesses**
+AI advertising workspace for Indian businesses.
 
-Launch1stAd.ai helps Indian businesses create ready-to-launch campaign packs for Meta, Google, WhatsApp and landing pages with AI-powered strategy, audience targeting, ad copy, creative ideas, budget planning and optimization guidance.
+Launch1stAd.ai helps a business sign in, add verified ad funds, generate an AI campaign, submit it for review, connect approved ad accounts, and track launch status.
 
-> Safe promise: AI-optimized campaigns designed to improve leads, CTR and conversions. Results are not guaranteed.
+## Core Promise
 
-## Brand
+Create professional campaign packs with AI and manage the launch workflow in one place. Results are not guaranteed; campaigns still depend on budget, offer, audience, creative quality, account approval, and provider policies.
 
-- **Display name:** Launch1stAd.ai
-- **Tagline:** Launch your first professional ad campaign with AI.
-- **Hindi line:** Business batao, AI se pehla ad launch karo.
-- **Positioning:** AI Marketing OS for Indian Businesses
-- **Style:** warm cream canvas, coral CTA, dark premium product panels, editorial SaaS spacing.
-
-## MVP Features
-
-1. Landing page with premium brand positioning
-2. Business profile save system
-3. Campaign builder with saved profile auto-fill
-4. Meta campaign structure
-5. Google campaign structure
-6. Hindi / English / Hinglish ad copy
-7. WhatsApp lead conversion script
-8. 7-day optimization plan
-9. Campaign history and saved drafts
-10. Full campaign report page
-11. Use again / duplicate campaign flow
-12. PDF export through browser print
-13. Gemini AI provider with deterministic fallback
-14. Supabase schema foundation and setup status page
-15. Account access page and usage quota foundation
-16. Analytics metric checker for CTR, CPC, CPL and ROAS
-
-## Tech Stack
+## Current Stack
 
 - Next.js 14 App Router
 - TypeScript
 - Tailwind CSS
-- Browser localStorage for MVP drafts/profiles
-- Built-in deterministic campaign generator
-- Optional Gemini AI generation via `GEMINI_API_KEY`
-- Supabase database schema for production persistence
-- Environment readiness page at `/setup`
+- Supabase Auth and database access
+- Razorpay Checkout
+- Gemini AI with deterministic fallback
+- GitHub Actions build workflow
 
-## AI Generation Flow
+## Main Product Flow
 
-- Campaign Builder calls `/api/generate-campaign`.
-- If `GEMINI_API_KEY` is present, the API tries Gemini generation.
-- If the key is missing or the API fails, it automatically returns the built-in fallback campaign.
-- The app never promises guaranteed leads, sales or income.
+1. User signs in with email, Google, Facebook, or phone OTP.
+2. User funds the wallet through verified checkout.
+3. Wallet balance is synced from the database.
+4. User creates an AI campaign only after verified funds are available.
+5. Campaign is submitted for review.
+6. Review request is saved to the database.
+7. Provider connector can send campaign payloads after Meta or Google provider setup.
+8. User tracks review status from Launch Requests.
 
-## Supabase Setup
+## Implemented Features
 
-1. Create a Supabase project.
-2. Open Supabase SQL Editor.
-3. Run the SQL from `supabase/schema.sql`.
-4. Add Supabase environment variables in Vercel and `.env.local`.
-5. Open `/setup` in the app to confirm env variables are present.
+- Email magic-link login
+- Google and Facebook Supabase OAuth entry points
+- Phone OTP send and verify UI
+- Razorpay deposit flow
+- Payment signature verification route
+- Database wallet credit flow
+- Authenticated wallet read route
+- Cloud wallet sync in wallet UI
+- Cloud wallet funding gate in campaign form
+- AI campaign builder
+- Campaign review request route
+- Launch requests cloud read
+- Provider connection page
+- Meta and Google connector skeletons
+- FAQ, Privacy, Terms, Settings
+- Security headers middleware
+- GitHub Actions build check
+- Project memory in `PROJECT_BRAIN.md`
 
-## Environment Options
+## External Setup Needed
 
-Copy `.env.example` to `.env.local`.
+Some features require external provider setup before live use:
 
-```bash
-cp .env.example .env.local
-```
+- Supabase Email provider
+- Supabase Google provider for Google login
+- Supabase Facebook provider for Facebook login
+- Supabase Phone provider plus SMS provider for OTP
+- Razorpay test or live account for wallet deposits
+- Meta developer and ad account approval for Meta campaign delivery
+- Google Ads developer token and customer account for Google campaign delivery
 
-Available env options:
+## Important Production Notes
 
-```bash
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-GEMINI_API_KEY=your_key_here
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-NEXT_PUBLIC_GROWTH_LINK=your_growth_access_or_payment_link
-NEXT_PUBLIC_TEAM_LINK=your_team_access_or_payment_link
-NEXT_PUBLIC_WHATSAPP_NUMBER=91882437XXXX
-NEXT_PUBLIC_SUPPORT_EMAIL=support@launch1stad.ai
-```
+- Wallet credits should only be added after payment verification.
+- Campaign generation should require verified wallet funding.
+- Meta and Google delivery is not fully live until provider API credentials and approvals are configured.
+- Do not expose developer setup pages to normal users.
+- Update `PROJECT_BRAIN.md` after major changes.
 
 ## Run Locally
 
@@ -89,10 +79,20 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-## Next Build Steps
+## Build
 
-- Add server-side PDF export
-- Add campaign share page
-- Add client workspace / multi-business management
-- Add admin checklist for launch readiness
-- Connect real payment confirmation later
+```bash
+npm run build
+```
+
+GitHub Actions also runs install and build on pushes and pull requests to main.
+
+## Next Priorities
+
+- Live redeploy and end-to-end testing
+- Cleaner payment gateway error messages
+- API rate limiting
+- Provider token exchange and safe storage
+- Real Meta and Google campaign creation after approval
+- SEO, GEO, and AEO content pages
+- E2E smoke tests
