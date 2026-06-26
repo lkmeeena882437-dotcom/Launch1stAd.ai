@@ -2,6 +2,7 @@
 
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
+import { getAuthSession } from "@/lib/auth/session";
 import type { CampaignInput } from "@/lib/campaign";
 import { readWallet } from "@/lib/wallet";
 import { BusinessFields } from "./BusinessFields";
@@ -18,15 +19,38 @@ export function CampaignForm({ form, update, onSubmit }: {
   const [message, setMessage] = useState("");
   const [step, setStep] = useState(1);
   const [walletReady, setWalletReady] = useState(false);
+  const [walletStatus, setWalletStatus] = useState("Checking wallet...");
+
+  async function checkWallet() {
+    const session = getAuthSession();
+    if (!session?.accessToken) {
+      const local = readWallet();
+      const ready = local.balance > 0 || local.reserved > 0;
+      setWalletReady(ready);
+      setWalletStatus(ready ? "Local funds detected. Sign in to sync." : "Sign in and add verified funds.");
+      return ready;
+    }
+
+    const response = await fetch("/api/wallet/me", {
+      headers: { Authorization: `Bearer ${session.accessToken}` }
+    });
+    const data = await response.json().catch(() => null);
+    const balance = Number(data?.wallet?.balance || 0);
+    const reserved = Number(data?.wallet?.reserved || 0);
+    const ready = response.ok && data?.ok && (balance > 0 || reserved > 0);
+    setWalletReady(ready);
+    setWalletStatus(ready ? "Verified ad funds available." : "Add verified ad funds before review.");
+    return ready;
+  }
 
   useEffect(() => {
-    const wallet = readWallet();
-    setWalletReady(wallet.balance > 0 || wallet.reserved > 0);
+    checkWallet();
   }, []);
 
-  function submit(event: FormEvent<HTMLFormElement>) {
-    if (!walletReady) {
-      event.preventDefault();
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const ready = await checkWallet();
+    if (!ready) {
       setMessage("Add verified ad funds before generating a campaign for review.");
       return;
     }
@@ -44,7 +68,11 @@ export function CampaignForm({ form, update, onSubmit }: {
           <button key={label} type="button" onClick={() => setStep(index + 1)} className={step === index + 1 ? "rounded-full bg-coral px-3 py-2 text-white" : "rounded-full bg-canvas px-3 py-2 text-muted"}>{label}</button>
         ))}
       </div>
-      <p className="mt-4 rounded-xl border border-hairline bg-canvas px-4 py-3 text-sm font-semibold text-coral">Wallet funding: {walletReady ? "Ready" : "Required before review"}</p>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-hairline bg-canvas px-4 py-3 text-sm font-semibold text-coral">
+        <span>Wallet funding: {walletReady ? "Ready" : "Required before review"}</span>
+        <button type="button" onClick={checkWallet} className="rounded-lg bg-white px-3 py-2 text-xs font-bold text-ink">Refresh</button>
+        <span className="w-full text-xs text-muted">{walletStatus}</span>
+      </div>
       <form onSubmit={submit} className="mt-8 space-y-5">
         {step === 1 && <BusinessFields form={form} update={update} />}
         {step === 2 && <PromotionFields form={form} update={update} />}
@@ -52,7 +80,7 @@ export function CampaignForm({ form, update, onSubmit }: {
         {step === 4 && (
           <div className="rounded-2xl bg-canvas p-5">
             <h2 className="text-xl font-semibold">Ready for review</h2>
-            <p className="mt-2 text-sm leading-6 text-muted">The campaign report is created after verified wallet funding. Reserve spend before submitting for review.</p>
+            <p className="mt-2 text-sm leading-6 text-muted">The campaign report is created after verified wallet funding.</p>
             <div className="mt-4 grid gap-3 text-sm md:grid-cols-2">
               <p><span className="font-semibold">Business:</span> {form.businessName || "Not added"}</p>
               <p><span className="font-semibold">Destination:</span> {form.promotionType}</p>
