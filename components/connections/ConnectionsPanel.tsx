@@ -32,11 +32,11 @@ export function ConnectionsPanel() {
       <div className="neon-shell rounded-[2rem] p-5 md:p-10">
         <p className="text-xs font-black uppercase tracking-[0.2em] text-[#22e6a8]">Account connections</p>
         <h1 className="mt-3 text-5xl font-black tracking-tight text-white md:text-7xl">Connect ad accounts.</h1>
-        <p className="mt-5 max-w-3xl leading-7 text-white/62">Connect Meta and Google accounts so reviewed campaigns can use the right advertising channel.</p>
+        <p className="mt-5 max-w-3xl leading-7 text-white/60">Connect Meta and Google accounts so reviewed campaigns can use the right advertising channel.</p>
 
         <div className="mt-8 grid gap-5 md:grid-cols-2">
           {connections.map((connection) => (
-            <div key={connection.provider} className="rounded-3xl border border-white/10 bg-black/26 p-5 text-white">
+            <div key={connection.provider} className="rounded-3xl border border-white/10 bg-black/25 p-5 text-white">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <h2 className="text-2xl font-black">{connection.label}</h2>
                 <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-black text-white/70">{connection.status.replace("_", " ")}</span>
@@ -51,9 +51,9 @@ export function ConnectionsPanel() {
         </div>
 
         <div className="mt-8 grid gap-4 md:grid-cols-3">
-          <a href="/terms" className="rounded-2xl border border-white/10 bg-white/7 p-4 text-sm font-black text-white">Terms</a>
-          <a href="/privacy" className="rounded-2xl border border-white/10 bg-white/7 p-4 text-sm font-black text-white">Privacy</a>
-          <a href="/faq" className="rounded-2xl border border-white/10 bg-white/7 p-4 text-sm font-black text-white">FAQ</a>
+          <a href="/terms" className="rounded-2xl border border-white/10 bg-white/10 p-4 text-sm font-black text-white">Terms</a>
+          <a href="/privacy" className="rounded-2xl border border-white/10 bg-white/10 p-4 text-sm font-black text-white">Privacy</a>
+          <a href="/faq" className="rounded-2xl border border-white/10 bg-white/10 p-4 text-sm font-black text-white">FAQ</a>
         </div>
       </div>
     </section>
