@@ -5,6 +5,7 @@ const rows = [
   ["Profile details", "/account"],
   ["Provider connections", "/connections"],
   ["Review requests", "/launch-requests"],
+  ["Review manager", "/admin/reviews"],
   ["FAQ", "/faq"],
   ["Privacy policy", "/privacy"],
   ["Terms & conditions", "/terms"]
