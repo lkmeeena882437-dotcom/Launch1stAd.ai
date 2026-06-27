@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { defaultConnections, readConnections, saveConnectionStatus, type PlatformConnection } from "@/lib/connections";
@@ -43,7 +44,7 @@ export function ConnectionsPanel() {
               </div>
               <p className="mt-3 text-sm leading-6 text-white/60">{connection.note}</p>
               <div className="mt-5 flex flex-wrap gap-3">
-                <a href={`/api/oauth/${connection.provider}/start`} className="rounded-2xl px-5 py-3 text-sm font-black text-white neon-button">Start connection</a>
+                <Link href={`/api/oauth/${connection.provider}/start`} className="rounded-2xl px-5 py-3 text-sm font-black text-white neon-button">Start connection</Link>
                 <button type="button" onClick={() => setConnections(saveConnectionStatus(connection.provider, "not_connected"))} className="rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-black text-white">Reset</button>
               </div>
             </div>
@@ -51,9 +52,9 @@ export function ConnectionsPanel() {
         </div>
 
         <div className="mt-8 grid gap-4 md:grid-cols-3">
-          <a href="/terms" className="rounded-2xl border border-white/10 bg-white/10 p-4 text-sm font-black text-white">Terms</a>
-          <a href="/privacy" className="rounded-2xl border border-white/10 bg-white/10 p-4 text-sm font-black text-white">Privacy</a>
-          <a href="/faq" className="rounded-2xl border border-white/10 bg-white/10 p-4 text-sm font-black text-white">FAQ</a>
+          <Link href="/terms" className="rounded-2xl border border-white/10 bg-white/10 p-4 text-sm font-black text-white">Terms</Link>
+          <Link href="/privacy" className="rounded-2xl border border-white/10 bg-white/10 p-4 text-sm font-black text-white">Privacy</Link>
+          <Link href="/faq" className="rounded-2xl border border-white/10 bg-white/10 p-4 text-sm font-black text-white">FAQ</Link>
         </div>
       </div>
     </section>
