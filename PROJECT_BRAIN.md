@@ -1,6 +1,6 @@
 # Launch1stAd.ai Project Brain
 
-_Last updated: 2026-06-26_
+_Last updated: 2026-06-27_
 
 This file is the permanent working memory for the Launch1stAd.ai build. Keep it updated after every major change.
 
@@ -68,7 +68,9 @@ External setup still required: enable providers inside Supabase. Phone OTP needs
 - Campaign funding gate now checks cloud wallet status when signed in.
 - Campaign generation creates a review request.
 - Review requests submit through server route `/api/campaigns/submit-review`.
-- Review requests sync to Supabase.
+- Review submit route now writes to the schema-backed `launch_requests` table.
+- Review submit route has basic rate limiting.
+- Review status update endpoint exists at `/api/reviews/status`.
 - Launch requests page can read cloud review records.
 - User-side manual activation control was removed.
 
@@ -92,22 +94,24 @@ External setup still required: enable providers inside Supabase. Phone OTP needs
 - GitHub Actions build workflow exists.
 - Build workflow runs install and build on push or pull request.
 - Security headers middleware exists.
+- Basic in-memory API rate limit helper exists at `lib/server/rateLimit.ts`.
 
 ## Current Gaps
 
 ### P0: Must Fix Before Claiming Production Ready
 
-1. Redeploy latest code and test the live app.
-2. Payment order route needs clearer gateway error messages. Tool safety blocked this patch once, so retry carefully later.
-3. Payment flow must be live-tested end to end.
-4. Email, Google, Facebook, and phone login must be live-tested after Supabase provider setup.
-5. Provider OAuth still needs production token exchange and safe storage.
-6. Meta and Google connectors are skeletons; real provider campaign creation is not complete.
-7. Add provider/admin status update flow for review requests.
+1. Vercel build is currently failing; exact failed build log is required to fix the remaining deployment blocker.
+2. Payment order route needs clearer gateway error messages. Patch attempts were blocked by tool safety, so retry with direct logs/context later.
+3. Payment verification route rate-limit patch was blocked by tool safety; retry after build log review.
+4. Payment flow must be live-tested end to end.
+5. Email, Google, Facebook, and phone login must be live-tested after Supabase provider setup.
+6. Provider OAuth still needs production token exchange and safe storage.
+7. Meta and Google connectors are skeletons; real provider campaign creation is not complete.
+8. Privileged admin review queue API needs final server-key implementation; tool safety blocked the direct privileged route patch.
 
 ### P1: Production Hardening
 
-- Add API rate limiting.
+- Apply rate limiting to every money and AI route after build blocker is resolved.
 - Add error logging.
 - Add E2E tests for login, wallet, campaign, and review queue.
 - Keep public setup screens out of user navigation.
@@ -147,14 +151,15 @@ Run this after every redeploy:
 
 ## Immediate Next Coding Tasks
 
-1. Improve payment order error messages.
-2. Add API rate limiting.
-3. Add first smoke tests.
-4. Add admin/provider review status update flow.
-5. Add SEO/GEO/AEO pages.
-6. Finish provider token exchange after account approvals.
-7. Add provider launch worker when real API credentials are ready.
-8. Add monitoring and alerts after first live user tests.
+1. Fix the Vercel build failure using exact build logs.
+2. Improve payment order route error messages.
+3. Add full rate limiting to AI and payment routes.
+4. Add privileged admin review queue API.
+5. Add first smoke tests.
+6. Add SEO/GEO/AEO pages.
+7. Finish provider token exchange after account approvals.
+8. Add provider launch worker when real API credentials are ready.
+9. Add monitoring and alerts after first live user tests.
 
 ## Working Standard
 
