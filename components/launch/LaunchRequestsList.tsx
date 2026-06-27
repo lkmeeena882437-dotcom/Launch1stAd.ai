@@ -6,6 +6,9 @@ import { getAuthSession } from "@/lib/auth/session";
 import { launchRequestsKey, type LaunchRequest } from "@/lib/launchRequests";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 
+const reviewStatuses = ["under_review", "approved", "rejected", "paused"] as const;
+type ReviewStatus = typeof reviewStatuses[number];
+
 function readRequests() {
   try {
     const raw = window.localStorage.getItem(launchRequestsKey);
@@ -20,7 +23,7 @@ async function loadCloudRequests() {
   const session = getAuthSession();
   if (!url || !anonKey || !session?.accessToken) return [];
 
-  const response = await fetch(`${url}/rest/v1/campaign_launches?select=*&order=created_at.desc`, {
+  const response = await fetch(`${url}/rest/v1/launch_requests?select=*&order=created_at.desc`, {
     headers: {
       apikey: anonKey,
       Authorization: `Bearer ${session.accessToken}`
@@ -34,30 +37,24 @@ async function loadCloudRequests() {
     campaignId: row.campaign_id,
     provider: row.provider || "selected",
     status: row.status || "under_review",
-    payload: row.payload || { input: { promotionType: row.destination || "Campaign" }, output: {} },
+    payload: row.payload || { input: { promotionType: "Campaign" }, output: {} },
     createdAt: row.created_at,
-    reviewWindow: row.review_window || "2–24 hours"
+    reviewWindow: "2–24 hours"
   })) as LaunchRequest[];
-}
-
-function estimatedMetrics(index: number) {
-  return {
-    views: 1200 + index * 340,
-    clicks: 75 + index * 18,
-    leads: 12 + index * 4
-  };
 }
 
 export function LaunchRequestsList() {
   const [items, setItems] = useState<LaunchRequest[]>([]);
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    setItems(readRequests());
-    loadCloudRequests().then((cloudItems) => {
-      if (cloudItems.length > 0) setItems(cloudItems);
-    });
-  }, []);
+  async function refresh() {
+    const local = readRequests();
+    setItems(local);
+    const cloudItems = await loadCloudRequests();
+    if (cloudItems.length > 0) setItems(cloudItems);
+  }
+
+  useEffect(() => { refresh(); }, []);
 
   function clearLocal() {
     window.localStorage.removeItem(launchRequestsKey);
@@ -65,74 +62,100 @@ export function LaunchRequestsList() {
     setMessage("Local review list cleared. Cloud records stay in your workspace.");
   }
 
+  async function updateStatus(item: LaunchRequest, status: ReviewStatus) {
+    const session = getAuthSession();
+    if (!session?.accessToken) {
+      setMessage("Sign in before updating review status.");
+      return;
+    }
+
+    setMessage("Updating review status...");
+    const response = await fetch("/api/reviews/status", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.accessToken}`
+      },
+      body: JSON.stringify({ id: item.id, status })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (response.ok && data?.ok) {
+      setItems((current) => current.map((record) => record.id === item.id ? { ...record, status } : record));
+      setMessage(`Review marked as ${status.replace("_", " ")}.`);
+    } else {
+      setMessage(data?.message || "Review status could not be updated.");
+    }
+  }
+
   async function sendToProvider(item: LaunchRequest) {
-    setMessage("Sending campaign to configured provider connector.");
+    if (item.status !== "approved") {
+      setMessage("Approve the campaign before sending it to a provider connector.");
+      return;
+    }
+
+    setMessage("Sending approved campaign to configured provider connector.");
     await fetch("/api/platform-action", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ provider: item.provider, requestId: item.id, payload: item.payload })
     }).catch(() => undefined);
-    setMessage("Provider request sent. Review window remains 2–24 hours.");
+    setMessage("Provider request sent. Delivery depends on provider setup and account approval.");
   }
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-8 md:px-5 md:py-10">
-      <div className="rounded-3xl bg-card p-5 md:p-10">
+      <div className="neon-shell rounded-[2rem] p-5 md:p-10">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-coral">Launch requests</p>
-            <h1 className="mt-3 text-4xl font-black tracking-tight text-ink md:text-6xl">Review, approve and track campaigns.</h1>
-            <p className="mt-4 max-w-3xl leading-7 text-muted">Submitted campaigns enter a 2–24 hour review window before active delivery and destination tracking.</p>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-[#22e6a8]">Review manager</p>
+            <h1 className="mt-3 text-4xl font-black tracking-tight text-white md:text-6xl">Review, approve and track campaigns.</h1>
+            <p className="mt-4 max-w-3xl leading-7 text-white/60">Submitted campaigns enter review before provider delivery. Approve only campaigns with correct offer, budget, destination and policy-safe copy.</p>
           </div>
-          {items.length > 0 && <button onClick={clearLocal} className="rounded-xl border border-hairline px-4 py-3 text-sm font-bold">Clear local</button>}
+          <div className="flex flex-wrap gap-2">
+            <button onClick={refresh} className="rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-sm font-black text-white">Refresh</button>
+            {items.length > 0 && <button onClick={clearLocal} className="rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-sm font-black text-white">Clear local</button>}
+          </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white p-4 text-sm">
-          <p className="font-semibold text-muted">Fund wallet and reserve ad spend before provider delivery.</p>
-          <Link href="/wallet" className="rounded-xl bg-coral px-4 py-3 font-bold text-white">Add ad funds</Link>
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/10 p-4 text-sm text-white/70">
+          <p className="font-semibold">Verified wallet funding is required before campaign review.</p>
+          <Link href="/wallet" className="rounded-xl bg-white px-4 py-3 font-black text-black">Add ad funds</Link>
         </div>
 
-        {message && <div className="mt-6 rounded-2xl bg-canvas p-4 text-sm font-semibold text-coral">{message}</div>}
+        {message && <div className="mt-6 rounded-2xl border border-white/10 bg-white/10 p-4 text-sm font-bold text-[#fda4af]">{message}</div>}
 
         {items.length === 0 ? (
-          <div className="mt-8 rounded-2xl bg-canvas p-6 text-muted">
+          <div className="mt-8 rounded-2xl border border-white/10 bg-black/25 p-6 text-white/60">
             No launch requests yet. Create a funded campaign to submit it for review.
           </div>
         ) : (
           <div className="mt-8 grid gap-4">
-            {items.map((item, index) => {
-              const metrics = estimatedMetrics(index);
-              return (
-              <div key={item.id} className="rounded-2xl bg-canvas p-4 md:p-5">
+            {items.map((item) => (
+              <div key={item.id} className="rounded-3xl border border-white/10 bg-black/25 p-4 text-white md:p-5">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
-                    <h2 className="text-xl font-semibold">Campaign request</h2>
-                    <p className="mt-1 text-sm text-muted">Campaign ID: {item.campaignId}</p>
+                    <h2 className="text-xl font-black">Campaign request</h2>
+                    <p className="mt-1 text-sm text-white/55">Campaign ID: {item.campaignId}</p>
                   </div>
-                  <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-muted">{item.status.replace("_", " ")}</span>
+                  <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-black text-white/70">{item.status.replace("_", " ")}</span>
                 </div>
                 <div className="mt-4 grid gap-3 text-sm md:grid-cols-4">
-                  <div className="rounded-xl bg-card px-4 py-3">Provider: {item.provider}</div>
-                  <div className="rounded-xl bg-card px-4 py-3">Created: {new Date(item.createdAt).toLocaleString()}</div>
-                  <div className="rounded-xl bg-card px-4 py-3">Review: {item.reviewWindow || "2–24 hours"}</div>
-                  <div className="rounded-xl bg-card px-4 py-3">Destination: {item.payload.input.promotionType}</div>
+                  <div className="rounded-xl bg-white/10 px-4 py-3">Provider: {item.provider}</div>
+                  <div className="rounded-xl bg-white/10 px-4 py-3">Created: {new Date(item.createdAt).toLocaleString()}</div>
+                  <div className="rounded-xl bg-white/10 px-4 py-3">Review: {item.reviewWindow || "2–24 hours"}</div>
+                  <div className="rounded-xl bg-white/10 px-4 py-3">Destination: {item.payload.input.promotionType}</div>
                 </div>
-
-                {item.status === "active" && (
-                  <div className="mt-4 grid gap-3 text-sm md:grid-cols-3">
-                    <div className="rounded-xl bg-white px-4 py-3"><strong>{metrics.views.toLocaleString()}</strong><span className="ml-2 text-muted">views</span></div>
-                    <div className="rounded-xl bg-white px-4 py-3"><strong>{metrics.clicks.toLocaleString()}</strong><span className="ml-2 text-muted">clicks</span></div>
-                    <div className="rounded-xl bg-white px-4 py-3"><strong>{metrics.leads.toLocaleString()}</strong><span className="ml-2 text-muted">leads / members</span></div>
-                  </div>
-                )}
 
                 <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:flex lg:flex-wrap">
-                  <button onClick={() => sendToProvider(item)} className="rounded-xl bg-dark px-4 py-3 text-sm font-bold text-canvas">Send to provider</button>
-                  <Link href={`/campaigns?id=${item.campaignId}`} className="rounded-xl border border-hairline px-4 py-3 text-sm font-bold">Open report</Link>
-                  <Link href="/wallet" className="rounded-xl border border-hairline px-4 py-3 text-sm font-bold">Wallet</Link>
+                  <button onClick={() => updateStatus(item, "approved")} className="rounded-xl bg-[#22e6a8] px-4 py-3 text-sm font-black text-black">Approve</button>
+                  <button onClick={() => updateStatus(item, "rejected")} className="rounded-xl bg-[#ff5d8f] px-4 py-3 text-sm font-black text-white">Reject</button>
+                  <button onClick={() => updateStatus(item, "paused")} className="rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-sm font-black text-white">Pause</button>
+                  <button onClick={() => sendToProvider(item)} className="rounded-xl border border-white/15 bg-white px-4 py-3 text-sm font-black text-black">Send to provider</button>
+                  <Link href={`/campaigns?id=${item.campaignId}`} className="rounded-xl border border-white/15 px-4 py-3 text-sm font-black text-white">Open report</Link>
+                  <Link href="/wallet" className="rounded-xl border border-white/15 px-4 py-3 text-sm font-black text-white">Wallet</Link>
                 </div>
               </div>
-            );})}
+            ))}
           </div>
         )}
       </div>
