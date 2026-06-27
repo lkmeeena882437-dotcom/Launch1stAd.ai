@@ -1,9 +1,14 @@
+function encodeBasicAuth(keyId: string, keySecret: string) {
+  if (typeof btoa === "function") return btoa(`${keyId}:${keySecret}`);
+  return globalThis.Buffer.from(`${keyId}:${keySecret}`).toString("base64");
+}
+
 export async function confirmRazorpayPayment(paymentId: string, orderId: string, amountInr: number) {
   const keyId = process.env.RAZORPAY_KEY_ID;
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
   if (!keyId || !keySecret) return { ok: false, message: "Payment provider is not configured." };
 
-  const auth = Buffer.from(`${keyId}:${keySecret}`).toString("base64");
+  const auth = encodeBasicAuth(keyId, keySecret);
   const response = await fetch(`https://api.razorpay.com/v1/payments/${paymentId}`, {
     headers: { Authorization: `Basic ${auth}` },
     cache: "no-store"
