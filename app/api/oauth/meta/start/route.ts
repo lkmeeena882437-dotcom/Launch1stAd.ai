@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
 
+function appBaseUrl(request: Request) {
+  const raw = (process.env.NEXT_PUBLIC_APP_URL || new URL(request.url).origin).trim().replace(/\/+$/, "");
+  return /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+}
+
 export async function GET(request: Request) {
   const appId = process.env.META_APP_ID;
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || new URL(request.url).origin;
+  const baseUrl = appBaseUrl(request);
   if (!appId) {
     return NextResponse.redirect(`${baseUrl}/connections?provider=meta&status=error`);
   }
