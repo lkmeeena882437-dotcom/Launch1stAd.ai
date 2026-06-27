@@ -1,6 +1,5 @@
 function encodeBasicAuth(keyId: string, keySecret: string) {
-  if (typeof btoa === "function") return btoa(`${keyId}:${keySecret}`);
-  return globalThis.Buffer.from(`${keyId}:${keySecret}`).toString("base64");
+  return btoa(`${keyId}:${keySecret}`);
 }
 
 export async function confirmRazorpayPayment(paymentId: string, orderId: string, amountInr: number) {
