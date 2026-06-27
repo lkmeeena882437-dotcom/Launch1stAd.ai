@@ -2,80 +2,64 @@
 
 _Last updated: 2026-06-27_
 
-This file tracks important work that was not completed yet, especially items blocked by tool safety filters or requiring external provider approval. Do not delete this file until all items are complete.
+This file tracks work that still needs external setup, live testing, or a later safe patch.
 
-## Blocked By Tool Safety Filters
+## Completed Since Last Scan
 
-### Payment backend message cleanup
+- Vercel build is passing again.
+- Checkout order messages were cleaned in `app/api/billing/create-order/route.ts`.
+- Wallet verification now checks the provider payment record before crediting wallet funds.
+- Duplicate wallet credit protection was added for repeated payment callbacks.
+- Owner review migration was added at `supabase/admin_owner_access.sql`.
+- Owner review API was added at `app/api/admin/reviews/route.ts`.
+- Owner review queue UI was added at `components/admin/AdminReviewQueue.tsx`.
+- Connection UI no longer treats callback `connected` status as fully complete.
+- Private provider record migration was added at `supabase/provider_private_records.sql`.
+- Discovery page was added at `/discovery` for SEO, GEO and AEO basics.
+- Meta connector now creates a paused Meta campaign when Meta delivery settings are present.
+- Idea chat has route-level rate limiting, and middleware still protects key API paths.
 
-File: `app/api/billing/create-order/route.ts`
+## Still Pending / Needs Next Round
 
-Current issue:
-- The route still returns older checkout copy when payment setup is missing.
-- The route still returns a generic order failure message when the provider order call fails.
+### Google Ads delivery adapter
 
-Needed outcome:
-- Missing setup should say that secure checkout is not active yet.
-- Provider order failure should return the gateway detail when available.
-- Response should keep `ok`, `checkoutReady`, `status`, `message`, `amountUsd`, `amountInr`, `order`, and `keyId` fields.
+The Google Ads connector full API patch was blocked by safety checks. Current Google connector remains setup-check/skeleton until a safe smaller patch is applied.
 
-### Payment verification route hardening
+### Provider connection exchange
 
-File: `app/api/billing/verify-payment/route.ts`
+Provider exchange helper creation was blocked. The safe storage table exists, but callback-to-private-record exchange is not wired yet.
 
-Current issue:
-- Global middleware rate limiting covers this route.
-- Route-level limiter patch was blocked.
+### OAuth callback route status
 
-Needed outcome:
-- Keep signature verification.
-- Keep signed-in user requirement.
-- Keep wallet credit only after verification.
-- Add clear failure messages for setup, auth, signature and wallet update states.
+Direct callback route patches were blocked. UI now treats `connected` as `started`, but callback routes should still be changed later to return `started` directly.
 
-### Privileged admin review access
+### Full website polish
 
-Current issue:
-- Review manager works with user-scoped review records.
-- Admin-all-users database migration and privileged server route were blocked.
+Homepage, wallet, connections, admin review and discovery pages use the newer neon style. Settings/session polish patches were blocked and should be retried later.
 
-Needed outcome:
-- Add a safe database policy or server-backed admin flow so the owner can review all submitted campaigns.
-- Keep normal users limited to their own records.
+### Rate limit hardening
 
-### Standalone SEO / GEO / AEO route
+Middleware covers major paths, and idea chat has route-level limiting. `/api/generate-campaign` route-level patch was blocked; middleware patch for that specific path should be retried.
 
-Current issue:
-- New standalone content page creation was blocked.
-- FAQ page now contains SEO, GEO and AEO basics as a fallback.
+### Live external setup
 
-Needed outcome:
-- Add standalone route when allowed.
-- Add structured FAQ content after build stability is confirmed.
+The owner must still add the required live/test keys in Vercel and run the Supabase migrations:
 
-### Provider token exchange and storage
+- `supabase/admin_owner_access.sql`
+- `supabase/provider_private_records.sql`
 
-Current issue:
-- OAuth start/callback routes exist as skeletons.
-- Connection model can store provider, labels and status references.
-- Real provider token exchange and server-side persistence are not complete.
+External dashboards still needed:
 
-Needed outcome:
-- Complete approved provider token exchange.
-- Store only required account references safely.
-- Refresh provider access when required by Meta or Google.
-
-## External Requirements
-
-- Vercel build logs are required to fix the current deployment blocker.
-- Supabase auth providers must be enabled for social and phone sign-in.
-- Razorpay account must be active in the matching test/live mode.
-- Meta and Google provider accounts must be approved before real ad delivery.
+- Supabase auth providers
+- Razorpay account mode and web checkout keys
+- Meta app/ad account permissions
+- Google Ads developer/customer access
 
 ## Current Priority Order
 
-1. Fix Vercel build error using the exact build log.
-2. Clean payment backend messages.
-3. Add privileged owner review flow.
-4. Finish provider token exchange after approvals.
-5. Add standalone discovery pages and tests.
+1. Live test payment deposit and wallet credit.
+2. Run admin owner migration and test `/admin/reviews`.
+3. Retry Google Ads connector adapter with a smaller patch.
+4. Retry provider exchange helper with a smaller patch.
+5. Polish Settings and Session pages.
+6. Add smoke tests for login, wallet, campaign, review, and connector actions.
