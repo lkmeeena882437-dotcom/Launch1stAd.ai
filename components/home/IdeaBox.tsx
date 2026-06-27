@@ -36,7 +36,7 @@ export function IdeaBox() {
           <div>
             <p className="text-xs font-black uppercase tracking-[0.2em] text-[#c084fc]">AI campaign assistant</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight text-white md:text-5xl">Ask less. Launch clearer.</h2>
-            <p className="mt-3 max-w-xl text-sm leading-6 text-white/62">A compact planner for strategy, targeting, hooks and follow-up ideas. Keep it focused; build the full campaign in the workspace.</p>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-white/60">A compact planner for strategy, targeting, hooks and follow-up ideas. Keep it focused; build the full campaign in the workspace.</p>
           </div>
 
           <div className="rounded-3xl border border-white/10 bg-black/25 p-3 md:p-4">
