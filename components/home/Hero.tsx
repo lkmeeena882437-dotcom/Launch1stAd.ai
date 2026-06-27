@@ -14,7 +14,7 @@ export function Hero() {
         <h1 className="serif-display mt-6 max-w-4xl text-5xl leading-[0.94] text-white md:text-7xl">
           Launch sharper ads with <span className="neon-text">AI, wallet control and review flow.</span>
         </h1>
-        <p className="mt-6 max-w-2xl text-base leading-8 text-white/68 md:text-lg">Build campaign briefs, prepare audience targeting, connect approved ad accounts, fund verified spend and move every campaign into a clean review workflow.</p>
+        <p className="mt-6 max-w-2xl text-base leading-8 text-white/70 md:text-lg">Build campaign briefs, prepare audience targeting, connect approved ad accounts, fund verified spend and move every campaign into a clean review workflow.</p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link href="/campaign" className="rounded-2xl px-6 py-4 text-sm font-black text-white neon-button">Create campaign</Link>
           <Link href="/wallet" className="rounded-2xl border border-white/15 bg-white/10 px-6 py-4 text-sm font-black text-white backdrop-blur">Add ad funds</Link>
@@ -22,15 +22,15 @@ export function Hero() {
         </div>
         <div className="mt-8 grid gap-3 sm:grid-cols-3">
           {stats.map(([title, text]) => (
-            <div key={title} className="rounded-2xl border border-white/10 bg-white/7 p-4">
+            <div key={title} className="rounded-2xl border border-white/10 bg-white/10 p-4">
               <h3 className="text-sm font-black text-white">{title}</h3>
-              <p className="mt-2 text-xs leading-5 text-white/58">{text}</p>
+              <p className="mt-2 text-xs leading-5 text-white/60">{text}</p>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="rounded-[2rem] border border-white/15 bg-white/8 p-5 backdrop-blur-2xl neon-ring md:p-7">
+      <div className="rounded-[2rem] border border-white/15 bg-white/10 p-5 backdrop-blur-2xl neon-ring md:p-7">
         <p className="text-xs font-black uppercase tracking-[0.18em] text-[#22e6a8]">Workspace preview</p>
         <h2 className="mt-3 text-3xl font-black text-white">From idea to review in one flow.</h2>
         <div className="mt-6 grid gap-3">
@@ -40,9 +40,9 @@ export function Hero() {
             ["03", "Campaign generated"],
             ["04", "Review request saved"]
           ].map(([step, label]) => (
-            <div key={step} className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/7 p-4">
+            <div key={step} className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/10 p-4">
               <span className="grid h-11 w-11 place-items-center rounded-2xl bg-[#2dd4ff]/15 text-sm font-black text-[#7dd3fc]">{step}</span>
-              <span className="text-sm font-bold text-white/82">{label}</span>
+              <span className="text-sm font-bold text-white/80">{label}</span>
             </div>
           ))}
         </div>
