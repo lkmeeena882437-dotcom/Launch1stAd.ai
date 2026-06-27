@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { checkRateLimit, rateLimitResponse } from "@/lib/server/rateLimit";
 
 async function getUser(accessToken: string) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -16,6 +17,9 @@ async function getUser(accessToken: string) {
 }
 
 export async function POST(request: Request) {
+  const limit = checkRateLimit(request, { key: "submit-review", limit: 10, windowMs: 60_000 });
+  if (!limit.ok) return rateLimitResponse(limit);
+
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const authHeader = request.headers.get("authorization") || "";
@@ -38,7 +42,7 @@ export async function POST(request: Request) {
   const provider = body.provider || "selected";
   const payload = body.payload || { input: body.input || {}, output: body.output || {} };
 
-  const response = await fetch(`${url}/rest/v1/campaign_launches`, {
+  const response = await fetch(`${url}/rest/v1/launch_requests`, {
     method: "POST",
     headers: {
       apikey: anonKey,
@@ -51,8 +55,6 @@ export async function POST(request: Request) {
       campaign_id: campaignId,
       provider,
       status: "under_review",
-      review_window: "2-24 hours",
-      destination: payload?.input?.promotionType || "Campaign",
       payload
     })
   });
