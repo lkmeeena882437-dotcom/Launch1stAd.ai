@@ -19,8 +19,8 @@ export function AppHub() {
   const line = " Meta Ads • Instagram Reels • Facebook Feed • Google Search • YouTube • WhatsApp Leads • Website Traffic ";
   return (
     <section id="payments" className="mx-auto max-w-7xl px-4 py-10 md:px-5 md:py-14">
-      <div className="overflow-hidden rounded-[2rem] border border-white/12 bg-white/8 py-3 text-white backdrop-blur-xl">
-        <div className="marquee-track gap-8 text-sm font-black uppercase tracking-[0.16em] text-white/72">
+      <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 py-3 text-white backdrop-blur-xl">
+        <div className="marquee-track gap-8 text-sm font-black uppercase tracking-[0.16em] text-white/70">
           <span>{line}</span><span>{line}</span><span>{line}</span><span>{line}</span>
         </div>
       </div>
@@ -31,10 +31,10 @@ export function AppHub() {
           <h2 className="mt-3 text-3xl font-black tracking-tight text-white md:text-5xl">Launch across high-intent channels.</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {channels.map(([title, text, color]) => (
-              <div key={title} className="rounded-3xl border border-white/10 bg-black/24 p-5">
+              <div key={title} className="rounded-3xl border border-white/10 bg-black/25 p-5">
                 <div style={{ background: color }} className="grid h-12 w-12 place-items-center rounded-2xl text-sm font-black text-black">{title.slice(0, 1)}</div>
                 <h3 className="mt-4 text-xl font-black text-white">{title}</h3>
-                <p className="mt-2 text-sm text-white/58">{text}</p>
+                <p className="mt-2 text-sm text-white/60">{text}</p>
               </div>
             ))}
           </div>
@@ -45,8 +45,8 @@ export function AppHub() {
           <h2 className="mt-3 text-3xl font-black tracking-tight text-white md:text-5xl">Deposit, verify and launch with control.</h2>
           <div className="mt-6 grid gap-3">
             {[["Deposit", "Razorpay checkout and verified wallet credits"], ["Review", "Campaign generated only after funding"], ["Track", "Requests and records stay in workspace"]].map(([name, text]) => (
-              <Link key={name} href="/wallet" className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-black/24 p-4">
-                <div><h3 className="font-black text-white">{name}</h3><p className="text-sm text-white/58">{text}</p></div>
+              <Link key={name} href="/wallet" className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-black/25 p-4">
+                <div><h3 className="font-black text-white">{name}</h3><p className="text-sm text-white/60">{text}</p></div>
                 <span className="rounded-xl bg-white px-4 py-2 text-sm font-black text-black">Open</span>
               </Link>
             ))}
@@ -63,10 +63,10 @@ export function AppHub() {
       </div>
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {modules.map((item) => (
-          <Link key={item.title} href={item.href} className="group rounded-3xl border border-white/12 bg-white/8 p-5 shadow-soft backdrop-blur-xl transition hover:-translate-y-1 hover:bg-white/12">
+          <Link key={item.title} href={item.href} className="group rounded-3xl border border-white/10 bg-white/10 p-5 shadow-soft backdrop-blur-xl transition hover:-translate-y-1 hover:bg-white/15">
             <div className={`grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br ${item.glow} text-sm font-black text-white shadow-lg`}>{item.badge}</div>
             <h3 className="mt-5 text-xl font-black text-white">{item.title}</h3>
-            <p className="mt-2 text-sm leading-6 text-white/58">{item.text}</p>
+            <p className="mt-2 text-sm leading-6 text-white/60">{item.text}</p>
           </Link>
         ))}
       </div>
