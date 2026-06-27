@@ -1,9 +1,15 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { saveAuthSession } from "@/lib/auth/session";
 import { sendMagicLink } from "@/lib/auth/magicLink";
 import { getSupabaseConfig } from "@/lib/supabase/config";
+
+function appBaseUrl() {
+  const raw = (process.env.NEXT_PUBLIC_APP_URL || window.location.origin).trim().replace(/\/+$/, "");
+  return /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+}
 
 export function SignInBox() {
   const [email, setEmail] = useState("");
@@ -75,8 +81,7 @@ export function SignInBox() {
       setNote("Social login is not configured.");
       return;
     }
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
-    const redirectTo = `${appUrl.replace(/\/+$/, "")}/session`;
+    const redirectTo = `${appBaseUrl()}/session`;
     window.location.href = `${url}/auth/v1/authorize?provider=${provider}&redirect_to=${encodeURIComponent(redirectTo)}`;
   }
 
@@ -110,7 +115,9 @@ export function SignInBox() {
         </div>
       </form>
 
-      <div className="mt-4 rounded-2xl border border-white/10 bg-white/10 p-4 text-xs leading-6 text-white/60">After sign-in, connect Meta or Google accounts from Settings and manage campaigns from the dashboard.</div>
+      <div className="mt-4 rounded-2xl border border-white/10 bg-white/10 p-4 text-xs leading-6 text-white/60">
+        By continuing, you agree to the <Link href="/terms" className="font-black text-white">Terms</Link> and <Link href="/privacy" className="font-black text-white">Privacy Policy</Link>. After sign-in, continue from the dashboard.
+      </div>
       {note && <p className="mt-4 rounded-2xl bg-white/10 px-4 py-3 text-sm font-bold text-[#fda4af]">{note}</p>}
     </div>
   );
