@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Brand } from "@/components/Brand";
-import { LaunchRequestsList } from "@/components/launch/LaunchRequestsList";
+import { AdminReviewQueue } from "@/components/admin/AdminReviewQueue";
 
 export default function AdminReviewsPage() {
   return (
@@ -16,12 +16,12 @@ export default function AdminReviewsPage() {
       </header>
       <section className="mx-auto max-w-6xl px-4 pt-8 md:px-5">
         <div className="rounded-3xl border border-white/10 bg-white/10 p-5 text-white backdrop-blur-xl">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[#7dd3fc]">Admin workspace</p>
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[#7dd3fc]">Review workspace</p>
           <h1 className="mt-3 text-4xl font-black tracking-tight md:text-6xl">Campaign review operations.</h1>
           <p className="mt-4 max-w-3xl leading-7 text-white/60">Review submitted campaigns, approve policy-safe work, reject weak requests and send only approved campaigns to provider connectors.</p>
         </div>
       </section>
-      <LaunchRequestsList />
+      <AdminReviewQueue />
     </main>
   );
 }
