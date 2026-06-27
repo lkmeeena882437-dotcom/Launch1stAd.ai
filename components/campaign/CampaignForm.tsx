@@ -54,28 +54,28 @@ export function CampaignForm({ form, update, onSubmit }: {
   }
 
   return (
-    <section className="rounded-3xl border border-white/10 bg-white/8 p-5 text-white backdrop-blur-xl md:p-8">
+    <section className="rounded-3xl border border-white/10 bg-white/10 p-5 text-white backdrop-blur-xl md:p-8">
       <p className="text-xs font-black uppercase tracking-[0.2em] text-[#7dd3fc]">Campaign setup</p>
       <h1 className="mt-3 text-4xl font-black tracking-tight md:text-5xl">Build a launch-ready campaign.</h1>
-      <p className="mt-4 leading-7 text-white/62">Add business details, destination, audience, budget and billing model.</p>
+      <p className="mt-4 leading-7 text-white/60">Add business details, destination, audience, budget and billing model.</p>
       <div className="mt-5 grid grid-cols-2 gap-2 text-center text-xs font-black sm:grid-cols-4">
         {steps.map((label, index) => (
-          <button key={label} type="button" onClick={() => setStep(index + 1)} className={step === index + 1 ? "rounded-full bg-[#2dd4ff] px-3 py-2 text-black" : "rounded-full bg-white/10 px-3 py-2 text-white/68"}>{label}</button>
+          <button key={label} type="button" onClick={() => setStep(index + 1)} className={step === index + 1 ? "rounded-full bg-[#2dd4ff] px-3 py-2 text-black" : "rounded-full bg-white/10 px-3 py-2 text-white/70"}>{label}</button>
         ))}
       </div>
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-black/22 px-4 py-3 text-sm font-bold text-[#fda4af]">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-black/25 px-4 py-3 text-sm font-bold text-[#fda4af]">
         <span>Wallet funding: {walletReady ? "Ready" : "Required before review"}</span>
         <button type="button" onClick={checkWallet} className="rounded-xl bg-white px-3 py-2 text-xs font-black text-black">Refresh</button>
-        <span className="w-full text-xs text-white/58">{walletStatus}</span>
+        <span className="w-full text-xs text-white/60">{walletStatus}</span>
       </div>
       <form onSubmit={submit} className="mt-8 space-y-5">
         {step === 1 && <BusinessFields form={form} update={update} />}
         {step === 2 && <PromotionFields form={form} update={update} />}
         {step === 3 && <TargetFields form={form} update={update} />}
         {step === 4 && (
-          <div className="rounded-2xl border border-white/10 bg-black/22 p-5">
+          <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
             <h2 className="text-xl font-black">Ready for review</h2>
-            <p className="mt-2 text-sm leading-6 text-white/62">A review request is created only after verified wallet funding.</p>
+            <p className="mt-2 text-sm leading-6 text-white/60">A review request is created only after verified wallet funding.</p>
             <div className="mt-4 grid gap-3 text-sm md:grid-cols-2">
               <p><span className="font-black">Business:</span> {form.businessName || "Not added"}</p>
               <p><span className="font-black">Destination:</span> {form.promotionType}</p>
