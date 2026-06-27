@@ -9,6 +9,30 @@ import { getSupabaseConfig } from "@/lib/supabase/config";
 const reviewStatuses = ["under_review", "approved", "rejected", "paused"] as const;
 type ReviewStatus = typeof reviewStatuses[number];
 
+const fallbackPayload: LaunchRequest["payload"] = {
+  input: {
+    businessName: "Campaign",
+    category: "General",
+    product: "Campaign offer",
+    priceRange: "",
+    location: "India",
+    budget: "₹500/day",
+    goal: "Leads",
+    language: "Hinglish",
+    promotionType: "Campaign",
+    promotionLink: "",
+    targetPlatforms: ["Instagram", "Facebook"],
+    audienceType: "Interested buyers",
+    ageRange: "18-45",
+    gender: "All",
+    interests: "",
+    currency: "INR",
+    totalBudget: "₹3500/week",
+    paymentModel: "Auto"
+  },
+  output: {}
+};
+
 type CloudLaunchRow = {
   id?: string;
   campaign_id?: string;
@@ -33,7 +57,7 @@ function normalizeLaunchRequest(row: CloudLaunchRow): LaunchRequest {
     campaignId: row.campaign_id || "campaign",
     provider: row.provider || "selected",
     status: row.status || "under_review",
-    payload: row.payload || { input: { promotionType: "Campaign" } as LaunchRequest["payload"]["input"], output: {} },
+    payload: row.payload || fallbackPayload,
     createdAt: row.created_at || new Date().toISOString(),
     reviewWindow: "2–24 hours"
   };
