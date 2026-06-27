@@ -17,13 +17,13 @@ export default function LoginPage() {
         <div className="neon-shell rounded-[2rem] p-6 md:p-10">
           <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7dd3fc]">Secure access</p>
           <h1 className="mt-4 text-5xl font-black leading-[0.95] tracking-tight text-white md:text-7xl">Access your advertising workspace.</h1>
-          <p className="mt-5 max-w-2xl text-base leading-8 text-white/64">Sign in to manage wallet funds, campaign reviews, provider connections, client records and launch reports from one protected workspace.</p>
+          <p className="mt-5 max-w-2xl text-base leading-8 text-white/60">Sign in to manage wallet funds, campaign reviews, provider connections, client records and launch reports from one protected workspace.</p>
           <div className="mt-7 grid gap-3">
             {trustItems.map((item) => (
-              <div key={item} className="rounded-2xl border border-white/10 bg-white/7 px-4 py-3 text-sm font-bold text-white/78">✓ {item}</div>
+              <div key={item} className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm font-bold text-white/80">✓ {item}</div>
             ))}
           </div>
-          <div className="mt-7 flex flex-wrap gap-3 text-xs font-bold text-white/58">
+          <div className="mt-7 flex flex-wrap gap-3 text-xs font-bold text-white/60">
             <Link href="/privacy" className="rounded-full border border-white/10 px-4 py-2">Privacy Policy</Link>
             <Link href="/terms" className="rounded-full border border-white/10 px-4 py-2">Terms & Conditions</Link>
             <Link href="/faq" className="rounded-full border border-white/10 px-4 py-2">FAQ</Link>
