@@ -19,7 +19,7 @@ const fallbackPayload: LaunchRequest["payload"] = {
     budget: "₹500/day",
     goal: "Leads",
     language: "Hinglish",
-    promotionType: "Campaign",
+    promotionType: "WhatsApp",
     promotionLink: "",
     targetPlatforms: ["Instagram", "Facebook"],
     audienceType: "Interested buyers",
