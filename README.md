@@ -42,11 +42,16 @@ Create professional campaign packs with AI and manage the launch workflow in one
 - Cloud wallet funding gate in campaign form
 - AI campaign builder
 - Campaign review request route
-- Launch requests cloud read
+- Review manager page at `/admin/reviews`
+- Review approve, reject, pause and provider send controls
+- Launch requests cloud read from `launch_requests`
 - Provider connection page
+- Provider connection record model
 - Meta and Google connector skeletons
 - FAQ, Privacy, Terms, Settings
+- FAQ discovery content for SEO, GEO and AEO basics
 - Security headers middleware
+- Global API rate limiting middleware
 - GitHub Actions build check
 - Project memory in `PROJECT_BRAIN.md`
 
@@ -87,12 +92,27 @@ npm run build
 
 GitHub Actions also runs install and build on pushes and pull requests to main.
 
+## Pre-Deploy Diagnostics
+
+Before one final redeploy, check:
+
+1. Vercel project is connected to the correct repository and production branch.
+2. Vercel build command uses `npm run build`.
+3. The latest deployment source commit matches the latest GitHub commit.
+4. Supabase URL and anon key are present in the same Vercel project.
+5. Payment settings are present in the same Vercel project.
+6. Supabase redirect URLs include the live `/session` URL.
+7. Base database schema has been run.
+8. Login, wallet, campaign, review and provider flows are tested in that order.
+
+If a deployment fails, open Vercel build logs and copy the first red error block. Fix that exact line before changing more UI.
+
 ## Next Priorities
 
-- Live redeploy and end-to-end testing
-- Cleaner payment gateway error messages
-- API rate limiting
-- Provider token exchange and safe storage
+- Fix any remaining Vercel build error using exact build logs
+- Cleaner backend payment order messages when route patch is allowed
+- Privileged admin-all review access after database policy migration
+- Real Meta and Google token exchange after provider approval
 - Real Meta and Google campaign creation after approval
-- SEO, GEO, and AEO content pages
+- Standalone SEO, GEO and AEO landing pages
 - E2E smoke tests
