@@ -3,6 +3,8 @@ import { Suspense } from "react";
 import { Brand } from "@/components/Brand";
 import { ConnectionsPanel } from "@/components/connections/ConnectionsPanel";
 
+export const dynamic = "force-dynamic";
+
 export default function ConnectionsPage() {
   return (
     <main className="min-h-screen bg-transparent text-ink">
