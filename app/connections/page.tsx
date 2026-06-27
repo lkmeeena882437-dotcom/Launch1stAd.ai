@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { Brand } from "@/components/Brand";
 import { ConnectionsPanel } from "@/components/connections/ConnectionsPanel";
 
@@ -11,7 +12,9 @@ export default function ConnectionsPage() {
           <Link href="/dashboard" className="rounded-xl border border-white/15 bg-white/10 px-4 py-2 text-sm font-black text-white">Dashboard</Link>
         </div>
       </header>
-      <ConnectionsPanel />
+      <Suspense fallback={<div className="mx-auto max-w-6xl px-4 py-10 text-white">Loading connections...</div>}>
+        <ConnectionsPanel />
+      </Suspense>
     </main>
   );
 }
