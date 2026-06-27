@@ -3,11 +3,20 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getAuthSession } from "@/lib/auth/session";
-import { launchRequestsKey, type LaunchRequest } from "@/lib/launchRequests";
+import { launchRequestsKey, type LaunchRequest, type LaunchRequestStatus } from "@/lib/launchRequests";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 
 const reviewStatuses = ["under_review", "approved", "rejected", "paused"] as const;
 type ReviewStatus = typeof reviewStatuses[number];
+
+type CloudLaunchRow = {
+  id?: string;
+  campaign_id?: string;
+  provider?: string;
+  status?: LaunchRequestStatus;
+  payload?: LaunchRequest["payload"];
+  created_at?: string;
+};
 
 function readRequests() {
   try {
@@ -16,6 +25,18 @@ function readRequests() {
   } catch {
     return [];
   }
+}
+
+function normalizeLaunchRequest(row: CloudLaunchRow): LaunchRequest {
+  return {
+    id: row.id || crypto.randomUUID(),
+    campaignId: row.campaign_id || "campaign",
+    provider: row.provider || "selected",
+    status: row.status || "under_review",
+    payload: row.payload || { input: { promotionType: "Campaign" } as LaunchRequest["payload"]["input"], output: {} },
+    createdAt: row.created_at || new Date().toISOString(),
+    reviewWindow: "2–24 hours"
+  };
 }
 
 async function loadCloudRequests() {
@@ -31,16 +52,7 @@ async function loadCloudRequests() {
   });
   const rows = await response.json().catch(() => []);
   if (!response.ok || !Array.isArray(rows)) return [];
-
-  return rows.map((row) => ({
-    id: row.id,
-    campaignId: row.campaign_id,
-    provider: row.provider || "selected",
-    status: row.status || "under_review",
-    payload: row.payload || { input: { promotionType: "Campaign" }, output: {} },
-    createdAt: row.created_at,
-    reviewWindow: "2–24 hours"
-  })) as LaunchRequest[];
+  return rows.map((row) => normalizeLaunchRequest(row as CloudLaunchRow));
 }
 
 export function LaunchRequestsList() {
@@ -125,9 +137,7 @@ export function LaunchRequestsList() {
         {message && <div className="mt-6 rounded-2xl border border-white/10 bg-white/10 p-4 text-sm font-bold text-[#fda4af]">{message}</div>}
 
         {items.length === 0 ? (
-          <div className="mt-8 rounded-2xl border border-white/10 bg-black/25 p-6 text-white/60">
-            No launch requests yet. Create a funded campaign to submit it for review.
-          </div>
+          <div className="mt-8 rounded-2xl border border-white/10 bg-black/25 p-6 text-white/60">No launch requests yet. Create a funded campaign to submit it for review.</div>
         ) : (
           <div className="mt-8 grid gap-4">
             {items.map((item) => (
