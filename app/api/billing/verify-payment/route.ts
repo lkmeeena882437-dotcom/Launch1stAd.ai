@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { NextResponse } from "next/server";
+import { confirmRazorpayPayment } from "@/lib/server/paymentProvider";
 
 async function getUserId(accessToken: string) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -20,13 +21,19 @@ async function getUserId(accessToken: string) {
 async function creditWallet(accessToken: string, userId: string, amountInr: number, paymentId: string) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anonKey) return { ok: false, message: "Supabase configuration missing." };
+  if (!url || !anonKey) return { ok: false, message: "Wallet service is not configured." };
 
   const headers = {
     apikey: anonKey,
     Authorization: `Bearer ${accessToken}`,
     "Content-Type": "application/json"
   };
+
+  const existingTx = await fetch(`${url}/rest/v1/wallet_transactions?user_id=eq.${userId}&reference_id=eq.${encodeURIComponent(paymentId)}&select=id,amount_inr&limit=1`, { headers });
+  const existingRows = await existingTx.json().catch(() => []);
+  if (Array.isArray(existingRows) && existingRows[0]?.id) {
+    return { ok: true, message: "Payment was already credited." };
+  }
 
   const read = await fetch(`${url}/rest/v1/wallet_accounts?user_id=eq.${userId}&select=*`, { headers });
   const rows = await read.json().catch(() => []);
@@ -49,7 +56,7 @@ async function creditWallet(accessToken: string, userId: string, amountInr: numb
     if (!create.ok) return { ok: false, message: "Wallet account create failed." };
   }
 
-  await fetch(`${url}/rest/v1/wallet_transactions`, {
+  const tx = await fetch(`${url}/rest/v1/wallet_transactions`, {
     method: "POST",
     headers,
     body: JSON.stringify({
@@ -57,16 +64,16 @@ async function creditWallet(accessToken: string, userId: string, amountInr: numb
       transaction_type: "credit",
       amount_inr: amountInr,
       note: "Verified ad spend deposit",
-      reference_id: paymentId,
-      status: "completed"
+      reference_id: paymentId
     })
   });
 
+  if (!tx.ok) return { ok: false, message: "Wallet transaction record failed." };
   return { ok: true, message: "Wallet credited." };
 }
 
 export async function POST(request: Request) {
-  const body = (await request.json()) as {
+  const body = (await request.json().catch(() => ({}))) as {
     razorpay_order_id?: string;
     razorpay_payment_id?: string;
     razorpay_signature?: string;
@@ -75,13 +82,17 @@ export async function POST(request: Request) {
 
   const secret = process.env.RAZORPAY_KEY_SECRET;
   if (!secret) {
-    return NextResponse.json({ ok: false, status: "missing_setup", message: "Payment verification secret missing." }, { status: 202 });
+    return NextResponse.json({ ok: false, status: "missing_setup", message: "Payment verification is not configured." }, { status: 202 });
   }
 
   const orderId = body.razorpay_order_id || "";
   const paymentId = body.razorpay_payment_id || "";
   const signature = body.razorpay_signature || "";
   const amountInr = Number(body.amountInr || 0);
+
+  if (!orderId || !paymentId || !signature || !Number.isFinite(amountInr) || amountInr <= 0) {
+    return NextResponse.json({ ok: false, status: "invalid_request", message: "Payment verification details are incomplete." }, { status: 200 });
+  }
 
   const expected = crypto
     .createHmac("sha256", secret)
@@ -90,7 +101,12 @@ export async function POST(request: Request) {
 
   const verified = Boolean(signature && expected === signature);
   if (!verified) {
-    return NextResponse.json({ ok: false, status: "blocked", message: "Payment verification failed. Credits were not approved." }, { status: 200 });
+    return NextResponse.json({ ok: false, status: "blocked", message: "Payment signature verification failed." }, { status: 200 });
+  }
+
+  const providerCheck = await confirmRazorpayPayment(paymentId, orderId, amountInr);
+  if (!providerCheck.ok) {
+    return NextResponse.json({ ok: false, status: "provider_check_failed", message: providerCheck.message }, { status: 200 });
   }
 
   const authHeader = request.headers.get("authorization") || "";
@@ -112,7 +128,7 @@ export async function POST(request: Request) {
   return NextResponse.json({
     ok: true,
     status: "verified",
-    message: "Payment verified. Wallet credited.",
+    message: wallet.message,
     amountInr
   });
 }
