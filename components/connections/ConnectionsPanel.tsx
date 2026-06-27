@@ -14,15 +14,15 @@ export function ConnectionsPanel() {
     const provider = searchParams.get("provider");
     const status = searchParams.get("status");
     if ((provider === "meta" || provider === "google") && status === "connected") {
-      setConnections(saveConnectionStatus(provider, "connected", "Connected."));
+      setConnections(saveConnectionStatus(provider, "started", "Connection started. Account record storage is pending."));
       return;
     }
     if ((provider === "meta" || provider === "google") && status === "started") {
-      setConnections(saveConnectionStatus(provider, "started", "Connection started."));
+      setConnections(saveConnectionStatus(provider, "started", "Connection started. Complete account approval before delivery."));
       return;
     }
     if ((provider === "meta" || provider === "google") && status === "error") {
-      setConnections(saveConnectionStatus(provider, "error", "Connection failed."));
+      setConnections(saveConnectionStatus(provider, "error", "Connection could not be completed."));
       return;
     }
     setConnections(saved);
