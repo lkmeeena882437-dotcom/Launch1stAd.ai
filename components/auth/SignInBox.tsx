@@ -18,7 +18,7 @@ export function SignInBox() {
     setNote("");
     try {
       await sendMagicLink(email);
-      setNote("Secure sign-in link sent. Open it from your inbox to enter the dashboard.");
+      setNote("Sign-in link sent. Check your inbox and continue to the dashboard.");
     } catch (error) {
       setNote(error instanceof Error ? error.message : "Unable to send sign-in link.");
     }
@@ -60,9 +60,7 @@ export function SignInBox() {
         body: JSON.stringify({ phone, token: otp, type: "sms" })
       });
       const data = await response.json().catch(() => ({}));
-      if (!response.ok || !data?.access_token) {
-        throw new Error(data?.msg || data?.message || "OTP verification failed.");
-      }
+      if (!response.ok || !data?.access_token) throw new Error(data?.msg || data?.message || "OTP verification failed.");
       saveAuthSession({ accessToken: data.access_token, refreshToken: data.refresh_token, expiresAt: Date.now() + Number(data.expires_in || 3600) * 1000 });
       window.location.href = "/dashboard";
     } catch (error) {
@@ -74,7 +72,7 @@ export function SignInBox() {
   function social(provider: "google" | "facebook") {
     const { url, anonKey, isConfigured } = getSupabaseConfig();
     if (!isConfigured || !url || !anonKey) {
-      setNote("Supabase social login is not configured.");
+      setNote("Social login is not configured.");
       return;
     }
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
@@ -83,36 +81,37 @@ export function SignInBox() {
   }
 
   return (
-    <div className="mt-8 rounded-2xl bg-card p-5 md:p-8">
-      <div className="grid gap-3 sm:grid-cols-2">
-        <button type="button" onClick={() => social("google")} className="rounded-xl bg-white px-4 py-3 text-sm font-bold text-ink">Continue with Google</button>
-        <button type="button" onClick={() => social("facebook")} className="rounded-xl bg-white px-4 py-3 text-sm font-bold text-ink">Continue with Facebook</button>
+    <div className="neon-card rounded-[2rem] p-5 md:p-7">
+      <p className="text-xs font-black uppercase tracking-[0.18em] text-[#fda4af]">Choose sign-in method</p>
+      <h2 className="mt-2 text-2xl font-black text-white">Continue to workspace</h2>
+
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+        <button type="button" onClick={() => social("google")} className="rounded-2xl bg-white px-4 py-4 text-sm font-black text-slate-950">Continue with Google</button>
+        <button type="button" onClick={() => social("facebook")} className="rounded-2xl bg-[#1877f2] px-4 py-4 text-sm font-black text-white">Continue with Facebook</button>
       </div>
 
-      <form onSubmit={submitEmail} className="mt-5 rounded-2xl bg-white p-4">
+      <form onSubmit={submitEmail} className="mt-4 rounded-3xl border border-white/10 bg-black/25 p-4">
         <label className="block">
-          <span className="text-sm font-bold">Email address</span>
-          <input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} className="mt-2 w-full rounded-lg border border-hairline bg-canvas px-4 py-3 outline-coral" placeholder="you@company.com" />
+          <span className="text-sm font-black text-white">Email link</span>
+          <input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} className="mt-3 w-full rounded-2xl border border-white/10 bg-white px-4 py-4 text-slate-950 outline-none" placeholder="you@company.com" />
         </label>
-        <button disabled={busy} className="mt-4 rounded-lg bg-coral px-5 py-3 text-sm font-semibold text-white disabled:opacity-60">{busy ? "Sending..." : "Send secure link"}</button>
+        <button disabled={busy} className="mt-4 w-full rounded-2xl px-5 py-4 text-sm font-black text-white disabled:opacity-60 neon-button">{busy ? "Sending..." : "Send link"}</button>
       </form>
 
-      <form onSubmit={submitPhone} className="mt-4 rounded-2xl bg-white p-4">
+      <form onSubmit={submitPhone} className="mt-4 rounded-3xl border border-white/10 bg-black/25 p-4">
         <label className="block">
-          <span className="text-sm font-bold">Mobile number with country code</span>
-          <input value={phone} onChange={(event) => setPhone(event.target.value)} className="mt-2 w-full rounded-lg border border-hairline bg-canvas px-4 py-3 outline-coral" placeholder="+91XXXXXXXXXX" />
+          <span className="text-sm font-black text-white">Mobile OTP</span>
+          <input value={phone} onChange={(event) => setPhone(event.target.value)} className="mt-3 w-full rounded-2xl border border-white/10 bg-white px-4 py-4 text-slate-950 outline-none" placeholder="+91XXXXXXXXXX" />
         </label>
-        <button disabled={busy} className="mt-4 rounded-lg border border-hairline px-5 py-3 text-sm font-semibold text-ink disabled:opacity-60">Send OTP</button>
-        <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto]">
-          <input value={otp} onChange={(event) => setOtp(event.target.value)} className="rounded-lg border border-hairline bg-canvas px-4 py-3 outline-coral" placeholder="Enter OTP" />
-          <button type="button" onClick={verifyPhone} disabled={busy} className="rounded-lg bg-dark px-5 py-3 text-sm font-semibold text-white disabled:opacity-60">Verify</button>
+        <button disabled={busy} className="mt-4 w-full rounded-2xl border border-white/15 bg-white/10 px-5 py-4 text-sm font-black text-white disabled:opacity-60">Send OTP</button>
+        <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]">
+          <input value={otp} onChange={(event) => setOtp(event.target.value)} className="rounded-2xl border border-white/10 bg-white px-4 py-4 text-slate-950 outline-none" placeholder="Enter OTP" />
+          <button type="button" onClick={verifyPhone} disabled={busy} className="rounded-2xl bg-[#22e6a8] px-5 py-4 text-sm font-black text-black disabled:opacity-60">Verify</button>
         </div>
       </form>
 
-      <div className="mt-5 rounded-2xl bg-canvas p-4 text-sm leading-6 text-muted">
-        Connect Meta or Google ad accounts from Settings after login. This allows campaign delivery and reporting through approved provider accounts.
-      </div>
-      {note && <p className="mt-4 text-sm font-semibold text-coral">{note}</p>}
+      <div className="mt-4 rounded-2xl border border-white/10 bg-white/10 p-4 text-xs leading-6 text-white/60">After sign-in, connect Meta or Google accounts from Settings and manage campaigns from the dashboard.</div>
+      {note && <p className="mt-4 rounded-2xl bg-white/10 px-4 py-3 text-sm font-bold text-[#fda4af]">{note}</p>}
     </div>
   );
 }
