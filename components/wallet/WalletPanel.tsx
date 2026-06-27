@@ -153,24 +153,24 @@ export function WalletPanel() {
       <div className="neon-shell rounded-[2rem] p-5 md:p-10">
         <p className="text-xs font-black uppercase tracking-[0.2em] text-[#7dd3fc]">Ad spend wallet</p>
         <h1 className="mt-3 text-5xl font-black tracking-tight text-white md:text-7xl">Add verified ad funds.</h1>
-        <p className="mt-4 max-w-3xl leading-7 text-white/64">Use Razorpay checkout for UPI, cards, net banking and wallets. Credits appear only after payment verification.</p>
+        <p className="mt-4 max-w-3xl leading-7 text-white/65">Use Razorpay checkout for UPI, cards, net banking and wallets. Credits appear only after payment verification.</p>
 
-        <div className="mt-7 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/8 p-4 text-sm text-white/70">
+        <div className="mt-7 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/10 p-4 text-sm text-white/70">
           <span>Razorpay is the primary payment gateway. Manual transfer is shown only as a support fallback.</span>
           <button onClick={() => refreshWallet(true)} className="rounded-xl border border-white/15 bg-white px-4 py-2 text-xs font-black text-black">Sync wallet</button>
         </div>
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">
-          <div className="rounded-3xl border border-white/10 bg-black/35 p-6 text-white">
+          <div className="rounded-3xl border border-white/10 bg-black/30 p-6 text-white">
             <p className="text-sm text-white/50">Verified balance</p>
             <h2 className="mt-3 text-5xl font-black">₹{wallet.balance.toLocaleString("en-IN")}</h2>
           </div>
           <div className="rounded-3xl border border-white/10 bg-white/10 p-6 text-white">
-            <p className="text-sm text-white/55">Payment records</p>
+            <p className="text-sm text-white/50">Payment records</p>
             <h2 className="mt-3 text-5xl font-black">{wallet.transactions.length}</h2>
           </div>
           <div className="rounded-3xl border border-white/10 bg-white/10 p-6 text-white">
-            <p className="text-sm text-white/55">Minimum review fund</p>
+            <p className="text-sm text-white/50">Minimum review fund</p>
             <h2 className="mt-3 text-5xl font-black">₹200</h2>
           </div>
         </div>
@@ -203,14 +203,14 @@ export function WalletPanel() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-black/28 p-6 text-white">
+          <div className="rounded-3xl border border-white/10 bg-black/30 p-6 text-white">
             <h2 className="text-2xl font-black">Manual payment support</h2>
-            <p className="mt-3 text-sm leading-6 text-white/62">For UPI QR, bank transfer or receipt support, contact support. Manual credits are added only after verification.</p>
+            <p className="mt-3 text-sm leading-6 text-white/60">For UPI QR, bank transfer or receipt support, contact support. Manual credits are added only after verification.</p>
             <div className="mt-5 grid gap-3 text-sm">
-              <div className="rounded-2xl border border-white/10 bg-white/7 p-4"><strong>UPI / QR:</strong><br />Available through support desk</div>
-              <div className="rounded-2xl border border-white/10 bg-white/7 p-4"><strong>Bank transfer:</strong><br />Receipt verification required</div>
-              <Link href="/privacy" className="rounded-2xl border border-white/10 bg-white/7 p-4 font-bold">Payment privacy policy</Link>
-              <Link href="/terms" className="rounded-2xl border border-white/10 bg-white/7 p-4 font-bold">Payment terms</Link>
+              <div className="rounded-2xl border border-white/10 bg-white/10 p-4"><strong>UPI / QR:</strong><br />Available through support desk</div>
+              <div className="rounded-2xl border border-white/10 bg-white/10 p-4"><strong>Bank transfer:</strong><br />Receipt verification required</div>
+              <Link href="/privacy" className="rounded-2xl border border-white/10 bg-white/10 p-4 font-bold">Payment privacy policy</Link>
+              <Link href="/terms" className="rounded-2xl border border-white/10 bg-white/10 p-4 font-bold">Payment terms</Link>
             </div>
           </div>
         </div>
