@@ -3,11 +3,13 @@ import { getAuthSession } from "./auth/session";
 
 export const launchRequestsKey = "launch1stad.launchRequests";
 
+export type LaunchRequestStatus = "draft" | "connected_required" | "under_review" | "approved" | "rejected" | "active" | "paused";
+
 export type LaunchRequest = {
   id: string;
   campaignId: string;
   provider: string;
-  status: "draft" | "connected_required" | "under_review" | "active" | "paused";
+  status: LaunchRequestStatus;
   payload: {
     input: CampaignInput;
     output: unknown;
